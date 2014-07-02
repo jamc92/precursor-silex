@@ -1,0 +1,91 @@
+{% extends 'ag_menu.html.twig' %}
+
+{% block menu %}
+
+<li class="treeview {% if option is defined and (option == 'articulo_list' or option == 'articulo_create' or option == 'articulo_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Artículos</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'articulo_list' %}class="active"{% endif %}><a href="{{ path('articulo_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver artículos</a></li>
+        <li {% if option is defined and option == 'articulo_create' %}class="active"{% endif %}><a href="{{ path('articulo_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'articulos_etiquetas_list' or option == 'articulos_etiquetas_create' or option == 'articulos_etiquetas_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Etiquetas de Artículos</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'articulos_etiquetas_list' %}class="active"{% endif %}><a href="{{ path('articulos_etiquetas_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver etiquetas de artículos</a></li>
+        <li {% if option is defined and option == 'articulos_etiquetas_create' %}class="active"{% endif %}><a href="{{ path('articulos_etiquetas_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'categoria_list' or option == 'categoria_create' or option == 'categoria_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Categoría</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'categoria_list' %}class="active"{% endif %}><a href="{{ path('categoria_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver categorías</a></li>
+        <li {% if option is defined and option == 'categoria_create' %}class="active"{% endif %}><a href="{{ path('categoria_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'comentario_list' or option == 'comentario_create' or option == 'comentario_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Comentarios</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'comentario_list' %}class="active"{% endif %}><a href="{{ path('comentario_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver comentarios</a></li>
+        <li {% if option is defined and option == 'comentario_create' %}class="active"{% endif %}><a href="{{ path('comentario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'etiqueta_list' or option == 'etiqueta_create' or option == 'etiqueta_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Etiquetas</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'etiqueta_list' %}class="active"{% endif %}><a href="{{ path('etiqueta_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver etiquetas</a></li>
+        <li {% if option is defined and option == 'etiqueta_create' %}class="active"{% endif %}><a href="{{ path('etiqueta_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'perfil_list' or option == 'perfil_create' or option == 'perfil_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Perfiles</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'perfil_list' %}class="active"{% endif %}><a href="{{ path('perfil_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver perfiles</a></li>
+        <li {% if option is defined and option == 'perfil_create' %}class="active"{% endif %}><a href="{{ path('perfil_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'usuario_list' or option == 'usuario_create' or option == 'usuario_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Usuarios</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'usuario_list' %}class="active"{% endif %}><a href="{{ path('usuario_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver usuarios</a></li>
+        <li {% if option is defined and option == 'usuario_create' %}class="active"{% endif %}><a href="{{ path('usuario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+    </ul>
+</li>
+
+
+
+{% endblock %}
