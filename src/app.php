@@ -38,7 +38,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         )
 ));
 
-$app['asset_path'] = 'http://localhost/admingenerator/web/resources';
+$app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
 $app['debug'] = true;
 
 return $app;

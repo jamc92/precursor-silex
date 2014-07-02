@@ -23,8 +23,7 @@ $app->match('/admin/categoria', function () use ($app) {
 		'id_categoria', 
 		'nombre', 
 		'creado', 
-		'modificado', 
-
+		'modificado',
     );
 
     $primary_key = "id";
@@ -54,20 +53,26 @@ $app->match('/admin/categoria', function () use ($app) {
 
 
 $app->match('/admin/categoria/create', function () use ($app) {
-    
-    $initial_data = array(
-		'id_categoria' => '', 
-		'nombre' => '', 
-		'creado' => '', 
-		'modificado' => '', 
 
+    $find_sql = "SELECT * FROM `categoria`";
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql) {
+        $options[$row_sql['id']] = $row_sql['nombre'];
+    }
+
+    $initial_data = array(
+        'categoria_superior' => '', 
+        'nombre' => '', 
     );
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
+    $form = $form->add('categoria_superior', 'choice', array(
+            'choices' => $options,
+            'required' => false
+        ));
 
-
-	$form = $form->add('id_categoria', 'text', array('required' => false));
 	$form = $form->add('nombre', 'text', array('required' => true));
 
     $form = $form->getForm();
@@ -79,8 +84,8 @@ $app->match('/admin/categoria/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "INSERT INTO `categoria` (`id_categoria`, `nombre`, `creado`, `modificado`) VALUES (?, ?, ?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['id_categoria'], $data['nombre'], $data['creado'], $data['modificado']));            
+            $update_query = "INSERT INTO `categoria` (`id_categoria`, `nombre`, `creado`, `modificado`) VALUES (?, ?, NOW(), NOW())";
+            $app['db']->executeUpdate($update_query, array($data['categoria_superior'], $data['nombre']));
 
 
             $app['session']->getFlashBag()->add(
