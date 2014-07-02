@@ -123,23 +123,29 @@ $app->match('/admin/categoria/edit/{id}', function ($id) use ($app) {
         return $app->redirect($app['url_generator']->generate('categoria_list'));
     }
 
+    $find_sql = "SELECT * FROM `categoria`";
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql2) {
+        if ($row_sql['id_categoria'] != $row_sql2['id_categoria']) {
+            $options[$row_sql2['id']] = $row_sql2['nombre'];
+        }
+    }
+
     
     $initial_data = array(
-		'id_categoria' => $row_sql['id_categoria'], 
-		'nombre' => $row_sql['nombre'], 
-		'creado' => $row_sql['creado'], 
-		'modificado' => $row_sql['modificado'], 
-
+		'nombre' => $row_sql['nombre'],
     );
 
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-
-	$form = $form->add('id_categoria', 'text', array('required' => false));
+	$form = $form->add('categoria_superior', 'choice', array(
+            'choices' => $options,
+            'data' => $row_sql['id_categoria'],
+            'required' => false
+        ));
 	$form = $form->add('nombre', 'text', array('required' => true));
-	$form = $form->add('creado', 'text', array('required' => true));
-	$form = $form->add('modificado', 'text', array('required' => true));
 
 
     $form = $form->getForm();
@@ -151,8 +157,8 @@ $app->match('/admin/categoria/edit/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "UPDATE `categoria` SET `id_categoria` = ?, `nombre` = ?, `creado` = ?, `modificado` = ? WHERE `id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['id_categoria'], $data['nombre'], $data['creado'], $data['modificado'], $id));            
+            $update_query = "UPDATE `categoria` SET `id_categoria` = ?, `nombre` = ? WHERE `id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['categoria_superior'], $data['nombre'], $id));            
 
 
             $app['session']->getFlashBag()->add(
