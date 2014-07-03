@@ -14,7 +14,7 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 require_once __DIR__.'/../../src/app.php';
 
-
+require_once __DIR__.'/backend/auth.php';
 require_once __DIR__.'/backend/articulo.php';
 require_once __DIR__.'/backend/articulos_etiquetas.php';
 require_once __DIR__.'/backend/categoria.php';
