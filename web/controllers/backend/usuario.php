@@ -82,7 +82,7 @@ $app->match('/admin/usuario/create', function () use ($app) {
             'required' => true
         ));
 	$form = $form->add('nombre', 'text', array('required' => true));
-	$form = $form->add('correo', 'text', array('required' => true));
+	$form = $form->add('correo', 'email', array('required' => true));
 	$form = $form->add('alias', 'text', array('required' => true));
 	$form = $form->add('clave', 'password', array('required' => true));
 
@@ -96,7 +96,7 @@ $app->match('/admin/usuario/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "INSERT INTO `usuario` (`id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
+            $update_query = "INSERT INTO `usuario` (`id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES (?, ?, ?, ?, MD5(?), NOW(), NOW())";
             $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['clave']));
 
 
