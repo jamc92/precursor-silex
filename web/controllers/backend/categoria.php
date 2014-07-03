@@ -20,7 +20,7 @@ $app->match('/admin/categoria', function () use ($app) {
     
 	$table_columns = array(
 		'id', 
-		'id_categoria', 
+		'categoria', 
 		'nombre', 
 		'creado', 
 		'modificado',
@@ -29,7 +29,7 @@ $app->match('/admin/categoria', function () use ($app) {
     $primary_key = "id";
 	$rows = array();
 
-    $find_sql = "SELECT * FROM `categoria`";
+    $find_sql = "SELECT `categoria`.*, c2.nombre as categoria FROM `categoria` INNER JOIN `categoria` c2 ON `categoria`.id_categoria = c2.id";
     $rows_sql = $app['db']->fetchAll($find_sql, array());
 
     foreach($rows_sql as $row_key => $row_sql){

@@ -20,20 +20,19 @@ $app->match('/admin/usuario', function () use ($app) {
     
 	$table_columns = array(
 		'id', 
-		'id_perfil', 
+		'perfil', 
 		'nombre', 
 		'correo', 
 		'alias', 
-		'clave', 
+		#'clave', 
 		'creado', 
-		'modificado', 
-
+		'modificado',
     );
 
     $primary_key = "id";
 	$rows = array();
 
-    $find_sql = "SELECT * FROM `usuario`";
+    $find_sql = "SELECT `usuario`.*, `perfil`.`nombre` as perfil FROM `usuario` INNER JOIN `perfil` ON id_perfil = `perfil`.`id`";
     $rows_sql = $app['db']->fetchAll($find_sql, array());
 
     foreach($rows_sql as $row_key => $row_sql){
@@ -58,8 +57,14 @@ $app->match('/admin/usuario', function () use ($app) {
 
 $app->match('/admin/usuario/create', function () use ($app) {
     
+    $find_sql = "SELECT * FROM `perfil`";
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql) {
+        $options[$row_sql['id']] = $row_sql['nombre'];
+    }
+    
     $initial_data = array(
-		'id' => '', 
 		'id_perfil' => '', 
 		'nombre' => '', 
 		'correo' => '', 
@@ -72,16 +77,14 @@ $app->match('/admin/usuario/create', function () use ($app) {
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-
-
-	$form = $form->add('id', 'text', array('required' => true));
-	$form = $form->add('id_perfil', 'text', array('required' => true));
+	$form = $form->add('id_perfil', 'choice', array(
+            'choices' => $options,
+            'required' => true
+        ));
 	$form = $form->add('nombre', 'text', array('required' => true));
 	$form = $form->add('correo', 'text', array('required' => true));
 	$form = $form->add('alias', 'text', array('required' => true));
 	$form = $form->add('clave', 'password', array('required' => true));
-	$form = $form->add('creado', 'text', array('required' => true));
-	$form = $form->add('modificado', 'text', array('required' => true));
 
 
     $form = $form->getForm();
@@ -93,8 +96,8 @@ $app->match('/admin/usuario/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
-            $app['db']->executeUpdate($update_query, array($data['id'], $data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['clave']));
+            $update_query = "INSERT INTO `usuario` (`id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
+            $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['clave']));
 
 
             $app['session']->getFlashBag()->add(
@@ -132,32 +135,33 @@ $app->match('/admin/usuario/edit/{id}', function ($id) use ($app) {
         return $app->redirect($app['url_generator']->generate('usuario_list'));
     }
 
+    $find_sql = "SELECT * FROM `perfil`";
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql2) {
+        $options[$row_sql2['id']] = $row_sql2['nombre'];
+    }
+
     
     $initial_data = array(
-		'id' => $row_sql['id'], 
-		'id_perfil' => $row_sql['id_perfil'], 
 		'nombre' => $row_sql['nombre'], 
 		'correo' => $row_sql['correo'], 
-		'alias' => $row_sql['alias'], 
-		'clave' => $row_sql['clave'], 
-		'creado' => $row_sql['creado'], 
-		'modificado' => $row_sql['modificado'], 
-
+		'alias' => $row_sql['alias'],
     );
 
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
 
-	$form = $form->add('id', 'text', array('required' => true));
-	$form = $form->add('id_perfil', 'text', array('required' => true));
+	$form = $form->add('id_perfil', 'choice', array(
+            'choices' => $options,
+            'data' => $row_sql['id_perfil'],
+            'required' => true
+        ));
 	$form = $form->add('nombre', 'text', array('required' => true));
 	$form = $form->add('correo', 'text', array('required' => true));
 	$form = $form->add('alias', 'text', array('required' => true));
-	$form = $form->add('clave', 'text', array('required' => true));
-	$form = $form->add('creado', 'text', array('required' => true));
-	$form = $form->add('modificado', 'text', array('required' => true));
-
+	$form = $form->add('nueva_clave', 'password', array('required' => false));
 
     $form = $form->getForm();
 
@@ -168,9 +172,13 @@ $app->match('/admin/usuario/edit/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "UPDATE `usuario` SET `id` = ?, `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ?, `clave` = ?, `creado` = ?, `modificado` = ? WHERE `id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['id'], $data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['clave'], $data['creado'], $data['modificado'], $id));            
-
+            if (!empty($data['nueva_clave'])) {
+                $update_query = "UPDATE `usuario` SET `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ?, `clave` = ? WHERE `id` = ?";
+                $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['nueva_clave'], $id));
+            } else {
+                $update_query = "UPDATE `usuario` SET `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ? WHERE `id` = ?";
+                $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $id));
+            }
 
             $app['session']->getFlashBag()->add(
                 'info',

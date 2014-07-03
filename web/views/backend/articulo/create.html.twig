@@ -24,7 +24,7 @@
                 {% include 'ag_alerts.html.twig' %}
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-8 col-lg-6">
 
                         {{ form_start(form, {'method': 'POST'}) }}
                             {{ form_errors(form) }}
@@ -36,17 +36,7 @@
                                 <div class="box-body">
 
 									<div class='form-group'>
-									    {{ form_label(form.id_autor) }}
-									    {{ form_widget(form.id_autor, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.id_categoria) }}
-									    {{ form_widget(form.id_categoria, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.titulo) }}
+									    {{ form_label(form.titulo, 'Título') }}
 									    {{ form_widget(form.titulo, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
@@ -55,22 +45,15 @@
 									    {{ form_widget(form.contenido, { attr: { 'class': 'form-control textarea', 'id': 'insert', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
 									</div>
 
-									<div class='form-group'>
-									    {{ form_label(form.fecha_pub) }}
-									    {{ form_widget(form.fecha_pub, { attr: { 'class': 'form-control' }}) }}
-									</div>
+                                    <div class='form-group'>
+                                        {{ form_label(form.categoria, 'Categoría') }}
+                                        {{ form_widget(form.categoria, { attr: { 'class': 'form-control' }}) }}
+                                    </div>
 
 									<div class='form-group'>
-									    {{ form_label(form.creado) }}
-									    {{ form_widget(form.creado, { attr: { 'class': 'form-control' }}) }}
+									    {{ form_label(form.fecha_publicacion, 'Fecha de publicación') }}
+									    {{ form_widget(form.fecha_publicacion, { attr: { 'class': 'form-control' }}) }}
 									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.modificado) }}
-									    {{ form_widget(form.modificado, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-                                                  
 
                                 </div><!-- /.box-body -->
 
@@ -78,6 +61,10 @@
 
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-primary">Crear</button>
+<<<<<<< HEAD
+=======
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('articulo_list') }}'">Volver</button>
+>>>>>>> e1d44f4ac77c11b892522126171352c0aecee3e2
                                 </div>
 
                             </div><!-- /.box -->

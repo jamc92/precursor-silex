@@ -36,11 +36,6 @@
                                 <div class="box-body">
 
 									<div class='form-group'>
-									    {{ form_label(form.id) }}
-									    {{ form_widget(form.id, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
 									    {{ form_label(form.id_perfil) }}
 									    {{ form_widget(form.id_perfil, { attr: { 'class': 'form-control' }}) }}
 									</div>
@@ -63,19 +58,7 @@
 									<div class='form-group'>
 									    {{ form_label(form.clave) }}
 									    {{ form_widget(form.clave, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.creado) }}
-									    {{ form_widget(form.creado, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.modificado) }}
-									    {{ form_widget(form.modificado, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-                                                  
+									</div>           
 
                                 </div><!-- /.box-body -->
 
@@ -83,6 +66,10 @@
 
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-primary">Crear</button>
+<<<<<<< HEAD
+=======
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('usuario_list') }}'">Volver</button>
+>>>>>>> e1d44f4ac77c11b892522126171352c0aecee3e2
                                 </div>
 
                             </div><!-- /.box -->

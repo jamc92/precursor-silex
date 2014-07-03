@@ -57,26 +57,15 @@
 									<div class='form-group'>
 									    {{ form_label(form.fecha_pub) }}
 									    {{ form_widget(form.fecha_pub, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.creado) }}
-									    {{ form_widget(form.creado, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.modificado) }}
-									    {{ form_widget(form.modificado, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-                                                 
+									</div>      
 
                                 </div><!-- /.box-body -->
 
                                 {{ form_rest(form) }}
 
                                 <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('articulo_list') }}'">Volver</button>
                                 </div>
 
                             </div><!-- /.box -->
