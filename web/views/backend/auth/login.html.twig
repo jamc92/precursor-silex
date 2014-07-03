@@ -7,15 +7,17 @@
 {% block container%}
 	<div class="wrapper row-offcanvas row-offcanvas-left">
 		<div class="container">
-            <form class="form-signin" method="POST">
+            <form class="form-signin" action="{{ path('admin_login_check') }}" method="post">
+                {{ error }}
                 <input type="hidden" name="redirect_url" value="<?php print $redirect_url?>">
                 <h2 class="form-signin-heading">Iniciar sesión</h2>
                 <div class=" input-group">
                     <span class="input-group-addon glyphicon glyphicon-user"></span>
                     <input type="text"
                            class="form-control"
-                           id="alias"
-                           name="alias"
+                           id="_username"
+                           name="_username"
+                           value="{{ last_username }}"
                            placeholder="Usuario o Correo"
                            required autofocus>
                 </div>
@@ -24,8 +26,8 @@
                     <span class="input-group-addon glyphicon glyphicon-lock"></span>
                     <input type="password"
                            class="form-control" 
-                           id="clave"
-                           name="clave"
+                           id="_password"
+                           name="_password"
                            placeholder="Clave"
                            required>
                 </div>
