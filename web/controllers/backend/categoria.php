@@ -56,6 +56,7 @@ $app->match('/admin/categoria/create', function () use ($app) {
 
     $find_sql = "SELECT * FROM `categoria`";
     $rows_sql = $app['db']->fetchAll($find_sql, array());
+    $options = array();
 
     foreach($rows_sql as $row_key => $row_sql) {
         $options[$row_sql['id']] = $row_sql['nombre'];
