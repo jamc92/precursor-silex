@@ -91,7 +91,7 @@ $app->match('/admin/categoria/create', function () use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'categoria created!',
+                    'message' => '¡Categoría creada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('categoria_list'));
@@ -115,9 +115,9 @@ $app->match('/admin/categoria/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Categoría no encontrada!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('categoria_list'));
@@ -162,9 +162,9 @@ $app->match('/admin/categoria/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
-                    'message' => 'categoria edited!',
+                    'message' => 'Categoría editada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('categoria_edit', array("id" => $id)));
@@ -192,17 +192,17 @@ $app->match('/admin/categoria/delete/{id}', function ($id) use ($app) {
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
-                'message' => 'categoria deleted!',
+                'message' => '¡Categoría eliminada!',
             )
         );
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => 'Categoría no encontrada',
             )
         );  
     }

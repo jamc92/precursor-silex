@@ -91,7 +91,7 @@ $app->match('/admin/comentario/create', function () use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'comentario created!',
+                    'message' => '¡Comentario creado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('comentario_list'));
@@ -115,9 +115,9 @@ $app->match('/admin/comentario/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => 'Comentario no encontrado',
             )
         );        
         return $app->redirect($app['url_generator']->generate('comentario_list'));
@@ -158,9 +158,9 @@ $app->match('/admin/comentario/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
-                    'message' => 'comentario edited!',
+                    'message' => '¡Comentario editado',
                 )
             );
             return $app->redirect($app['url_generator']->generate('comentario_edit', array("id" => $id)));
@@ -188,17 +188,17 @@ $app->match('/admin/comentario/delete/{id}', function ($id) use ($app) {
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
-                'message' => 'comentario deleted!',
+                'message' => '¡Comentario eliminado!',
             )
         );
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Comentario no encontrado!',
             )
         );  
     }

@@ -14,7 +14,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("Are you sure? This action cannot be undone.")) { 
+            if(!confirm("¿Esta seguro que desea realizar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -33,7 +33,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Articulo list
+                    Lista de Artículos
                 </h1>
             </section>
 
@@ -51,14 +51,14 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('articulo_create') }}">Create new articulo</a><br /><br />
+                                <a class="btn btn-primary" href="{{ path('articulo_create') }}">Crear Artículo</a><br /><br />
                                 <table id="articulo_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             {% for table_column in table_columns %}
                                             <th>{{ table_column }}</th>
                                             {% endfor %}
-                                            <th>Actions</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,7 +67,7 @@
                                                 {% for table_column in table_columns %}
                                                     <td>{{ row[table_column] }}</td>
                                                 {% endfor %}
-                                                <td><a href="{{ path('articulo_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Edit</a> <a href="{{ path('articulo_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Delete</a></td>
+                                                <td><a href="{{ path('articulo_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('articulo_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
@@ -77,7 +77,7 @@
                                             {% for table_column in table_columns %}
                                             <th>{{ table_column }}</th>
                                             {% endfor %}
-                                            <th>Actions</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </tfoot>
                                 </table>

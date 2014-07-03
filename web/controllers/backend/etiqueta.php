@@ -19,10 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 $app->match('/admin/etiqueta', function () use ($app) {
     
 	$table_columns = array(
-		'id', 
-		'nombre', 
-		'creado', 
-		'modificado', 
+		'id',
+		'nombre',
+		'creado',
+		'modificado',
 
     );
 
@@ -107,9 +107,9 @@ $app->match('/admin/etiqueta/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => '¡No encontrada!',
+                'message' => '¡Etiqueta No encontrada!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('etiqueta_list'));
@@ -143,7 +143,7 @@ $app->match('/admin/etiqueta/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
                     'message' => '¡Etiqueta editada!',
                 )
@@ -173,7 +173,7 @@ $app->match('/admin/etiqueta/delete/{id}', function ($id) use ($app) {
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
                 'message' => '¡Etiqueta eliminada!',
             )
@@ -181,9 +181,9 @@ $app->match('/admin/etiqueta/delete/{id}', function ($id) use ($app) {
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => '¡No encontrada!',
+                'message' => '¡Etiqueta no encontrada!',
             )
         );  
     }

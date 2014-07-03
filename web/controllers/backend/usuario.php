@@ -100,7 +100,7 @@ $app->match('/admin/usuario/create', function () use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'usuario created!',
+                    'message' => '¡Usuario creado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('usuario_list'));
@@ -124,9 +124,9 @@ $app->match('/admin/usuario/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Usuario no encontrado!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('usuario_list'));
@@ -173,9 +173,9 @@ $app->match('/admin/usuario/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
-                    'message' => 'usuario edited!',
+                    'message' => '¡Usuario editado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('usuario_edit', array("id" => $id)));
@@ -203,17 +203,17 @@ $app->match('/admin/usuario/delete/{id}', function ($id) use ($app) {
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
-                'message' => 'usuario deleted!',
+                'message' => 'Usuario eliminado!',
             )
         );
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Usuario no encontrado!',
             )
         );  
     }

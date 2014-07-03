@@ -14,7 +14,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("Are you sure? This action cannot be undone.")) { 
+            if(!confirm("¿Esta seguro que desea eliminar esta etiqueta de artículo? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -33,7 +33,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Articulos_etiquetas list
+                    Lista de Etiquetas de Artículos
                 </h1>
             </section>
 
@@ -51,14 +51,14 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('articulos_etiquetas_create') }}">Create new articulos_etiquetas</a><br /><br />
+                                <a class="btn btn-primary" href="{{ path('articulos_etiquetas_create') }}">Crear Etiqueta de Artículo</a><br /><br />
                                 <table id="articulos_etiquetas_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             {% for table_column in table_columns %}
                                             <th>{{ table_column }}</th>
                                             {% endfor %}
-                                            <th>Actions</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -77,7 +77,7 @@
                                             {% for table_column in table_columns %}
                                             <th>{{ table_column }}</th>
                                             {% endfor %}
-                                            <th>Actions</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </tfoot>
                                 </table>

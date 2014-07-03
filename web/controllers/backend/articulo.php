@@ -19,14 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 $app->match('/admin/articulo', function () use ($app) {
     
 	$table_columns = array(
-		'id', 
-		'id_autor', 
-		'id_categoria', 
-		'titulo', 
-		'contenido', 
-		'fecha_pub', 
-		'creado', 
-		'modificado', 
+		'id',
+		'id_autor',
+		'id_categoria',
+		'titulo',
+		'contenido',
+		'fecha_pub',
+		'creado',
+		'modificado',
 
     );
 
@@ -98,7 +98,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'articulo created!',
+                    'message' => '¡Artículo creado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('articulo_list'));
@@ -122,9 +122,9 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Etiqueta no encontrada!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('articulo_list'));
@@ -169,9 +169,9 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
-                    'message' => 'articulo edited!',
+                    'message' => '¡Artículo Editado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('articulo_edit', array("id" => $id)));
@@ -200,17 +200,17 @@ $app->match('/admin/articulo/delete/{id}', function ($id) use ($app) {
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
-                'message' => 'articulo deleted!',
+                'message' => '¡Artículo Eliminado!',
             )
         );
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => 'Artículo no encontrado',
             )
         );  
     }
