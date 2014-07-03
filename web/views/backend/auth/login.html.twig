@@ -1,0 +1,43 @@
+{% extends 'layouts/frontend.html.twig' %}
+
+{% block title %}Inicio de sesión{% endblock %}
+
+{% block body_params%}class="skin-black" id="login"{% endblock %}
+
+{% block container%}
+	<div class="wrapper row-offcanvas row-offcanvas-left">
+		<div class="container">
+            <form class="form-signin" method="POST">
+                <input type="hidden" name="redirect_url" value="<?php print $redirect_url?>">
+                <h2 class="form-signin-heading">Iniciar sesión</h2>
+                <div class=" input-group">
+                    <span class="input-group-addon glyphicon glyphicon-user"></span>
+                    <input type="text"
+                           class="form-control"
+                           id="alias"
+                           name="alias"
+                           placeholder="Usuario o Correo"
+                           required autofocus>
+                </div>
+                <br/>
+                <div class=" input-group">
+                    <span class="input-group-addon glyphicon glyphicon-lock"></span>
+                    <input type="password"
+                           class="form-control" 
+                           id="clave"
+                           name="clave"
+                           placeholder="Clave"
+                           required>
+                </div>
+                <label class="checkbox">
+                    <input type="checkbox" 
+                           id="recordarme"
+                           name="recordarme" value=1 > Mantenerme conectado
+                </label>
+                <div style="text-align: center;">
+                    <button class="btn btn-large btn-primary" type="submit">Iniciar sesión</button>
+                </div>
+            </form>
+        </div>
+	</div>
+{% endblock %}
