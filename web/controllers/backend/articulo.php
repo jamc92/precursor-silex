@@ -27,7 +27,6 @@ $app->match('/admin/articulo', function () use ($app) {
 		'fecha_pub', 
 		'creado', 
 		'modificado', 
-
     );
 
     $primary_key = "id";
@@ -37,11 +36,8 @@ $app->match('/admin/articulo', function () use ($app) {
     $rows_sql = $app['db']->fetchAll($find_sql, array());
 
     foreach($rows_sql as $row_key => $row_sql){
-    	for($i = 0; $i < count($table_columns); $i++){
-
-		$rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-
-
+    	for($i = 0; $i < count($table_columns); $i++) {
+            $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
     	}
     }
 
@@ -58,12 +54,28 @@ $app->match('/admin/articulo', function () use ($app) {
 
 $app->match('/admin/articulo/create', function () use ($app) {
     
+    // Categorías
+    $find_sql = "SELECT * FROM `categoria`";
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql) {
+        $options_cat[$row_sql['id']] = $row_sql['nombre'];
+    }
+
+    // Etiquetas
+    $find_sql = "SELECT * FROM `etiqueta`";
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql) {
+        $options_etiq[$row_sql['id']] = $row_sql['nombre'];
+    }
+
     $initial_data = array(
 		'id_autor' => '', 
-		'id_categoria' => '', 
+		'categoria' => '', 
 		'titulo' => '', 
 		'contenido' => '', 
-		'fecha_pub' => '', 
+		'fecha_publicacion' => '', 
 		'creado' => '', 
 		'modificado' => '', 
 
@@ -72,16 +84,16 @@ $app->match('/admin/articulo/create', function () use ($app) {
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
 
-
-	$form = $form->add('id_autor', 'text', array('required' => true));
-	$form = $form->add('id_categoria', 'text', array('required' => true));
+    // El autor del articulo debe ser el logueado
+	
+	$form = $form->add('categoria', 'choice', array(
+            'choices' => $options_cat,
+            'required' => false
+        ));
 	$form = $form->add('titulo', 'text', array('required' => true));
 	$form = $form->add('contenido', 'textarea', array('required' => true));
-	$form = $form->add('fecha_pub', 'text', array('required' => true));
-	$form = $form->add('creado', 'text', array('required' => true));
-	$form = $form->add('modificado', 'text', array('required' => true));
-
-
+	$form = $form->add('fecha_publicacion', 'text', array('required' => true));
+	
     $form = $form->getForm();
 
     if("POST" == $app['request']->getMethod()){
@@ -92,7 +104,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
             $data = $form->getData();
 
             $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `titulo`, `contenido`, `fecha_pub`, `creado`, `modificado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
-            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['id_categoria'], $data['titulo'], $data['contenido'], $data['fecha_pub']));            
+            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['titulo'], $data['contenido'], $data['fecha_publicacion']));            
 
 
             $app['session']->getFlashBag()->add(
