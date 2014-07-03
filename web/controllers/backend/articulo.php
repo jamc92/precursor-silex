@@ -19,17 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 $app->match('/admin/articulo', function () use ($app) {
     
 	$table_columns = array(
-<<<<<<< HEAD
-		'id',
-		'id_autor',
-		'id_categoria',
-		'titulo',
-		'contenido',
-		'fecha_pub',
-		'creado',
-		'modificado',
-
-=======
 		'id', 
 		'id_autor', 
 		'id_categoria', 
@@ -38,7 +27,6 @@ $app->match('/admin/articulo', function () use ($app) {
 		'fecha_pub', 
 		'creado', 
 		'modificado', 
->>>>>>> e1d44f4ac77c11b892522126171352c0aecee3e2
     );
 
     $primary_key = "id";
@@ -69,6 +57,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
     // Categorías
     $find_sql = "SELECT * FROM `categoria`";
     $rows_sql = $app['db']->fetchAll($find_sql, array());
+    $options_cat = array();
 
     foreach($rows_sql as $row_key => $row_sql) {
         $options_cat[$row_sql['id']] = $row_sql['nombre'];
@@ -77,6 +66,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
     // Etiquetas
     $find_sql = "SELECT * FROM `etiqueta`";
     $rows_sql = $app['db']->fetchAll($find_sql, array());
+    $options_etiq = array();
 
     foreach($rows_sql as $row_key => $row_sql) {
         $options_etiq[$row_sql['id']] = $row_sql['nombre'];

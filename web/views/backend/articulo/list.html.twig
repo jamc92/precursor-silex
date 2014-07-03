@@ -67,12 +67,8 @@
                                                 {% for table_column in table_columns %}
                                                     <td>{{ row[table_column] }}</td>
                                                 {% endfor %}
-<<<<<<< HEAD
-                                                <td><a href="{{ path('articulo_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('articulo_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
-=======
                                                 <td><a href="{{ path('articulos_etiquetas') }}" class="btn btn-success btn-xs">Etiquetas</a>
-                                                <a href="{{ path('articulo_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Edit</a> <a href="{{ path('articulo_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Delete</a></td>
->>>>>>> e1d44f4ac77c11b892522126171352c0aecee3e2
+                                                <td><a href="{{ path('articulo_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('articulo_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
