@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 02-07-2014 a las 18:34:27
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.11
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 03-07-2014 a las 21:14:38
+-- Versión del servidor: 5.5.34
+-- Versión de PHP: 5.4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -69,7 +69,15 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
   PRIMARY KEY (`id`),
   KEY `id_categoria` (`id_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=3 ;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`) VALUES
+(1, NULL, 'Categoría principal', '2014-07-03 13:08:06', '2014-07-03 17:38:06'),
+(2, 1, 'Menu', '2014-07-03 13:08:38', '2014-07-03 17:38:38');
 
 -- --------------------------------------------------------
 
@@ -106,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `etiqueta` (
 --
 
 INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
-(1, 'Etiquetaasdasd', '2014-07-02 11:49:11', '2014-07-02 16:20:55');
+(1, 'Etiqueta', '2014-07-02 11:49:11', '2014-07-03 17:39:08');
 
 -- --------------------------------------------------------
 
@@ -120,14 +128,15 @@ CREATE TABLE IF NOT EXISTS `perfil` (
   `creado` datetime NOT NULL COMMENT 'Fecha de creación del registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `perfil`
 --
 
 INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
-(1, 'Administrador', '2014-07-02 10:01:29', '2014-07-02 14:59:54');
+(1, 'Administrador', '2014-07-02 10:01:29', '2014-07-03 18:58:06'),
+(2, 'Usuario', '2014-07-03 13:07:32', '2014-07-03 17:37:32');
 
 -- --------------------------------------------------------
 
@@ -141,12 +150,22 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre y apellido',
   `correo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Correo electrónico',
   `alias` varchar(32) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Alias para inicio de sesión',
-  `clave` varchar(32) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Clave para inicio de sesión',
+  `clave` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Clave para inicio de sesión',
   `creado` datetime NOT NULL COMMENT 'Fecha de la creación del registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la modificación del registro',
   PRIMARY KEY (`id`),
   KEY `id_perfil` (`id_perfil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=5 ;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES
+(1, 1, 'Ramón Serrano', 'ramon.calle.88@gmail.com', 'RamEduard', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:11:27', '2014-07-03 18:56:35'),
+(2, 1, 'Javier Madrid', 'javiermadrid19@hotmail.com', 'jamc92', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:12:15', '2014-07-03 19:02:24'),
+(3, 1, 'Sander Rodríguez', 'sander@gmail.com', 'sander', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:15:08', '2014-07-03 19:02:30'),
+(4, 2, 'Usuario', 'usuario@precursor', 'usuario', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:16:05', '2014-07-03 19:02:34');
 
 --
 -- Restricciones para tablas volcadas
