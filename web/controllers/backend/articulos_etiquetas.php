@@ -83,7 +83,7 @@ $app->match('/admin/articulos_etiquetas/create', function () use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'articulos_etiquetas created!',
+                    'message' => '¡Etiqueta de Artículo creada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('articulos_etiquetas_list'));
@@ -107,9 +107,9 @@ $app->match('/admin/articulos_etiquetas/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => 'Etiqueta de Artículo no encontrada!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('articulos_etiquetas_list'));
@@ -144,9 +144,9 @@ $app->match('/admin/articulos_etiquetas/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
-                    'message' => 'articulos_etiquetas edited!',
+                    'message' => 'Etiqueta de Artículo editada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('articulos_etiquetas_edit', array("id" => $id)));
@@ -174,17 +174,17 @@ $app->match('/admin/articulos_etiquetas/delete/{id}', function ($id) use ($app) 
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
-                'message' => 'articulos_etiquetas deleted!',
+                'message' => 'Etiqueta de Artículo eliminada!',
             )
         );
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => 'Etiqueta de Artículo no encontrada',
             )
         );  
     }

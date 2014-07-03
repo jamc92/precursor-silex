@@ -14,7 +14,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("Are you sure? This action cannot be undone.")) { 
+            if(!confirm("¿Esta seguro que desea eliminar el usuario?\n¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -51,14 +51,14 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('usuario_create') }}">Create new usuario</a><br /><br />
+                                <a class="btn btn-primary" href="{{ path('usuario_create') }}">Crear Usuario</a><br /><br />
                                 <table id="usuario_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             {% for table_column in table_columns %}
                                             <th>{{ table_column }}</th>
                                             {% endfor %}
-                                            <th>Actions</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -77,7 +77,7 @@
                                             {% for table_column in table_columns %}
                                             <th>{{ table_column }}</th>
                                             {% endfor %}
-                                            <th>Actions</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </tfoot>
                                 </table>

@@ -82,7 +82,7 @@ $app->match('/admin/perfil/create', function () use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'perfil created!',
+                    'message' => '¡Perfil creado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('perfil_list'));
@@ -106,9 +106,9 @@ $app->match('/admin/perfil/edit/{id}', function ($id) use ($app) {
 
     if(!$row_sql){
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Perfil no encontrado!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('perfil_list'));
@@ -142,9 +142,9 @@ $app->match('/admin/perfil/edit/{id}', function ($id) use ($app) {
 
 
             $app['session']->getFlashBag()->add(
-                'success',
+                'info',
                 array(
-                    'message' => 'perfil edited!',
+                    'message' => '¡Perfil editado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('perfil_edit', array("id" => $id)));
@@ -172,17 +172,17 @@ $app->match('/admin/perfil/delete/{id}', function ($id) use ($app) {
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
-            'success',
+            'info',
             array(
-                'message' => 'perfil deleted!',
+                'message' => '¡Perfil eliminado!',
             )
         );
     }
     else{
         $app['session']->getFlashBag()->add(
-            'danger',
+            'warning',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡Perfil no encontrado!',
             )
         );  
     }
