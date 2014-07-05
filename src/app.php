@@ -10,7 +10,8 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . "/UserProvider.php";
+require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../src/UserProvider.php';
 
 use Silex\Application;
 
@@ -26,7 +27,7 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
-app->register(new Silex\Provider\SecurityServiceProvider(), array(
+$app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'security.firewalls' => array(
             'login_path' => array(
                 'pattern' => '^/login$',
@@ -50,7 +51,9 @@ app->register(new Silex\Provider\SecurityServiceProvider(), array(
         ),
         'security.access_rules' => array(
             array('^/login$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/.+$', 'ROLE_ADMIN'),
+            array('^/admin/perfil', 'ROLE_SUPER_ADMIN'),
+            array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
+            array('^/admin', 'ROLE_ADMIN'),
             array('^/admin', 'ROLE_USER')
         )
     ));
@@ -68,7 +71,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         )
 ));
 
-$app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
+$app['asset_path'] = 'http://' . $_SERVER['SERVER_ADDR'] . '/precursor-silex/web/resources';
 $app['debug'] = true;
 
 return $app;

@@ -22,7 +22,7 @@ class UserProvider implements UserProviderInterface
  
         if (!$user = $stmt->fetch()) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }        
+        }
  
         return new User($user['alias'], $user['clave'], explode(',', $user['perfil']), true, true, true, true);
     }
