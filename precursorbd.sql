@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.9
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 03-07-2014 a las 21:14:38
--- Versión del servidor: 5.5.34
--- Versión de PHP: 5.4.22
+-- Servidor: localhost
+-- Tiempo de generación: 05-07-2014 a las 23:55:38
+-- Versión del servidor: 5.6.16
+-- Versión de PHP: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -135,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `perfil` (
 --
 
 INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
-(1, 'Administrador', '2014-07-02 10:01:29', '2014-07-03 18:58:06'),
-(2, 'Usuario', '2014-07-03 13:07:32', '2014-07-03 17:37:32');
+(1, 'ROLE_ADMIN', '2014-07-02 10:01:29', '2014-07-05 17:42:11'),
+(2, 'ROLE_USER', '2014-07-03 13:07:32', '2014-07-05 17:42:20');
 
 -- --------------------------------------------------------
 
