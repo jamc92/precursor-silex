@@ -53,7 +53,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         array('^/login$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
         array('^/admin/perfil', 'ROLE_SUPER_ADMIN'),
         array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
-        array('^/admin', 'ROLE_ADMIN'),
+        array('^/admin', array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')),
         array('^/admin', 'ROLE_USER')
     )
 ));
@@ -71,7 +71,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     )
 ));
 
-$app['asset_path'] = 'http://' . $_SERVER['SERVER_ADDR'] . '/precursor-silex/web/resources';
+$app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
 $app['debug'] = true;
 
 require_once __DIR__ . '/routes/backend/base.php';
