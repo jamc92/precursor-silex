@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Precursor\\' => array($vendorDir . '/precursor/precursor/src'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Symfony\\Component\\Validator\\' => array($vendorDir . '/symfony/validator'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
