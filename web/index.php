@@ -2,8 +2,6 @@
 
 # Autocargador del framework
 require_once __DIR__ . '/../vendor/autoload.php';
-# Proveedor de usuario
-require_once __DIR__ . '/../src/UserProvider.php';
 
 use Silex\Application;
 
@@ -45,7 +43,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
                 'invalidate_session' => false
             ),
             'users' => $app->share(function($app) {
-                return new UserProvider($app['db']);
+                return new Precursor\UserProvider($app['db']);
             }),
         )
     ),
