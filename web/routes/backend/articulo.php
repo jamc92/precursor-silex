@@ -183,8 +183,8 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "UPDATE `articulo` SET `id_autor` = ?, `id_categoria` = ?, `titulo` = ?, `contenido` = ? WHERE `id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['id_categoria'], $data['titulo'], $data['contenido'], $id));
+            $update_query = "UPDATE `articulo` SET `id_autor` = ?, `id_categoria` = ?, `titulo` = ?, `descripcion` = ?, `contenido` = ? WHERE `id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['id_categoria'], $data['titulo'], $data['descripcion'], $data['contenido'], $id));
 
 
             $app['session']->getFlashBag()->add(
