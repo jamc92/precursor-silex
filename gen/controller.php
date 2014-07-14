@@ -2,7 +2,7 @@
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-$app->match('/__TABLENAME__', function () use ($app) {
+$app->match('/admin/__TABLENAME__', function () use ($app) {
     
 	$table_columns = array(
 __TABLECOLUMNS_ARRAY__
@@ -31,7 +31,7 @@ __EXTERNALS_FOR_LIST__
 })
 ->bind('__TABLENAME___list');
 
-$app->match('/__TABLENAME__/create', function () use ($app) {
+$app->match('/admin/__TABLENAME__/create', function () use ($app) {
     
     $initial_data = array(
 __TABLECOLUMNS_INITIALDATA_EMPTY_ARRAY__
@@ -74,7 +74,7 @@ __FIELDS_FOR_FORM__
 })
 ->bind('__TABLENAME___create');
 
-$app->match('/__TABLENAME__/edit/{id}', function ($id) use ($app) {
+$app->match('/admin/__TABLENAME__/edit/{id}', function ($id) use ($app) {
 
     $find_sql = "SELECT * FROM `__TABLENAME__` WHERE `__TABLE_PRIMARYKEY__` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
@@ -132,7 +132,7 @@ __FIELDS_FOR_FORM__
 })
 ->bind('__TABLENAME___edit');
 
-$app->match('/__TABLENAME__/delete/{id}', function ($id) use ($app) {
+$app->match('/admin/__TABLENAME__/delete/{id}', function ($id) use ($app) {
 
     $find_sql = "SELECT * FROM `__TABLENAME__` WHERE `__TABLE_PRIMARYKEY__` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
