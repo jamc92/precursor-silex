@@ -2,5 +2,125 @@
 
 {% block title %}Inicio - El Precursor{% endblock %}
 
-{% block container %}
+{% block content %}
+    <div class="col-12 col-sm-8 col-lg-8">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">Noticias</h1>
+        </div>
+
+        <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
+            <a class="thumbnail" href="noticia/1">
+                <img class="img-responsive" src="">
+                <h4 class="text-primary">Equipos VIT para el CUFM</h4>
+                <p>23 de abril de 2014 |<b>10:00 AM</b></p>
+                <p>Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.</p>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
+            <a class="thumbnail" href="noticia/1">
+                <img class="img-responsive" src="">
+                <h4 class="text-primary">Equipos VIT para el CUFM</h4>
+                <p>23 de abril de 2014 |<b>10:00 AM</b></p>
+                <p>Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.</p>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
+            <a class="thumbnail" href="noticia/1">
+                <img class="img-responsive" src="">
+                <h4 class="text-primary">Equipos VIT para el CUFM</h4>
+                <p>23 de abril de 2014 |<b>10:00 AM</b></p>
+                <p>Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.</p>
+            </a>
+        </div>
+
+
+        <div class="clearfix"></div>
+
+        <hr>
+
+        <!-- pager -->
+        <ul class="pager">
+            <li class="previous"><a href="noticia/1">&larr; Anterior</a>
+            </li>
+            <li><a href="">1</a></li>
+            <li><a href="">2</a></li>
+            <li><a href="">3</a></li>
+            <li><a href="">4</a></li>
+            <li><a href="">5</a></li>
+            <li><a href="">6</a></li>
+            <li><a href="">7</a></li>
+            <li><a href="">8</a></li>
+            <li><a href="">9</a></li>
+            <li><a href="">10</a></li>
+            <li><a href="">...</a></li>
+            <li class="next"><a href="noticia/1">Siguiente &rarr;</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-12 col-sm-4 col-lg-4 pull-right" id="sidebar">
+        <div class="well">
+            <h4>Búsqueda</h4>
+            <div class="input-group">
+                <input type="text" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+            </div>
+            <!-- /input-group -->
+        </div>
+        <!-- /well -->
+        <div class="well">
+            <h4>Noticias más vistas</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="col-lg-4" src="">
+                    <p class="col-lg-8">
+                        La colisión, entre la gabarra Doña Martha y una chalana, está siendo atendida por funcionarios del 171 y cuerpos de seguridad de la entidad.
+                    </p>
+                </div>
+                <div class="col-lg-12">
+                    <img class="col-lg-4" src="">
+                    <p class="col-lg-8">
+                        La colisión, entre la gabarra Doña Martha y una chalana, está siendo atendida por funcionarios del 171 y cuerpos de seguridad de la entidad.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- /well -->
+        <!-- /well -->
+        <div class="well">
+            <h4>Categorías</h4>
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-unstyled">
+                        {% for categoria in categorias %}
+                            <li>
+                                <a href="#{{ categoria.nombre }}">{{ categoria.nombre }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="list-unstyled">
+                        {% for categoria in categorias %}
+                            <li>
+                                <a href="#{{ categoria.nombre }}">{{ categoria.nombre }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /well -->
+        <!-- <div class="well">
+            <h4>Side Widget Well</h4>
+            <p>Bootstrap's default wells work great for side widgets! What is a widget anyways...?</p>
+        </div> -->
+        <!-- /well -->
+    </div>
 {% endblock %}
