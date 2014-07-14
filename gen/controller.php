@@ -1,19 +1,5 @@
 <?php
 
-/*
- * This file is part of the CRUD Admin Generator project.
- *
- * Author: Jon Segador <jonseg@gmail.com>
- * Web: http://crud-admin-generator.com
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-
-require_once __DIR__.'/../../../vendor/autoload.php';
-require_once __DIR__.'/../../../src/app.php';
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 $app->match('/__TABLENAME__', function () use ($app) {
@@ -44,8 +30,6 @@ __EXTERNALS_FOR_LIST__
         
 })
 ->bind('__TABLENAME___list');
-
-
 
 $app->match('/__TABLENAME__/create', function () use ($app) {
     
@@ -89,8 +73,6 @@ __FIELDS_FOR_FORM__
         
 })
 ->bind('__TABLENAME___create');
-
-
 
 $app->match('/__TABLENAME__/edit/{id}', function ($id) use ($app) {
 
@@ -150,8 +132,6 @@ __FIELDS_FOR_FORM__
 })
 ->bind('__TABLENAME___edit');
 
-
-
 $app->match('/__TABLENAME__/delete/{id}', function ($id) use ($app) {
 
     $find_sql = "SELECT * FROM `__TABLENAME__` WHERE `__TABLE_PRIMARYKEY__` = ?";
@@ -181,9 +161,3 @@ $app->match('/__TABLENAME__/delete/{id}', function ($id) use ($app) {
 
 })
 ->bind('__TABLENAME___delete');
-
-
-
-
-
-
