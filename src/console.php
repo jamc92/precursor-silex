@@ -1,15 +1,5 @@
 <?php
 
-/*
- * This file is part of the CRUD Admin Generator project.
- *
- * Author: Jon Segador <jonseg@gmail.com>
- * Web: http://crud-admin-generator.com
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -357,12 +347,340 @@ $console
 });
 
 $console
-        ->register('generate:entity')
-        ->setDefinition(array())
-        ->addArgument('name')
-        ->setDescription('Generate Entity Doctrine')
-        ->setCode(function(InputInterface $input, OutputInterface $output) use($app){
-            echo "Generate Entity";
-        });
+    ->register("generate:crud")
+    ->setDefinition(array(
+        new InputOption('table', '', InputOption::VALUE_REQUIRED, 'The name of the table')
+    ))
+    ->setDescription("Generate Crud of table")
+    ->setHelp(<<<EOT
+The <info>generate:crud</info> command helps you generates new CRUDs.
+
+By default, the command interacts with the developer to tweak the generation.
+Any passed option will be used as a default value for the interaction
+(<comment>--table</comment> is the only one needed if you follow the
+conventions):
+
+<info>php app/console generate:bundle --table=Workout</info>
+EOT
+    )
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $table = $input->getOption('table');
+
+        if (empty($table)) {
+            throw new \Symfony\Component\CssSelector\Exception\ExpressionErrorException('Introduzca el nombre de la tabla. <info>generate:crud --table=name_table</info>');
+        }
+
+        print "Generate CRUD of table $table\n";
+
+        $getTableColumnsQuery = "SHOW COLUMNS FROM `$table`";
+
+        $getTableColumnsResult = $app['db']->fetchAll($getTableColumnsQuery, array());
+
+        $dbTable = array(
+            'name' => $table,
+            'columns' => array()
+        );
+
+        foreach($getTableColumnsResult as $getTableColumnResult) {
+            $dbTable['columns'][] = $getTableColumnResult;
+        }
+
+        if(count($dbTable['columns']) > 1) {
+            $table_columns = array();
+            $primary_key = false;
+
+            $primary_keys = 0;
+            $primary_keys_auto = 0;
+            foreach($dbTable['columns'] as $column) {
+                if($column['Key'] == "PRI") {
+                    $primary_keys++;
+                }
+                if($column['Extra'] == "auto_increment") {
+                    $primary_keys_auto++;
+                }
+            }
+
+            if($primary_keys === 1 || ($primary_keys > 1 && $primary_keys_auto === 1)){
+
+                foreach($dbTable['columns'] as $column){
+
+                    $external_table = false;
+
+                    if($primary_keys > 1 && $primary_keys_auto == 1){
+                        if($column['Extra'] == "auto_increment"){
+                            $primary_key = $column['Field'];
+                        }
+                    }
+                    else if($primary_keys == 1){
+                        if($column['Key'] == "PRI"){
+                            $primary_key = $column['Field'];
+                        }
+                    }
+
+                    $table_columns[] = array(
+                        "name" => $column['Field'],
+                        "primary" => $column['Field'] == $primary_key ? true : false,
+                        "nullable" => $column['Null'] == "NO" ? true : false,
+                        "auto" => $column['Extra'] == "auto_increment" ? true : false,
+                        "external" => $column['Field'] != $primary_key ? $external_table : false,
+                        "type" => $column['Type']
+                    );
+                }
+
+            }
+        } else {
+            die("Fields not found.\n");
+        }
+
+        $table = array(
+            "name" => $dbTable['name'],
+            "primary_key" => $primary_key,
+            "columns" => $table_columns
+        );
+
+        $MENU_OPTIONS = "";
+        $BASE_INCLUDES = "";
+
+        $table_columns = $table['columns'];
+
+        $TABLENAME = $table['name'];
+        $TABLE_PRIMARYKEY = $table['primary_key'];
+
+        $TABLECOLUMNS_ARRAY = "";
+        $TABLECOLUMNS_INITIALDATA_EMPTY_ARRAY = "";
+        $TABLECOLUMNS_INITIALDATA_ARRAY = "";
+
+        $EXTERNALS_FOR_LIST = "";
+        $EXTERNALSFIELDS_FOR_FORM = "";
+        $FIELDS_FOR_FORM = "";
+
+        $INSERT_QUERY_FIELDS = array();
+        $INSERT_EXECUTE_FIELDS = array();
+        $UPDATE_QUERY_FIELDS = array();
+        $UPDATE_EXECUTE_FIELDS = array();
+
+        $EDIT_FORM_TEMPLATE = "";
+
+        $MENU_OPTIONS .= "" .
+            "<li class=\"treeview {% if option is defined and (option == '" . $TABLENAME . "_list' or option == '" . $TABLENAME . "_create' or option == '" . $TABLENAME . "_edit') %}active{% endif %}\">" . "\n" .
+            "    <a href=\"#\">" . "\n" .
+            "        <i class=\"fa fa-folder-o\"></i>" . "\n" .
+            "        <span>" . $TABLENAME . "</span>" . "\n" .
+            "        <i class=\"fa pull-right fa-angle-right\"></i>" . "\n" .
+            "    </a>" . "\n" .
+            "    <ul class=\"treeview-menu\" style=\"display: none;\">" . "\n" .
+            "        <li {% if option is defined and option == '" . $TABLENAME . "_list' %}class=\"active\"{% endif %}><a href=\"{{ path('" . $TABLENAME . "_list') }}\" style=\"margin-left: 10px;\"><i class=\"fa fa-angle-double-right\"></i> List</a></li>" . "\n" .
+            "        <li {% if option is defined and option == '" . $TABLENAME . "_create' %}class=\"active\"{% endif %}><a href=\"{{ path('" . $TABLENAME . "_create') }}\" style=\"margin-left: 10px;\"><i class=\"fa fa-angle-double-right\"></i> Create</a></li>" . "\n" .
+            "    </ul>" . "\n" .
+            "</li>" . "\n\n";
+
+        $BASE_INCLUDES .= "require_once __DIR__.'/" . $TABLENAME . "/index.php';" . "\n";
+
+        $count_externals = 0;
+        foreach($table_columns as $table_column){
+            $TABLECOLUMNS_ARRAY .= "\t\t" . "'". $table_column['name'] . "', \n";
+            if(!$table_column['primary'] || ($table_column['primary'] && !$table_column['auto'])){
+                $TABLECOLUMNS_INITIALDATA_EMPTY_ARRAY .= "\t\t" . "'". $table_column['name'] . "' => '', \n";
+                $TABLECOLUMNS_INITIALDATA_ARRAY .= "\t\t" . "'". $table_column['name'] . "' => \$row_sql['".$table_column['name']."'], \n";
+
+                $INSERT_QUERY_FIELDS[] = "`" . $table_column['name'] . "`";
+                $INSERT_EXECUTE_FIELDS[] = "\$data['" . $table_column['name'] . "']";
+                $UPDATE_QUERY_FIELDS[] = "`" . $table_column['name'] . "` = ?";
+                $UPDATE_EXECUTE_FIELDS[] = "\$data['" . $table_column['name'] . "']";
+
+                if(strpos($table_column['type'], 'text') !== false){
+                    $EDIT_FORM_TEMPLATE .= "" .
+                        "\t\t\t\t\t\t\t\t\t" . "<div class='form-group'>" . "\n" .
+                        "\t\t\t\t\t\t\t\t\t" . "    {{ form_label(form." . $table_column['name'] . ") }}" . "\n" .
+                        "\t\t\t\t\t\t\t\t\t" . "    {{ form_widget(form." . $table_column['name'] . ", { attr: { 'class': 'form-control textarea', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}" . "\n" .
+                        "\t\t\t\t\t\t\t\t\t" . "</div>" . "\n\n";
+                }
+                else {
+                    $EDIT_FORM_TEMPLATE .= "" .
+                        "\t\t\t\t\t\t\t\t\t" . "<div class='form-group'>" . "\n" .
+                        "\t\t\t\t\t\t\t\t\t" . "    {{ form_label(form." . $table_column['name'] . ") }}" . "\n" .
+                        "\t\t\t\t\t\t\t\t\t" . "    {{ form_widget(form." . $table_column['name'] . ", { attr: { 'class': 'form-control' }}) }}" . "\n" .
+                        "\t\t\t\t\t\t\t\t\t" . "</div>" . "\n\n";
+                }
+            }
+
+            $field_nullable = $table_column['nullable'] ? "true" : "false";
+
+            if($table_column['external']){
+                $external_table = $table[$table_column['external']];
+
+                $external_primary_key = $external_table['primary_key'];
+                $external_select_field = false;
+
+                foreach($external_table['columns'] as $external_column){
+                    if($external_column['name'] == "name" ||
+                        $external_column['name'] == "title" ||
+                        $external_column['name'] == "email" ||
+                        $external_column['name'] == "username"){
+                        $external_select_field = $external_column['name'];
+                    }
+                }
+
+                if(!$external_select_field){
+                    $external_select_field = $external_primary_key;
+                }
+
+                $external_cond = $count_externals > 0 ? "else if" : "if";
+
+                $EXTERNALS_FOR_LIST .= "" .
+                    "\t\t\t" . $external_cond . "(\$table_columns[\$i] == '" . $table_column['name'] . "'){" . "\n" .
+                    "\t\t\t" . "    \$findexternal_sql = 'SELECT `" . $external_select_field . "` FROM `" . $table_column['external'] . "` WHERE `" . $external_primary_key . "` = ?';" . "\n" .
+                    "\t\t\t" . "    \$findexternal_row = \$app['db']->fetchAssoc(\$findexternal_sql, array(\$row_sql[\$table_columns[\$i]]));" . "\n" .
+                    "\t\t\t" . "    \$rows[\$row_key][\$table_columns[\$i]] = \$findexternal_row['" . $external_select_field . "'];" . "\n" .
+                    "\t\t\t" . "}" . "\n";
+
+
+                $EXTERNALSFIELDS_FOR_FORM .= "" .
+                    "\t" . "\$options = array();" . "\n" .
+                    "\t" . "\$findexternal_sql = 'SELECT `" . $external_primary_key . "`, `" . $external_select_field . "` FROM `" . $table_column['external'] . "`';" . "\n" .
+                    "\t" . "\$findexternal_rows = \$app['db']->fetchAll(\$findexternal_sql, array());" . "\n" .
+                    "\t" . "foreach(\$findexternal_rows as \$findexternal_row){" . "\n" .
+                    "\t" . "    \$options[\$findexternal_row['" . $external_primary_key . "']] = \$findexternal_row['" . $external_select_field . "'];" . "\n" .
+                    "\t" . "}" . "\n" .
+                    "\t" . "if(count(\$options) > 0){" . "\n" .
+                    "\t" . "    \$form = \$form->add('" . $table_column['name'] . "', 'choice', array(" . "\n" .
+                    "\t" . "        'required' => " . $field_nullable . "," . "\n" .
+                    "\t" . "        'choices' => \$options," . "\n" .
+                    "\t" . "        'expanded' => false," . "\n" .
+                    "\t" . "        'constraints' => new Assert\Choice(array_keys(\$options))" . "\n" .
+                    "\t" . "    ));" . "\n" .
+                    "\t" . "}" . "\n" .
+                    "\t" . "else{" . "\n" .
+                    "\t" . "    \$form = \$form->add('" . $table_column['name'] . "', 'text', array('required' => " . $field_nullable . "));" . "\n" .
+                    "\t" . "}" . "\n\n";
+
+                $count_externals++;
+            }
+            else{
+                if(!$table_column['primary']){
+
+                    if(strpos($table_column['type'], 'text') !== false){
+                        $FIELDS_FOR_FORM .= "" .
+                            "\t" . "\$form = \$form->add('" . $table_column['name'] . "', 'textarea', array('required' => " . $field_nullable . "));" . "\n";
+                    }
+                    elseif(strpos($table_column['type'], 'date') !== false || strpos($table_column['type'], 'datetime') !== false) {
+                        $FIELDS_FOR_FORM .= "" .
+                            "\t" . "\$form = \$form->add('" . $table_column['name'] . "', 'date', array('required' => " . $field_nullable . "));" . "\n";
+                    }
+                    else{
+                        $FIELDS_FOR_FORM .= "" .
+                            "\t" . "\$form = \$form->add('" . $table_column['name'] . "', 'text', array('required' => " . $field_nullable . "));" . "\n";
+                    }
+                }
+                else if($table_column['primary'] && !$table_column['auto']){
+                    $FIELDS_FOR_FORM .= "" .
+                        "\t" . "\$form = \$form->add('" . $table_column['name'] . "', 'text', array('required' => " . $field_nullable . "));" . "\n";
+                }
+            }
+        }
+
+        if($count_externals > 0){
+            $EXTERNALS_FOR_LIST .= "" .
+                "\t\t\t" . "else{" . "\n" .
+                "\t\t\t" . "    \$rows[\$row_key][\$table_columns[\$i]] = \$row_sql[\$table_columns[\$i]];" . "\n" .
+                "\t\t\t" . "}" . "\n";
+        }
+
+        if($EXTERNALS_FOR_LIST == ""){
+            $EXTERNALS_FOR_LIST .= "" .
+                "\t\t" . "\$rows[\$row_key][\$table_columns[\$i]] = \$row_sql[\$table_columns[\$i]];" . "\n";
+        }
+
+
+        $INSERT_QUERY_VALUES = array();
+        foreach($INSERT_QUERY_FIELDS as $INSERT_QUERY_FIELD){
+            $INSERT_QUERY_VALUES[] = "?";
+        }
+        $INSERT_QUERY_VALUES = implode(", ", $INSERT_QUERY_VALUES);
+        $INSERT_QUERY_FIELDS = implode(", ", $INSERT_QUERY_FIELDS);
+        $INSERT_EXECUTE_FIELDS = implode(", ", $INSERT_EXECUTE_FIELDS);
+
+        $UPDATE_QUERY_FIELDS = implode(", ", $UPDATE_QUERY_FIELDS);
+        $UPDATE_EXECUTE_FIELDS = implode(", ", $UPDATE_EXECUTE_FIELDS);
+
+        $_controller = file_get_contents(__DIR__.'/../gen/controller.php');
+        $_controller = str_replace("__TABLENAME__", $TABLENAME, $_controller);
+        $_controller = str_replace("__TABLE_PRIMARYKEY__", $TABLE_PRIMARYKEY, $_controller);
+        $_controller = str_replace("__TABLECOLUMNS_ARRAY__", $TABLECOLUMNS_ARRAY, $_controller);
+        $_controller = str_replace("__TABLECOLUMNS_INITIALDATA_EMPTY_ARRAY__", $TABLECOLUMNS_INITIALDATA_EMPTY_ARRAY, $_controller);
+        $_controller = str_replace("__TABLECOLUMNS_INITIALDATA_ARRAY__", $TABLECOLUMNS_INITIALDATA_ARRAY, $_controller);
+        $_controller = str_replace("__EXTERNALS_FOR_LIST__", $EXTERNALS_FOR_LIST, $_controller);
+        $_controller = str_replace("__EXTERNALSFIELDS_FOR_FORM__", $EXTERNALSFIELDS_FOR_FORM, $_controller);
+        $_controller = str_replace("__FIELDS_FOR_FORM__", $FIELDS_FOR_FORM, $_controller);
+
+        $_controller = str_replace("__INSERT_QUERY_FIELDS__", $INSERT_QUERY_FIELDS, $_controller);
+        $_controller = str_replace("__INSERT_QUERY_VALUES__", $INSERT_QUERY_VALUES, $_controller);
+        $_controller = str_replace("__INSERT_EXECUTE_FIELDS__", $INSERT_EXECUTE_FIELDS, $_controller);
+
+        $_controller = str_replace("__UPDATE_QUERY_FIELDS__", $UPDATE_QUERY_FIELDS, $_controller);
+        $_controller = str_replace("__UPDATE_EXECUTE_FIELDS__", $UPDATE_EXECUTE_FIELDS, $_controller);
+
+
+        $_list_template = file_get_contents(__DIR__.'/../gen/list.html.twig');
+        $_list_template = str_replace("__TABLENAME__", $TABLENAME, $_list_template);
+        $_list_template = str_replace("__TABLENAMEUP__", ucfirst(strtolower($TABLENAME)), $_list_template);
+
+        $_create_template = file_get_contents(__DIR__.'/../gen/create.html.twig');
+        $_create_template = str_replace("__TABLENAME__", $TABLENAME, $_create_template);
+        $_create_template = str_replace("__TABLENAMEUP__", ucfirst(strtolower($TABLENAME)), $_create_template);
+        $_create_template = str_replace("__EDIT_FORM_TEMPLATE__", $EDIT_FORM_TEMPLATE, $_create_template);
+
+        $_edit_template = file_get_contents(__DIR__.'/../gen/edit.html.twig');
+        $_edit_template = str_replace("__TABLENAME__", $TABLENAME, $_edit_template);
+        $_edit_template = str_replace("__TABLENAMEUP__", ucfirst(strtolower($TABLENAME)), $_edit_template);
+        $_edit_template = str_replace("__EDIT_FORM_TEMPLATE__", $EDIT_FORM_TEMPLATE, $_edit_template);
+
+        $_menu_template = file_get_contents(__DIR__.'/../gen/menu.html.twig');
+        $_menu_template = str_replace("__MENU_OPTIONS__", $MENU_OPTIONS, $_menu_template);
+
+        $_base_file = file_get_contents(__DIR__.'/../gen/base.php');
+        $_base_file = str_replace("__BASE_INCLUDES__", $BASE_INCLUDES, $_base_file);
+
+        #@mkdir(__DIR__."/../web/routes/backend/".$TABLENAME, 0755);
+        @mkdir(__DIR__."/../web/views/backend/".$TABLENAME, 0755);
+
+        $fp = fopen(__DIR__."/../web/routes/backend/".$TABLENAME.".php", "w+");
+        fwrite($fp, $_controller);
+        fclose($fp);
+
+        print "\n\tArchivo " . __DIR__."/../web/routes/backend/".$TABLENAME.".php" . " creado con exito.\n";
+
+        $fp = fopen(__DIR__."/../web/views/backend/".$TABLENAME."/create.html.twig", "w+");
+        fwrite($fp, $_create_template);
+        fclose($fp);
+
+        print "\tArchivo " . __DIR__."/../web/views/backend/".$TABLENAME."/create.html.twig" . " creado con exito.\n";
+
+        $fp = fopen(__DIR__."/../web/views/backend/".$TABLENAME."/edit.html.twig", "w+");
+        fwrite($fp, $_edit_template);
+        fclose($fp);
+
+        print "\tArchivo " . __DIR__."/../web/views/backend/".$TABLENAME."/edit.html.twig" . " creado con exito.\n";
+
+        $fp = fopen(__DIR__."/../web/views/backend/".$TABLENAME."/list.html.twig", "w+");
+        fwrite($fp, $_list_template);
+        fclose($fp);
+
+        print "\tArchivo " . __DIR__."/../web/views/backend/".$TABLENAME."/list.html.twig" . " creado con exito.\n";
+
+//      $fp = fopen(__DIR__."/../web/controllers/base.php", "w+");
+//      fwrite($fp, $_base_file);
+//      fclose($fp);
+//
+//      print "\tArchivo " . __DIR__."/../web/controllers/base.php" . " creado con exito.\n";
+
+		$fp = fopen(__DIR__."/../web/views/menu$TABLENAME.html.twig", "w+");
+		fwrite($fp, $_menu_template);
+		fclose($fp);
+
+		print "\tArchivo " . __DIR__."/../web/views/menu$TABLENAME.html.twig" . " creado con exito.\n\n";
+
+    });
 
 return $console;
