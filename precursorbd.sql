@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 05-07-2014 a las 23:55:38
+-- Tiempo de generación: 14-07-2014 a las 00:11:58
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   `id_autor` int(255) NOT NULL COMMENT 'Referencia al autor del artículo',
   `id_categoria` int(11) NOT NULL COMMENT 'Referencia a la categoría del artículo',
   `titulo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Título del artículo',
+  `descripcion` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Descripción corta del artículo',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido que lleva el artículo',
   `fecha_pub` datetime NOT NULL COMMENT 'Fecha de publicación del artículo',
   `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
@@ -38,7 +39,14 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   PRIMARY KEY (`id`),
   KEY `id_autor` (`id_autor`),
   KEY `id_categoria` (`id_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `articulo`
+--
+
+INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`, `modificado`) VALUES
+(1, 1, 2, 'Equipos VIT para el CUFM', 'Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.', 'Contenido', '2014-07-13 23:27:38', '2014-07-13 23:27:38', '2014-07-14 04:20:08');
 
 -- --------------------------------------------------------
 
@@ -69,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
   PRIMARY KEY (`id`),
   KEY `id_categoria` (`id_categoria`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `categoria`
@@ -77,7 +85,8 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 
 INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`) VALUES
 (1, NULL, 'Categoría principal', '2014-07-03 13:08:06', '2014-07-03 17:38:06'),
-(2, 1, 'Menu', '2014-07-03 13:08:38', '2014-07-03 17:38:38');
+(2, 1, 'Menu', '2014-07-03 13:08:38', '2014-07-03 17:38:38'),
+(3, 1, 'Deportes', '2014-07-13 23:01:36', '2014-07-14 03:31:36');
 
 -- --------------------------------------------------------
 
@@ -128,15 +137,16 @@ CREATE TABLE IF NOT EXISTS `perfil` (
   `creado` datetime NOT NULL COMMENT 'Fecha de creación del registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `perfil`
 --
 
 INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
-(1, 'ROLE_ADMIN', '2014-07-02 10:01:29', '2014-07-05 17:42:11'),
-(2, 'ROLE_USER', '2014-07-03 13:07:32', '2014-07-05 17:42:20');
+(1, 'ROLE_SUPER_ADMIN', '2014-07-02 10:01:29', '2014-07-07 00:45:12'),
+(2, 'ROLE_ADMIN', '2014-07-03 13:07:32', '2014-07-07 01:01:32'),
+(3, 'ROLE_USER', '2014-07-06 20:31:46', '2014-07-07 01:01:46');
 
 -- --------------------------------------------------------
 
@@ -175,8 +185,8 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 -- Filtros para la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  ADD CONSTRAINT `articulo_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION;
+  ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION,
+  ADD CONSTRAINT `articulo_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `articulos_etiquetas`
@@ -195,8 +205,8 @@ ALTER TABLE `categoria`
 -- Filtros para la tabla `comentario`
 --
 ALTER TABLE `comentario`
-  ADD CONSTRAINT `comentario_ibfk_3` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `comentario_ibfk_2` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id`) ON UPDATE NO ACTION;
+  ADD CONSTRAINT `comentario_ibfk_2` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id`) ON UPDATE NO ACTION,
+  ADD CONSTRAINT `comentario_ibfk_3` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `usuario`
