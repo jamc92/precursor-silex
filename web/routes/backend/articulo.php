@@ -61,6 +61,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
 		'id_autor' => $id_autor,
 		'categoria' => '',
 		'titulo' => '',
+        'descripcion' => '',
 		'contenido' => '',
 		'fecha_publicacion' => '',
     );
@@ -77,6 +78,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
         "multiple" => true
     ));
 	$form = $form->add('titulo', 'text', array('required' => true));
+    $form = $form->add('descripcion', 'text', array('required' => true));
 	$form = $form->add('contenido', 'textarea', array('required' => true));
 
     $form = $form->getForm();
@@ -88,9 +90,8 @@ $app->match('/admin/articulo/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `titulo`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, NOW(), NOW())";
-            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['titulo'], $data['contenido']));
-
+            $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
+            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['titulo'], $data['descripcion'], $data['contenido']));
 
             $app['session']->getFlashBag()->add(
                 'success',
@@ -151,8 +152,9 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
     $initial_data = array(
 		'id_autor' => $id_autor,
 		'id_categoria' => $row_sql['id_categoria'], 
-		'titulo' => $row_sql['titulo'], 
-		'contenido' => $row_sql['contenido'], 
+		'titulo' => $row_sql['titulo'],
+        'descripcion' => $row_sql['descripcion'],
+        'contenido' => $row_sql['contenido'],
 		'fecha_pub' => $row_sql['fecha_pub'], 
     );
 
@@ -169,6 +171,7 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
         "multiple" => true
     ));
 	$form = $form->add('titulo', 'text', array('required' => true));
+    $form = $form->add('descripcion', 'text', array('required' => true));
 	$form = $form->add('contenido', 'textarea', array('required' => true));
 
     $form = $form->getForm();

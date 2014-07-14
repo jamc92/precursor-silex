@@ -37,6 +37,11 @@
 									    {{ form_widget(form.titulo, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
+                                    <div class='form-group'>
+                                        {{ form_label(form.descripcion, 'Descripción') }}
+                                        {{ form_widget(form.descripcion, { attr: { 'class': 'form-control' }}) }}
+                                    </div>
+
 									<div class='form-group'>
 									    {{ form_label(form.contenido) }}
 									    {{ form_widget(form.contenido, { attr: { 'class': 'form-control textarea', 'id': 'insert', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
@@ -56,8 +61,8 @@
                                 {{ form_rest(form) }}
 
                                 <div class="box-footer">
-                                    <button type="button" class="btn btn-info" name="borrador" value="true">Borrador</button>
-                                    <button type="submit" class="btn btn-primary" name="publicar" value="true">Publicar</button>
+                                    <button type="button" class="btn btn-info">Borrador</button>
+                                    <button type="submit" class="btn btn-primary">Publicar</button>
                                     <button type="button" class="btn btn-default" onclick="location.href='{{ path('articulo_list') }}'">Volver</button>
                                 </div>
                                 {{ form_end(form) }}
