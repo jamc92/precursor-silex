@@ -7,6 +7,7 @@ require_once __DIR__.'/categoria.php';
 require_once __DIR__.'/comentario.php';
 require_once __DIR__.'/etiqueta.php';
 require_once __DIR__.'/etiquetas_articulo.php';
+require_once __DIR__.'/imagen.php';
 require_once __DIR__.'/perfil.php';
 require_once __DIR__.'/usuario.php';
 
