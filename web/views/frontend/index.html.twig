@@ -9,33 +9,16 @@
             <h1 class="page-header">Noticias</h1>
         </div>
 
-        <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
-            <a class="thumbnail" href="noticia/1">
-                <img class="img-responsive" src="">
-                <h4 class="text-primary">Equipos VIT para el CUFM</h4>
-                <p>23 de abril de 2014 |<b>10:00 AM</b></p>
-                <p>Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.</p>
-            </a>
-        </div>
-
-        <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
-            <a class="thumbnail" href="noticia/1">
-                <img class="img-responsive" src="">
-                <h4 class="text-primary">Equipos VIT para el CUFM</h4>
-                <p>23 de abril de 2014 |<b>10:00 AM</b></p>
-                <p>Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.</p>
-            </a>
-        </div>
-
-        <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
-            <a class="thumbnail" href="noticia/1">
-                <img class="img-responsive" src="">
-                <h4 class="text-primary">Equipos VIT para el CUFM</h4>
-                <p>23 de abril de 2014 |<b>10:00 AM</b></p>
-                <p>Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.</p>
-            </a>
-        </div>
-
+        {% for articulo in articulos %}
+            <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 thumb">
+                <a class="thumbnail" href="">
+                    <img class="img-responsive" src="" alt="Sin imagen">
+                    <h4 class="text-primary">{{ articulo.titulo }}</h4>
+                    <p>23 de abril de 2014 |<b>10:00 AM</b></p>
+                    <p>{{ articulo.descripcion }}</p>
+                </a>
+            </div>
+        {% endfor %}
 
         <div class="clearfix"></div>
 
