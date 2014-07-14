@@ -64,7 +64,7 @@
                                                 {% for table_column in table_columns %}
                                                     <td>{{ row[table_column] }}</td>
                                                 {% endfor %}
-                                                <td><a href="{{ path('articulos_etiquetas_list') }}" class="btn btn-success btn-xs">Etiquetas</a>
+                                                <td><a href="{{ path('etiquetas_articulo_list') }}" class="btn btn-success btn-xs">Etiquetas</a>
                                                 <td><a href="{{ path('articulo_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('articulo_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
