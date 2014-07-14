@@ -22,7 +22,7 @@ __EXTERNALS_FOR_LIST__
     	}
     }
 
-    return $app['twig']->render('__TABLENAME__/list.html.twig', array(
+    return $app['twig']->render('backend/__TABLENAME__/list.html.twig', array(
     	"table_columns" => $table_columns,
         "primary_key" => $primary_key,
     	"rows" => $rows
@@ -59,7 +59,7 @@ __FIELDS_FOR_FORM__
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => '__TABLENAME__ created!',
+                    'message' => '¡__TABLENAME__ creado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('__TABLENAME___list'));
@@ -67,7 +67,7 @@ __FIELDS_FOR_FORM__
         }
     }
 
-    return $app['twig']->render('__TABLENAME__/create.html.twig', array(
+    return $app['twig']->render('backend/__TABLENAME__/create.html.twig', array(
         "form" => $form->createView()
     ));
         
@@ -83,7 +83,7 @@ $app->match('/admin/__TABLENAME__/edit/{id}', function ($id) use ($app) {
         $app['session']->getFlashBag()->add(
             'danger',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡__TABLENAME__ no encontrado!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('__TABLENAME___list'));
@@ -116,7 +116,7 @@ __FIELDS_FOR_FORM__
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => '__TABLENAME__ edited!',
+                    'message' => '¡__TABLENAME__ modificado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('__TABLENAME___edit', array("id" => $id)));
@@ -124,7 +124,7 @@ __FIELDS_FOR_FORM__
         }
     }
 
-    return $app['twig']->render('__TABLENAME__/edit.html.twig', array(
+    return $app['twig']->render('backend/__TABLENAME__/edit.html.twig', array(
         "form" => $form->createView(),
         "id" => $id
     ));
@@ -144,7 +144,7 @@ $app->match('/admin/__TABLENAME__/delete/{id}', function ($id) use ($app) {
         $app['session']->getFlashBag()->add(
             'success',
             array(
-                'message' => '__TABLENAME__ deleted!',
+                'message' => '¡__TABLENAME__ eliminado!',
             )
         );
     }
@@ -152,7 +152,7 @@ $app->match('/admin/__TABLENAME__/delete/{id}', function ($id) use ($app) {
         $app['session']->getFlashBag()->add(
             'danger',
             array(
-                'message' => 'Row not found!',
+                'message' => '¡__TABLENAME__ no encontrado!',
             )
         );  
     }
