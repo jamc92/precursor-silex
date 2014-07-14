@@ -62,6 +62,18 @@
     </ul>
 </li>
 
+<li class="treeview {% if option is defined and (option == 'imagen_list' or option == 'imagen_create' or option == 'imagen_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Imágenes</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'imagen_list' %}class="active"{% endif %}><a href="{{ path('imagen_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver todas</a></li>
+        <li {% if option is defined and option == 'imagen_create' %}class="active"{% endif %}><a href="{{ path('imagen_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
+    </ul>
+</li>
+
 <li class="treeview {% if option is defined and (option == 'perfil_list' or option == 'perfil_create' or option == 'perfil_edit') %}active{% endif %}">
     <a href="#">
         <i class="fa fa-folder-o"></i>
