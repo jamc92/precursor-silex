@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-07-2014 a las 00:11:58
+-- Tiempo de generación: 14-07-2014 a las 15:31:38
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
   `id_autor` int(255) NOT NULL COMMENT 'Referencia al autor del artículo',
   `id_categoria` int(11) NOT NULL COMMENT 'Referencia a la categoría del artículo',
+  `id_imagen` int(255) NOT NULL COMMENT 'Índice que hace referencia a la imagen del artículo',
   `titulo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Título del artículo',
   `descripcion` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Descripción corta del artículo',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido que lleva el artículo',
@@ -38,15 +39,9 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
   PRIMARY KEY (`id`),
   KEY `id_autor` (`id_autor`),
-  KEY `id_categoria` (`id_categoria`)
+  KEY `id_categoria` (`id_categoria`),
+  KEY `id_imagen` (`id_imagen`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=2 ;
-
---
--- Volcado de datos para la tabla `articulo`
---
-
-INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`, `modificado`) VALUES
-(1, 1, 2, 'Equipos VIT para el CUFM', 'Gobierno inicia dotación de más de 23 mil computadoras a estudiantes universitarios.', 'Contenido', '2014-07-13 23:27:38', '2014-07-13 23:27:38', '2014-07-14 04:20:08');
 
 -- --------------------------------------------------------
 
@@ -84,9 +79,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 --
 
 INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`) VALUES
-(1, NULL, 'Categoría principal', '2014-07-03 13:08:06', '2014-07-03 17:38:06'),
-(2, 1, 'Menu', '2014-07-03 13:08:38', '2014-07-03 17:38:38'),
-(3, 1, 'Deportes', '2014-07-13 23:01:36', '2014-07-14 03:31:36');
+(1, NULL, 'Categoría principal', '2014-07-03 13:08:06', '2014-07-03 17:38:06');
 
 -- --------------------------------------------------------
 
@@ -124,6 +117,22 @@ CREATE TABLE IF NOT EXISTS `etiqueta` (
 
 INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
 (1, 'Etiqueta', '2014-07-02 11:49:11', '2014-07-03 17:39:08');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `imagen`
+--
+
+CREATE TABLE IF NOT EXISTS `imagen` (
+  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+  `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre de la imagen',
+  `link` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Dirección URL de la imagen',
+  `imagen` MEDIUMTEXT COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Imagen transformada para el navegador',
+  `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Imágenes del periódico' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -175,7 +184,8 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 (1, 1, 'Ramón Serrano', 'ramon.calle.88@gmail.com', 'RamEduard', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:11:27', '2014-07-03 18:56:35'),
 (2, 1, 'Javier Madrid', 'javiermadrid19@hotmail.com', 'jamc92', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:12:15', '2014-07-03 19:02:24'),
 (3, 1, 'Sander Rodríguez', 'sander@gmail.com', 'sander', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:15:08', '2014-07-03 19:02:30'),
-(4, 2, 'Usuario', 'usuario@precursor', 'usuario', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:16:05', '2014-07-03 19:02:34');
+(4, 2, 'Administrador', 'admin@precursor', 'admin', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-14 15:30:14', '2014-07-14 20:00:24'),
+(5, 3, 'Usuario', 'usuario@precursor', 'usuario', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:16:05', '2014-07-14 19:59:31');
 
 --
 -- Restricciones para tablas volcadas
@@ -185,6 +195,7 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 -- Filtros para la tabla `articulo`
 --
 ALTER TABLE `articulo`
+  ADD CONSTRAINT `articulo_ibfk_3` FOREIGN KEY (`id_imagen`) REFERENCES `imagen` (`id`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `articulo_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION;
 
