@@ -33,16 +33,6 @@
                                 <div class="box-body">
 
 									<div class='form-group'>
-									    {{ form_label(form.id_autor) }}
-									    {{ form_widget(form.id_autor, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.id_categoria) }}
-									    {{ form_widget(form.id_categoria, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
 									    {{ form_label(form.titulo) }}
 									    {{ form_widget(form.titulo, { attr: { 'class': 'form-control' }}) }}
 									</div>
@@ -52,10 +42,15 @@
 									    {{ form_widget(form.contenido, { attr: { 'class': 'form-control textarea', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
 									</div>
 
-									<div class='form-group'>
-									    {{ form_label(form.fecha_pub) }}
-									    {{ form_widget(form.fecha_pub, { attr: { 'class': 'form-control' }}) }}
-									</div>      
+                                    <div class='form-group'>
+                                        {{ form_label(form.categoria, 'Categoría') }}
+                                        {{ form_widget(form.categoria, { attr: { 'class': 'form-control' }}) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.etiquetas, 'Etiquetas') }}
+                                        {{ form_widget(form.etiquetas, { attr: { 'class': 'form-control' } }) }}
+                                    </div>
 
                                 </div><!-- /.box-body -->
 
