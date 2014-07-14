@@ -28,13 +28,20 @@
 
 {% endblock %}
 
-{% block body_params %}class="skin-black"{% endblock %}
+{% block body_params %}class="skin-blue"{% endblock %}
 
 {% block header %}
 {#{% include 'layouts/header.html.twig' %}#}
 {% endblock %}
 
 {% block container %}
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <div class="container">
+            <div class="row-fluid col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block footer %}
