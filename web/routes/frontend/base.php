@@ -13,7 +13,7 @@ $app->match('/', function () use ($app) {
 
     $articulos = array();
 
-    $articulos_sql = "SELECT * FROM `articulo` WHERE id > 1";
+    $articulos_sql = "SELECT * FROM `articulo`";
     $articulo_sql  = $app['db']->fetchAll($articulos_sql, array());
 
     foreach ($articulo_sql as $art_key => $art_value) {
