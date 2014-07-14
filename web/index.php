@@ -70,6 +70,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 $app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
+$app['upload_path'] = __DIR__ . "/uploads/";
 $app['debug'] = true;
 
 require_once __DIR__ . '/routes/backend/base.php';
