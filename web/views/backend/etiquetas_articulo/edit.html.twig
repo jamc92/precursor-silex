@@ -4,7 +4,7 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'articulos_etiquetas_edit'} %}
+        {% include 'menu.html.twig' with {'option': 'etiquetas_articulo_edit'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
@@ -33,11 +33,6 @@
                                 <div class="box-body">
 
 									<div class='form-group'>
-									    {{ form_label(form.id_articulo) }}
-									    {{ form_widget(form.id_articulo, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
 									    {{ form_label(form.id_etiqueta) }}
 									    {{ form_widget(form.id_etiqueta, { attr: { 'class': 'form-control' }}) }}
 									</div>
@@ -49,8 +44,8 @@
                                 {{ form_rest(form) }}
 
                                 <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Edit</button>
-                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('articulos_etiquetas_list') }}'">Volver</button>
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('etiquetas_articulo_list', { articulo_id: articulo_id }) }}'">Volver</button>
                                 </div>
 
                             </div><!-- /.box -->

@@ -7,7 +7,7 @@
     <!-- page script -->
     <script type="text/javascript">
         $(function() {
-            $("#articulos_etiquetas_list").dataTable();
+            $("#etiquetas_articulo_list").dataTable();
         });
 
         function confirm_delete(){
@@ -23,7 +23,7 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'articulos_etiquetas_list'} %}
+        {% include 'menu.html.twig' with {'option': 'etiquetas_articulo_list'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
@@ -48,8 +48,8 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('articulos_etiquetas_create') }}">Crear Etiqueta de Artículo</a><br /><br />
-                                <table id="articulos_etiquetas_list" class="table table-bordered table-striped">
+                                <a class="btn btn-primary" href="{{ path('etiquetas_articulo_create', {articulo_id: articulo_id}) }}">Crear Etiqueta de Artículo</a><br /><br />
+                                <table id="etiquetas_articulo_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             {% for table_column in table_columns %}
@@ -64,7 +64,7 @@
                                                 {% for table_column in table_columns %}
                                                     <td>{{ row[table_column] }}</td>
                                                 {% endfor %}
-                                                <td><a href="{{ path('articulos_etiquetas_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Edit</a> <a href="{{ path('articulos_etiquetas_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Delete</a></td>
+                                                <td><a href="{{ path('etiquetas_articulo_edit', { articulo_id: articulo_id, id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('etiquetas_articulo_delete', { articulo_id: articulo_id, id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
