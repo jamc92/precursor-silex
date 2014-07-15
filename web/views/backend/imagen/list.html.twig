@@ -57,10 +57,20 @@
                                         <b>No hay imágenes</b>
                                     {% endif %}
                                     {% for row in rows %}
-                                        <div class="panel col-12 col-md-3 col-lg-3">
+                                        <div class="panel col-12 col-md-4 col-lg-3">
                                             <div class="panel-body">
                                                 <h4>{{ row.nombre }}</h4>
+                                                <br/>
                                                 <img class="img-responsive" src="{{ row.link }}">
+                                                <br/>
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="button">
+                                                            <span class="glyphicon glyphicon-link"></span>
+                                                        </button>
+                                                    </span>
+                                                    <input type="text" class="form-control" value="{{ row.link }}" readonly style="cursor: pointer">
+                                                </div>
                                                 <br />
                                                 <a href="{{ path('imagen_edit', { id: row.id }) }}" class="btn btn-primary btn-xs">Editar</a>
                                                 <a href="{{ path('imagen_delete', { id: row.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
@@ -83,8 +93,8 @@
     <style>
         .panel {
             margin-right: 5px;
-            min-height: 250px;
-            max-height: 250px;
+            min-height: 350px;
+            max-height: 350px;
             box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3) inset;
         }
     </style>

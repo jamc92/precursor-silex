@@ -92,7 +92,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
+            $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
             $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido']));
 
             $app['session']->getFlashBag()->add(
@@ -144,7 +144,7 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
         $app['session']->getFlashBag()->add(
             'warning',
             array(
-                'message' => '¡Etiqueta no encontrada!',
+                'message' => '¡Artículo no encontrado!',
             )
         );        
         return $app->redirect($app['url_generator']->generate('articulo_list'));
