@@ -1,6 +1,8 @@
 <?php
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\Response;
+use Precursor\UploadImage;
 
 $app->match('/admin/imagen', function () use ($app) {
     
@@ -32,42 +34,27 @@ $app->match('/admin/imagen', function () use ($app) {
 ->bind('imagen_list');
 
 $app->match('/admin/imagen/create', function () use ($app) {
-    
-    $initial_data = array(
-		'nombre' => '', 
-		'link' => '',
-    );
-
-    $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-	$form = $form->add('nombre', 'text', array('required' => true));
-	$form = $form->add('link', 'textarea', array('required' => true));
-
-    $form = $form->getForm();
 
     if("POST" == $app['request']->getMethod()){
 
-        $form->handleRequest($app["request"]);
+        $uploadImage = new UploadImage();
+        $uploadImage->upload_dir = $app['upload_dir'];
 
-        if ($form->isValid()) {
-            $data = $form->getData();
+        $result = $uploadImage->uploadFile($_FILES['image']);
 
-            $update_query = "INSERT INTO `imagen` (`nombre`, `link`, `creado`) VALUES (?, ?, NOW()";
-            $app['db']->executeUpdate($update_query, array($data['nombre'], $data['link']));
+        $vars = $result['vars'];
 
-            $app['session']->getFlashBag()->add(
-                'success',
-                array(
-                    'message' => '¡imagen creado!',
-                )
-            );
-            return $app->redirect($app['url_generator']->generate('imagen_list'));
-        }
+        $nombreImagen = $vars['imagen'];
+        $linkImagen = "$app[upload_path]/$vars[folder]/$vars[imagen]";
+
+        $update_query = "INSERT INTO `imagen` (`nombre`, `link`, `creado`) VALUES (?, ?, NOW())";
+        $app['db']->executeUpdate($update_query, array($nombreImagen, $linkImagen));
+
+        die(json_encode(array('status' => $result['status'])));
+
     }
 
-    return $app['twig']->render('backend/imagen/create.html.twig', array(
-        "form" => $form->createView()
-    ));
+    return $app['twig']->render('backend/imagen/create.html.twig', array());
         
 })
 ->bind('imagen_create');
@@ -95,7 +82,7 @@ $app->match('/admin/imagen/edit/{id}', function ($id) use ($app) {
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
 	$form = $form->add('nombre', 'text', array('required' => true));
-	$form = $form->add('link', 'textarea', array('required' => true));
+	$form = $form->add('descripcion', 'textarea', array('required' => false));
 
     $form = $form->getForm();
 
@@ -112,7 +99,7 @@ $app->match('/admin/imagen/edit/{id}', function ($id) use ($app) {
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => '¡imagen modificado!',
+                    'message' => '¡Imagen modificada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('imagen_edit', array("id" => $id)));
@@ -122,6 +109,7 @@ $app->match('/admin/imagen/edit/{id}', function ($id) use ($app) {
 
     return $app['twig']->render('backend/imagen/edit.html.twig', array(
         "form" => $form->createView(),
+        "imagen" => $row_sql,
         "id" => $id
     ));
         
@@ -134,13 +122,20 @@ $app->match('/admin/imagen/delete/{id}', function ($id) use ($app) {
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
+
+        // Eliminar archivos
+        $search_str = $app['upload_path'] . "/";
+        $file = $app['upload_dir'] .str_replace($search_str, '', $row_sql['link']);
+
+        // Eliminar los archivos
+
         $delete_query = "DELETE FROM `imagen` WHERE `id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
             'success',
             array(
-                'message' => '¡imagen eliminado!',
+                'message' => '¡Imagen eliminada!',
             )
         );
     }
@@ -148,7 +143,7 @@ $app->match('/admin/imagen/delete/{id}', function ($id) use ($app) {
         $app['session']->getFlashBag()->add(
             'danger',
             array(
-                'message' => '¡imagen no encontrado!',
+                'message' => '¡Imagen no encontrada!',
             )
         );  
     }
