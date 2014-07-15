@@ -6,7 +6,7 @@ $app->match('/admin/articulo', function () use ($app) {
     
 	$table_columns = array(
 		'id', 
-		'id_autor', 
+		'id_autor',
 		'id_categoria', 
 		'titulo', 
 		'fecha_pub',
@@ -59,6 +59,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
 
     $initial_data = array(
 		'id_autor' => $id_autor,
+        'imagen' => '',
 		'categoria' => '',
 		'titulo' => '',
         'descripcion' => '',
@@ -77,6 +78,7 @@ $app->match('/admin/articulo/create', function () use ($app) {
         'required' => false,
         "multiple" => true
     ));
+    $form = $form->add('imagen', 'url', array('required' => true));
 	$form = $form->add('titulo', 'text', array('required' => true));
     $form = $form->add('descripcion', 'text', array('required' => true));
 	$form = $form->add('contenido', 'textarea', array('required' => true));
@@ -90,8 +92,8 @@ $app->match('/admin/articulo/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
-            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['titulo'], $data['descripcion'], $data['contenido']));
+            $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
+            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido']));
 
             $app['session']->getFlashBag()->add(
                 'success',
@@ -151,7 +153,8 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
     
     $initial_data = array(
 		'id_autor' => $id_autor,
-		'id_categoria' => $row_sql['id_categoria'], 
+		'categoria' => $row_sql['id_categoria'],
+        'imagen' => $row_sql['imagen'],
 		'titulo' => $row_sql['titulo'],
         'descripcion' => $row_sql['descripcion'],
         'contenido' => $row_sql['contenido'],
@@ -170,6 +173,7 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
         'required' => false,
         "multiple" => true
     ));
+    $form = $form->add('imagen', 'url', array('required' => true));
 	$form = $form->add('titulo', 'text', array('required' => true));
     $form = $form->add('descripcion', 'text', array('required' => true));
 	$form = $form->add('contenido', 'textarea', array('required' => true));
@@ -183,8 +187,8 @@ $app->match('/admin/articulo/edit/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $update_query = "UPDATE `articulo` SET `id_autor` = ?, `id_categoria` = ?, `titulo` = ?, `descripcion` = ?, `contenido` = ? WHERE `id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['id_categoria'], $data['titulo'], $data['descripcion'], $data['contenido'], $id));
+            $update_query = "UPDATE `articulo` SET `id_autor` = ?, `id_categoria` = ?, `imagen` = ?, `titulo` = ?, `descripcion` = ?, `contenido` = ? WHERE `id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['imagen'],$data['titulo'], $data['descripcion'], $data['contenido'], $id));
 
 
             $app['session']->getFlashBag()->add(
