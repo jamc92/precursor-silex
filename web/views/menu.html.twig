@@ -74,29 +74,31 @@
     </ul>
 </li>
 
-<li class="treeview {% if option is defined and (option == 'perfil_list' or option == 'perfil_create' or option == 'perfil_edit') %}active{% endif %}">
-    <a href="#">
-        <i class="fa fa-folder-o"></i>
-        <span>Perfiles</span>
-        <i class="fa pull-right fa-angle-right"></i>
-    </a>
-    <ul class="treeview-menu" style="display: none;">
-        <li {% if option is defined and option == 'perfil_list' %}class="active"{% endif %}><a href="{{ path('perfil_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver perfiles</a></li>
-        <li {% if option is defined and option == 'perfil_create' %}class="active"{% endif %}><a href="{{ path('perfil_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
-    </ul>
-</li>
+{% if is_granted('ROLE_SUPER_ADMIN') %}
+    <li class="treeview {% if option is defined and (option == 'perfil_list' or option == 'perfil_create' or option == 'perfil_edit') %}active{% endif %}">
+        <a href="#">
+            <i class="fa fa-folder-o"></i>
+            <span>Perfiles</span>
+            <i class="fa pull-right fa-angle-right"></i>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li {% if option is defined and option == 'perfil_list' %}class="active"{% endif %}><a href="{{ path('perfil_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver perfiles</a></li>
+            <li {% if option is defined and option == 'perfil_create' %}class="active"{% endif %}><a href="{{ path('perfil_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+        </ul>
+    </li>
 
-<li class="treeview {% if option is defined and (option == 'usuario_list' or option == 'usuario_create' or option == 'usuario_edit') %}active{% endif %}">
-    <a href="#">
-        <i class="fa fa-folder-o"></i>
-        <span>Usuarios</span>
-        <i class="fa pull-right fa-angle-right"></i>
-    </a>
-    <ul class="treeview-menu" style="display: none;">
-        <li {% if option is defined and option == 'usuario_list' %}class="active"{% endif %}><a href="{{ path('usuario_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver usuarios</a></li>
-        <li {% if option is defined and option == 'usuario_create' %}class="active"{% endif %}><a href="{{ path('usuario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
-    </ul>
-</li>
+    <li class="treeview {% if option is defined and (option == 'usuario_list' or option == 'usuario_create' or option == 'usuario_edit') %}active{% endif %}">
+        <a href="#">
+            <i class="fa fa-folder-o"></i>
+            <span>Usuarios</span>
+            <i class="fa pull-right fa-angle-right"></i>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li {% if option is defined and option == 'usuario_list' %}class="active"{% endif %}><a href="{{ path('usuario_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver usuarios</a></li>
+            <li {% if option is defined and option == 'usuario_create' %}class="active"{% endif %}><a href="{{ path('usuario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+        </ul>
+    </li>
+{% endif %}
 
 <li>
     <a href="{{ path('logout') }}">
