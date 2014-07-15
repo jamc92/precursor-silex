@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-07-2014 a las 15:31:38
+-- Tiempo de generación: 14-07-2014 a las 21:58:56
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
   `id_autor` int(255) NOT NULL COMMENT 'Referencia al autor del artículo',
   `id_categoria` int(11) NOT NULL COMMENT 'Referencia a la categoría del artículo',
-  `id_imagen` int(255) NOT NULL COMMENT 'Índice que hace referencia a la imagen del artículo',
+  `imagen` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Link de la imagen destacada del articulo',
   `titulo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Título del artículo',
   `descripcion` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Descripción corta del artículo',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido que lleva el artículo',
@@ -39,9 +39,8 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
   PRIMARY KEY (`id`),
   KEY `id_autor` (`id_autor`),
-  KEY `id_categoria` (`id_categoria`),
-  KEY `id_imagen` (`id_imagen`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=2 ;
+  KEY `id_categoria` (`id_categoria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -72,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
   PRIMARY KEY (`id`),
   KEY `id_categoria` (`id_categoria`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
 -- Volcado de datos para la tabla `categoria`
@@ -88,14 +87,16 @@ INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`)
 --
 
 CREATE TABLE IF NOT EXISTS `comentario` (
+  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
   `id_articulo` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de artículos',
   `id_autor` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de usuarios',
   `asunto` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Asunto del comentario',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido del comentario. Puede ser HTML',
   `fecha` datetime NOT NULL COMMENT 'Fecha del comentario',
-  PRIMARY KEY (`id_articulo`),
-  KEY `id_autor` (`id_autor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+  PRIMARY KEY (`id`),
+  KEY `id_autor` (`id_autor`),
+  KEY `id_articulo` (`id_articulo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -109,14 +110,7 @@ CREATE TABLE IF NOT EXISTS `etiqueta` (
   `creado` datetime NOT NULL COMMENT 'Fecha de creación del registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
-
---
--- Volcado de datos para la tabla `etiqueta`
---
-
-INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
-(1, 'Etiqueta', '2014-07-02 11:49:11', '2014-07-03 17:39:08');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -128,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `imagen` (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre de la imagen',
   `link` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Dirección URL de la imagen',
-  `imagen` MEDIUMTEXT COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Imagen transformada para el navegador',
+  `imagen` mediumtext COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Imagen transformada para el navegador',
   `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
   PRIMARY KEY (`id`)
@@ -174,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la modificación del registro',
   PRIMARY KEY (`id`),
   KEY `id_perfil` (`id_perfil`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -195,7 +189,6 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 -- Filtros para la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  ADD CONSTRAINT `articulo_ibfk_3` FOREIGN KEY (`id_imagen`) REFERENCES `imagen` (`id`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `articulo_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION;
 
