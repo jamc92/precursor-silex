@@ -2,7 +2,7 @@
     margin-left: 20px;
     margin-right: 20px;
     padding: 5px;
-    border: 1px solid transparent;
+    border: none;
     box-shadow:0 0 4px rgba(0,0,0,0.3) inset,0 -3px 2px rgba(0,0,0,0.1);
 }
 
