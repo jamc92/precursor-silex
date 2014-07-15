@@ -1,6 +1,6 @@
 {% extends 'layouts/backend.html.twig' %}
 
-{% block body_params %}class="skin-black"{% endblock %}
+{% block body_params %}class="skin-blue"{% endblock %}
 
 
 {% block javascripts %}
@@ -14,7 +14,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("Are you sure? This action cannot be undone.")) { 
+            if(!confirm("¿Esta seguro que desea eliminar esta etiqueta de artículo? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -33,7 +33,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Imagen list
+                    Imágenes
                 </h1>
             </section>
 
@@ -51,36 +51,23 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('imagen_create') }}">Create new imagen</a><br /><br />
-                                <table id="imagen_list" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for row in rows %}
-                                            <tr>
-                                                {% for table_column in table_columns %}
-                                                    <td>{{ row[table_column] }}</td>
-                                                {% endfor %}
-                                                <td><a href="{{ path('imagen_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Edit</a> <a href="{{ path('imagen_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Delete</a></td>
-                                            </tr>
-                                        {% endfor %}                                        
-
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
-                                            <th>Actions</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                <a class="btn btn-primary" href="{{ path('imagen_create') }}">Subir nueva</a><br /><br />
+                                <div class="row" style="padding-left:20px">
+                                    {% if rows == null %}
+                                        <b>No hay imágenes</b>
+                                    {% endif %}
+                                    {% for row in rows %}
+                                        <div class="panel col-12 col-md-3 col-lg-3">
+                                            <div class="panel-body">
+                                                <h4>{{ row.nombre }}</h4>
+                                                <img class="img-responsive" src="{{ row.link }}">
+                                                <br />
+                                                <a href="{{ path('imagen_edit', { id: row.id }) }}" class="btn btn-primary btn-xs">Editar</a>
+                                                <a href="{{ path('imagen_delete', { id: row.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div><!-- /.box-body -->
                         </div><!-- /.box -->
                     </div>
@@ -90,4 +77,15 @@
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
 
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .panel {
+            margin-right: 5px;
+            min-height: 250px;
+            max-height: 250px;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3) inset;
+        }
+    </style>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'layouts/backend.html.twig' %}
 
-{% block body_params %}class="skin-black"{% endblock %}
+{% block body_params %}class="skin-blue"{% endblock %}
 
 {% block container %}
 
@@ -13,7 +13,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Edit Imagen {{ id }}
+                    Edit Imagen 
                 </h1>
             </section>
 
@@ -33,6 +33,8 @@
                                     <h3 class="box-title"></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
+                                    
+                                    <img src="{{ imagen.link }}" height="150">
 
 									<div class='form-group'>
 									    {{ form_label(form.nombre) }}
@@ -40,8 +42,8 @@
 									</div>
 
 									<div class='form-group'>
-									    {{ form_label(form.link) }}
-									    {{ form_widget(form.link, { attr: { 'class': 'form-control textarea', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
+									    {{ form_label(form.descripcion, 'Descripción') }}
+									    {{ form_widget(form.descripcion, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
                                 </div><!-- /.box-body -->
@@ -49,7 +51,8 @@
                                 {{ form_rest(form) }}
 
                                 <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path("imagen_list") }}'">Volver</button>
                                 </div>
 
                             </div><!-- /.box -->
