@@ -94,7 +94,8 @@ class UploadImage {
 
             if(move_uploaded_file($file['tmp_name'], $this->upload_dir . "$date/" . urlencode($file['name']))) {
                 $message = array(
-                    'imagen' => urlencode($file['name']),
+                    'folder' => $date,
+                    'imagen' => urlencode($file['name'])
                 );
                 return $this->exitStatus('File was uploaded successfuly!', $message, 'array');
             }
