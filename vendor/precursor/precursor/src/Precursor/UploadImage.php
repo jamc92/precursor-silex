@@ -92,10 +92,10 @@ class UploadImage {
             // Move the uploaded file from the temporary
             // directory to the uploads folder:
 
-            if(move_uploaded_file($file['tmp_name'], $this->upload_dir . "$date/" . urlencode($file['name']))) {
+            if(move_uploaded_file($file['tmp_name'], $this->upload_dir . "$date/" . $file['name'])) {
                 $message = array(
                     'folder' => $date,
-                    'imagen' => urlencode($file['name'])
+                    'imagen' => $file['name']
                 );
                 return $this->exitStatus('File was uploaded successfuly!', $message, 'array');
             }
