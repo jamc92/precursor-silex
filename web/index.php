@@ -56,7 +56,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         array('^/admin', 'ROLE_USER')
     ),
     'security.encoder.digest' => $app->share(function($app) {
-        return new MessageDigestPasswordEncoder('sha512', false, 1);
+        return new MessageDigestPasswordEncoder('sha512');
     })
 ));
 # Proveedor de doctrine para base de datos
