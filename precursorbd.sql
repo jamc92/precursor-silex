@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre y apellido',
   `correo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Correo electrónico',
   `alias` varchar(32) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Alias para inicio de sesión',
-  `clave` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Clave para inicio de sesión',
+  `clave` varchar(88) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Clave para inicio de sesión',
   `creado` datetime NOT NULL COMMENT 'Fecha de la creación del registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la modificación del registro',
   PRIMARY KEY (`id`),
