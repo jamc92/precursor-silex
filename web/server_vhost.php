@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Silex\Application;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 # Objeto de la aplicacion Silex
 $app = new Application();
@@ -52,7 +53,10 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
         array('^/admin', array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')),
         array('^/admin', 'ROLE_USER')
-    )
+    ),
+    'security.encoder.digest' => $app->share(function($app) {
+        return new MessageDigestPasswordEncoder('sha512', false, 1);
+    })
 ));
 # Proveedor de doctrine para base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
