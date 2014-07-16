@@ -15,12 +15,14 @@
         <hr>
         <p class="lead">{{ articulo.descripcion }}</p>
 
-        {{ articulo.contenido|raw }}
+        <div class="row" style="overflow: hidden">
+            {{ articulo.contenido|raw }}
+        </div>
 
         <p><strong>Noticias Relacionadas</strong>
         </p>
         <ul>
-            <li><a href="http://spaceipsum.com/">Tecnologia</a>
+            <li><a href="http://spaceipsum.com/">Tecnología</a>
             </li>
             <li><a href="http://cupcakeipsum.com/">Educación</a>
             </li>
