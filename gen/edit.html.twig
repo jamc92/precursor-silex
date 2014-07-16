@@ -1,6 +1,6 @@
 {% extends 'layouts/backend.html.twig' %}
 
-{% block body_params %}class="skin-black"{% endblock %}
+{% block body_params %}class="skin-blue"{% endblock %}
 
 {% block container %}
 
@@ -13,7 +13,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Edit __TABLENAMEUP__ {{ id }}
+                    Editar __TABLENAMEUP__
                 </h1>
             </section>
 
@@ -41,7 +41,8 @@ __EDIT_FORM_TEMPLATE__
                                 {{ form_rest(form) }}
 
                                 <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('__TABLENAME___list') }}'">Volver</button>
                                 </div>
 
                             </div><!-- /.box -->
