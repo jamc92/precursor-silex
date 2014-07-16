@@ -38,6 +38,15 @@ $app->match('/admin/usuario', function () use ($app) {
 
 $app->match('/admin/usuario/create', function () use ($app) {
 
+    // Se adquiere el encoder
+    $encoder = $app['security.encoder.digest'];
+    // Se adquiere el token
+    $token = $app['security']->getToken();
+    // Se adquiere el usuario
+    if (is_object($token)) {
+        $user = $token->getUser();
+    }
+
     $find_sql = "SELECT * FROM `perfil`";
     $rows_sql = $app['db']->fetchAll($find_sql, array());
 
@@ -76,8 +85,11 @@ $app->match('/admin/usuario/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
+            // codificar la clave
+            $clave = $encoder->encodePassword($data['clave'], $user->getSalt());
+
             $update_query = "INSERT INTO `usuario` (`id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES (?, ?, ?, ?, MD5(?), NOW(), NOW())";
-            $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['clave']));
+            $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $clave));
 
 
             $app['session']->getFlashBag()->add(
@@ -96,6 +108,15 @@ $app->match('/admin/usuario/create', function () use ($app) {
 ->bind('usuario_create');
 
 $app->match('/admin/usuario/edit/{id}', function ($id) use ($app) {
+
+    // Se adquiere el encoder
+    $encoder = $app['security.encoder.digest'];
+    // Se adquiere el token
+    $token = $app['security']->getToken();
+    // Se adquiere el usuario
+    if (is_object($token)) {
+        $user = $token->getUser();
+    }
 
     $find_sql = "SELECT * FROM `usuario` WHERE `id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
@@ -146,9 +167,12 @@ $app->match('/admin/usuario/edit/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 
+            // codificar la clave
+            $nueva_clave = $encoder->encodePassword($data['nueva_clave'], $user->getSalt());
+
             if (!empty($data['nueva_clave'])) {
                 $update_query = "UPDATE `usuario` SET `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ?, `clave` = ? WHERE `id` = ?";
-                $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $data['nueva_clave'], $id));
+                $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $nueva_clave, $id));
             } else {
                 $update_query = "UPDATE `usuario` SET `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ? WHERE `id` = ?";
                 $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $id));
