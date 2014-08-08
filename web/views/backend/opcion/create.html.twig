@@ -1,0 +1,109 @@
+{% extends 'layouts/backend.html.twig' %}
+
+{% block body_params %}class="skin-blue"{% endblock %}
+
+
+{% block container %}
+
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+
+        {% include 'menu.html.twig' with {'option': 'opcion_create'} %}
+
+        <!-- Right side column. Contains the navbar and content of the page -->
+        <aside class="right-side">                
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Crear Opción
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                {% include 'ag_alerts.html.twig' %}
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        {{ form_start(form, {'method': 'POST'}) }}
+                            {{ form_errors(form) }}
+
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title"></h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+
+									<div class='form-group'>
+									    {{ form_label(form.tipo) }}
+									    {{ form_widget(form.tipo, { attr: { 'class': 'form-control', 'pattern': "\\S{4,100}" }}) }}
+									</div>
+
+									<div class='form-group'>
+									    {{ form_label(form.nombre) }}
+									    {{ form_widget(form.nombre, { attr: { 'class': 'form-control', 'pattern': "\\S{4,100}"  }}) }}
+									</div>
+
+                                    <div class="form-group">
+                                        <label for="form_tipo" class="required">Tipo de valor</label>
+                                        <select class="form-control" id="tipo">
+                                            <option>Seleccione tipo de valor</option>
+                                            <option value="text">String</option>
+                                            <option value="number">Int|Float</option>
+                                            <option value="color">Color</option>
+                                            <option value="url">Url</option>
+                                            <option value="email">Email</option>
+                                            <option value="date">Date</option>
+                                            <option value="textarea">Array|JSON</option>
+                                        </select>
+                                    </div>
+
+									<div class='form-group'>
+                                        <label for="form_tipo" class="required">Valor</label>
+                                        <input id="valor" class="form-control" readonly>
+									</div>
+
+                                </div><!-- /.box-body -->
+
+                                {{ form_rest(form) }}
+
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary">Crear</button>
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('opcion_list') }}'">Volver</button>
+                                </div>
+
+                            </div><!-- /.box -->
+                        {{ form_end(form) }}
+
+                    </div>
+                </div>
+
+            </section><!-- /.content -->
+        </aside><!-- /.right-side -->
+    </div><!-- ./wrapper -->
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $("#tipo").change(function() {
+
+                div = $("#valor").parent();
+                $("#valor").remove();
+
+                if ($(this).val() != "textarea") {
+                    div.append('<input id="valor" class="form-control" type="' + $(this).val() + '" required>');
+                } else {
+                    div.append('<textarea id="valor" class="form-control" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>');
+                }
+
+            });
+            $("form").submit(function() {
+                $("#form_valor").val($("#valor").val());
+                Pace.restart();
+            });
+        });
+    </script>
+{% endblock %}

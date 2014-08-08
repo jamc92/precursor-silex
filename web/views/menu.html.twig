@@ -77,6 +77,17 @@
 </li>
 
 {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <li class="treeview {% if option is defined and (option == 'opcion_list' or option == 'opcion_create' or option == 'opcion_edit') %}active{% endif %}">
+        <a href="#">
+            <i class="fa fa-gears"></i>
+            <span>Opciones</span>
+            <i class="fa pull-right fa-angle-right"></i>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li {% if option is defined and option == 'opcion_list' %}class="active"{% endif %}><a href="{{ path('opcion_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver opciones</a></li>
+            <li {% if option is defined and option == 'opcion_create' %}class="active"{% endif %}><a href="{{ path('opcion_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
+        </ul>
+    </li>
     <li class="treeview {% if option is defined and (option == 'perfil_list' or option == 'perfil_create' or option == 'perfil_edit') %}active{% endif %}">
         <a href="#">
             <i class="glyphicon glyphicon-asterisk"></i>

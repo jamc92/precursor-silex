@@ -1,0 +1,93 @@
+{% extends 'layouts/backend.html.twig' %}
+
+{% block body_params %}class="skin-blue"{% endblock %}
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <!-- page script -->
+    <script type="text/javascript">
+        $(function() {
+            $("#opcion_list").dataTable();
+        });
+
+        function confirm_delete(){
+            if(!confirm("¿Está seguro que desea eliminar la opción? \n ¡Esta acción no se podrá deshacer!")) {
+                return false;
+            }
+        }
+
+    </script>
+{% endblock %}
+
+{% block container %}
+
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+
+        {% include 'menu.html.twig' with {'option': 'opcion_list'} %}
+
+        <!-- Right side column. Contains the navbar and content of the page -->
+        <aside class="right-side">                
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Opciones
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                <div class="row">
+                    <div class="col-xs-8">
+
+                        {% include 'ag_alerts.html.twig' %}
+
+                        <div class="box">
+                            <div class="box-header">
+                                
+                            </div><!-- /.box-header -->
+
+                            <div class="box-body table-responsive">
+                                <a class="btn btn-primary" href="{{ path('opcion_create') }}">Agregar nueva opción</a><br /><br />
+                                <table id="opcion_list" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Nombre</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in rows %}
+                                            <tr>
+                                                <td>{{ row.tipo }}</td>
+                                                <td>{{ row.nombre }}</td>
+                                                <td>
+                                                    <a href="{{ path('opcion_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a>
+                                                    <a href="{{ path('opcion_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}                                        
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Nombre</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div>
+                </div>
+
+            </section><!-- /.content -->
+        </aside><!-- /.right-side -->
+    </div><!-- ./wrapper -->
+
+{% endblock %}

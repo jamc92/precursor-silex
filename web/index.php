@@ -52,6 +52,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         array('^/login$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
         array('^/admin/perfil', 'ROLE_SUPER_ADMIN'),
         array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
+        array('^/admin/opcion', 'ROLE_SUPER_ADMIN'),
         array('^/admin', array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')),
         array('^/admin', 'ROLE_USER')
     ),
