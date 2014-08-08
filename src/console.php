@@ -368,7 +368,7 @@ EOT
         $table = $input->getOption('table');
 
         if (empty($table)) {
-            throw new \Symfony\Component\CssSelector\Exception\ExpressionErrorException('Introduzca el nombre de la tabla. <info>generate:crud --table=name_table</info>');
+            throw new \Symfony\Component\CssSelector\Exception\ExpressionErrorException('Introduzca el nombre de la tabla.');
         }
 
         print "Generate CRUD of table $table\n";
