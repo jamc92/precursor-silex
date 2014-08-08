@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-07-2014 a las 21:58:56
+-- Tiempo de generación: 08-08-2014 a las 23:18:36
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -127,6 +127,23 @@ CREATE TABLE IF NOT EXISTS `imagen` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Imágenes del periódico' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `opcion`
+--
+
+CREATE TABLE IF NOT EXISTS `opcion` (
+  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+  `tipo` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Identificador para el tipo de opción',
+  `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre único para el valor de la opción',
+  `valor` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Valor de cualquier tipo para la opción',
+  `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
