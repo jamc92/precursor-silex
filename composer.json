@@ -15,7 +15,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "silex/silex": "1.2.1"
     },
     "minimum-stability": "dev",
     "autoload": {
