@@ -3,6 +3,8 @@ El Precursor
 
 Periódico El Presursor Colegio Universitario Francisco de Miranda
 
+URL de página de pruebas en internet: [http://precursor.esy.es](http://precursor.esy.es) ó [http://www.precursor.esy.es](http://www.precursor.esy.es)
+
 ### Tabla de Contenidos
 - [Configurar assets](#assets)
 - [Configurar virtual host](#vhost)
