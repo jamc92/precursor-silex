@@ -43,7 +43,21 @@ $app->match('/admin/opcion/create', function () use ($app) {
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-	$form = $form->add('tipo', 'text', array('required' => true));
+	$form = $form->add('tipo', 'choice', array(
+        'choices' => array(
+            'text'      => 'String',
+            'number'    => 'Int|Float',
+            'color'     => 'Color',
+            'email'     => 'Email',
+            'date'      => 'Date',
+            'datetime'  => 'Datetime',
+            'html'      => 'HTML',
+            'php'       => 'PHP',
+            'js'      => 'JS|JSON',
+            //'array-php' => 'Array'
+        ),
+        'required' => true
+    ));
 	$form = $form->add('nombre', 'text', array('required' => true));
 	$form = $form->add('valor', 'hidden', array('required' => true));
 
@@ -102,7 +116,21 @@ $app->match('/admin/opcion/edit/{id}', function ($id) use ($app) {
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-	$form = $form->add('tipo', 'text', array('required' => true));
+    $form = $form->add('tipo', 'choice', array(
+        'choices' => array(
+            'text'      => 'String',
+            'number'    => 'Int|Float',
+            'color'     => 'Color',
+            'email'     => 'Email',
+            'date'      => 'Date',
+            'datetime'  => 'Datetime',
+            'html'      => 'HTML',
+            'php'       => 'PHP',
+            'js'      => 'JSON',
+            //'array-php' => 'Array'
+        ),
+        'required' => true
+    ));
 	$form = $form->add('nombre', 'text', array('required' => true));
 	$form = $form->add('valor', 'hidden', array('required' => true));
 
@@ -131,8 +159,10 @@ $app->match('/admin/opcion/edit/{id}', function ($id) use ($app) {
     }
 
     return $app['twig']->render('backend/opcion/edit.html.twig', array(
-        "form" => $form->createView(),
-        "id" => $id
+        "form"  => $form->createView(),
+        "id"    => $id,
+        "tipo"  => $row_sql['tipo'],
+        "valor" => json_encode($row_sql['valor'])
     ));
         
 })
