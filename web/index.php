@@ -74,8 +74,14 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     )
 ));
 
-$app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
-$app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
+if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
+    $app['asset_path'] = 'http://precursor.esy.es/web/resources';
+    $app['upload_path'] = 'http://precursor.esy.es/web/resources/uploads';
+} else {
+    $app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
+    $app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
+}
+
 $app['upload_dir'] = __DIR__ . "/resources/uploads/";
 $app['debug'] = true;
 
