@@ -45,13 +45,8 @@
                                     </div>
 
 									<div class='form-group'>
-<<<<<<< HEAD
-                                        <label for="form_tipo" class="required">Valor</label>
-                                        <input id="valor" class="form-control">
-=======
                                         <label id="valor" for="form_tipo" class="required">Valor</label>
                                         <input id="valor" class="form-control" required>
->>>>>>> 1.0
 									</div>
 
                                 </div><!-- /.box-body -->
@@ -82,10 +77,6 @@
         $(function() {
             $("#form_tipo").change(function() {
 
-<<<<<<< HEAD
-                div = $("#valor").parent();
-                $("#valor").remove();
-=======
                 div = $("label#valor").parent();
                 if ($("textarea#textareaValor").val() != undefined) {
                     $("textarea#textareaValor").remove();
@@ -95,7 +86,6 @@
                 } else if ($("input#valor").remove() != undefined) {
                     $("input#valor").remove();
                 }
->>>>>>> 1.0
 
                 if ($(this).val() == "text" || $(this).val() == "number" || $(this).val() == "date" || $(this).val() == "datetime" || $(this).val() == "color" || $(this).val() == "email") {
                     div.append('<input id="valor" class="form-control" type="' + $(this).val() + '" required>');
@@ -105,10 +95,6 @@
 
                 if ($(this).val() == 'html') {
                     $('textarea#textareaValor').wysihtml5();
-                }
-
-                if ($(this).val() == 'html') {
-                    $('textarea#valor').wysihtml5();
                 }
 
             });

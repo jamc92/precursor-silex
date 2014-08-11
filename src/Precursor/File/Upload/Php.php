@@ -3,9 +3,9 @@
  * Description of Php.php.
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
+ *
  * @package Precursor
- * @subpackage File
- * @subpackage Upload
+ * @subpackage File\Upload
  */
 
 namespace Precursor\File\Upload;

@@ -3,9 +3,9 @@
  * Description of Image.php.
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
- * @package    Precursor
- * @subpackage File
- * @subpackage Upload
+ *
+ * @package Precursor
+ * @subpackage File\Upload
  */
 
 namespace Precursor\File\Upload;
