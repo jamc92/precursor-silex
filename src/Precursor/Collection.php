@@ -3,7 +3,6 @@
  * Description of Collection.php.
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
- * @package Precursor
  */
 
 namespace Precursor;

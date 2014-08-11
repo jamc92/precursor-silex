@@ -4,7 +4,6 @@
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @package Precursor
  * @subpackage Provider
  */
 
