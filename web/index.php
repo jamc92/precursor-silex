@@ -44,18 +44,11 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
                 'invalidate_session' => false
             ),
             'users' => $app->share(function($app) {
-                return new Precursor\UserProvider($app['db']);
+                return new Precursor\Provider\UserProvider($app['db']);
             }),
         )
     ),
-    'security.access_rules' => array(
-        array('^/login$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-        array('^/admin/perfil', 'ROLE_SUPER_ADMIN'),
-        array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
-        array('^/admin/opcion', 'ROLE_SUPER_ADMIN'),
-        array('^/admin', array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')),
-        array('^/admin', 'ROLE_USER')
-    ),
+    'security.access_rules' => Precursor\Security\AccessRules::getAccessRules(),
     'security.encoder.digest' => $app->share(function($app) {
         return new MessageDigestPasswordEncoder('sha512');
     })
@@ -63,19 +56,20 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 # Proveedor de doctrine para base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => array(
-        'db' => array(
-            'driver' => 'pdo_mysql',
-            'dbname' => 'precursorbd',
-            'host' => '127.0.0.1',
-            'user' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-        ),
+        'db' => \Precursor\Doctrine\Options::getOptions()
     )
 ));
+# Proveedor de archivos del Precursor
+$app->register(new \Precursor\Provider\PrecursorFilesProvider());
 
-$app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
-$app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
+if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
+    $app['asset_path'] = 'http://precursor.esy.es/web/resources';
+    $app['upload_path'] = 'http://precursor.esy.es/web/resources/uploads';
+} else {
+    $app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
+    $app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
+}
+
 $app['upload_dir'] = __DIR__ . "/resources/uploads/";
 $app['debug'] = true;
 
