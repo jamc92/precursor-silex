@@ -70,6 +70,17 @@ if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
     $app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
 }
 
+<<<<<<< HEAD
+=======
+if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
+    $app['asset_path'] = 'http://precursor.esy.es/web/resources';
+    $app['upload_path'] = 'http://precursor.esy.es/web/resources/uploads';
+} else {
+    $app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
+    $app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
+}
+
+>>>>>>> 6983e698e6bb1618663297ace85385a8e41b7376
 $app['upload_dir'] = __DIR__ . "/resources/uploads/";
 $app['debug'] = true;
 
