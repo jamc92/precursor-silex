@@ -6,14 +6,14 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'imagen_create'} %}
+        {% include 'menu.html.twig' with {'option': 'archivo_create'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Subir imágenes
+                    Crear archivo
                 </h1>
             </section>
 
@@ -23,28 +23,60 @@
                 {% include 'ag_alerts.html.twig' %}
 
                 <div class="row">
-                    <div class="col-md-12">
-
+                    <div class="col-md-8">
                         <div class="box box-info">
+
                             <div class="box-header">
                                 <h3 class="box-title"></h3>
                             </div><!-- /.box-header -->
+
                             <div class="box-body">
 
-                                <div class="row" id="dropbox">
-                                    <span class="message">Arrastra las imágenes para subir. <br /><i>Luego de arrastralas se subirán al servidor automáticamente</i></span>
+                                <div class="row-fluid">
+                                    {{ form_start(form, {'method': 'PUT'}) }}
+                                        {{ form_errors(form) }}
+
+                                        <div class='form-group'>
+                                            {{ form_label(form.nombre) }}
+                                            {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
+                                        </div>
+
+                                        <div class='form-group'>
+                                            {{ form_label(form.contenido) }}
+                                            {{ form_widget(form.contenido, { attr: { 'class': 'form-control', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
+                                        </div>
+
+                                        {{ form_rest(form) }}
+                                    {{ form_end(form) }}
                                 </div>
 
                             </div><!-- /.box-body -->
 
-
                             <div class="box-footer">
-                                <button type="button" class="btn btn-default" onclick="location.href='{{ path("imagen_list") }}'">Volver</button>
+                                <button type="button" class="btn btn-primary">Crear</button>
+                                <button type="button" class="btn btn-default" onclick="location.href='{{ path("archivo_list") }}'">Volver</button>
                             </div>
 
                         </div><!-- /.box -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-info">
 
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
 
+                            <div class="box-body">
+
+                                <div class="row" id="dropbox">
+                                    <span class="message">Arrastra los archivos para subir. <br /><i>Luego de arrastralos se subirán al servidor automáticamente.</i></span>
+                                </div>
+
+                            </div><!-- /.box-body -->
+
+                            <div class="box-footer"></div>
+
+                        </div><!-- /.box -->
                     </div>
                 </div>
 
@@ -59,6 +91,19 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ app.asset_path }}/js/plugins/phpeditor/phpeditor.min.js" type="text/javascript" ></script>
+    <script>
+        $(document).ready(function() {
+            editAreaLoader.init({
+                id: "form_contenido",
+                start_highlight: true,
+                allow_resize: 'both',
+                allow_toggle: false,
+                language: 'es',
+                syntax: 'php'
+            });
+        });
+    </script>
     <script src="{{ app.asset_path }}/js/plugins/filedrop/jquery.filedrop.js"></script>
     <script>
         $(function(){
@@ -68,9 +113,9 @@
 
             dropbox.filedrop({
                 // The name of the $_FILES entry:
-                paramname:'image',
+                paramname:'php',
 
-                maxfiles: 5,
+                maxfiles: 1,
                 maxfilesize: 2,
                 url: 'create',
 
@@ -100,9 +145,9 @@
                 },
 
                 // Called before each upload is started
-                beforeEach: function(file){
-                    if(!file.type.match(/^image\//)){
-                        alert('Only images are allowed!');
+                beforeEach: function(file) {
+                    if(file.type != 'application/x-php'){
+                        alert('Only php files are allowed!');
 
                         // Returning false will cause the
                         // file to be rejected
@@ -120,7 +165,7 @@
 
             });
 
-            var template = '<div class="preview col-12 col-md-3 col-lg-3">'+
+            var template = '<div class="preview col-12 col-md-12 col-lg-12">'+
                     '<span class="imageHolder">'+
                     '<img />'+
                     '<span class="uploaded"></span>'+
@@ -128,7 +173,7 @@
                     '<div class="progressHolder">'+
                     '<div class="progress"></div>'+
                     '</div>'+
-                    '</div>';
+                    '</div><br>';
 
 
             function createImage(file){
@@ -146,7 +191,7 @@
                     // e.target.result holds the DataURL which
                     // can be used as a source of the image:
 
-                    image.attr('src',e.target.result);
+                    image.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3ggLAhQ24QGNnQAAADt0RVh0Q29tbWVudABDcmVhdGVkIGJ5IFJhbW9uIFNlcnJhbm8KPHJhbW9uLmNhbGxlLjg4QGdtYWlsLmNvbT7cgiqkAAABvElEQVRYw+2XPUvDUBRAT2z6aYQ2aAfRSvGDlk4q6Kgojg4uQiEoOPoXBDfRf9BNVDp076xDt1rUTUsrFoUqtKKiUESsddGgeQ0qEYqSO70bXg4n3HtfEqnRaDRoYbTR4rAFbIG/KaBpu2jarl2C/yEgf6wrwObmBMlkkWy2Sr3+QiymommDdHV5hZufnp7Z2iqwv1/F4ZCYmupmfr4fSZL4Llc2QhOJY3K5qp4fHFQ5O7tnfX0MRXEZ9p6Qy1X0PJ0+R1XdzMz08l2uIFAqPbCyMkI43EGpdE8iccLNzSPp9AXx+MCnvZVKjY2NcVTVTSp1yt7eJZnMVVMBM67QAwsLQ0SjATwemWhUZXFxEICjo2sBurQUoadHwedzMjcXBqBcrjWttRlXEIhE/IY8oD+tMUIhRV/7/e63vqg3FTDjWpoCp9Ohrz82nqUxzOfvDPktAMGgz9K4mXGFJtzZKeD1ynqzbG8XARge7rQkYMYVBPr6FNbWDj9dCwTczM6GLAmYcYUSLC/HmJzspr1dxuVyMDrayerqiHAG/DTMuNL7R+n7iZVMTv/qUfsV134ZtVxAsn9MbAFboNUCr7JBsxtkosHuAAAAAElFTkSuQmCC');
                 };
 
                 // Reading the file as a DataURL. When finished,

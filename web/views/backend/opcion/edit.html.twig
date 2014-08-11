@@ -13,7 +13,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Editar Opcion
+                    Editar Opción
                 </h1>
             </section>
 
@@ -23,7 +23,7 @@
                 {% include 'ag_alerts.html.twig' %}
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-10 col-lg-8">
 
                         {{ form_start(form, {'method': 'POST'}) }}
                             {{ form_errors(form) }}
@@ -35,32 +35,22 @@
                                 <div class="box-body">
 
                                     <div class='form-group'>
-                                        {{ form_label(form.tipo) }}
-                                        {{ form_widget(form.tipo, { attr: { 'class': 'form-control', 'pattern': "\\S{4,100}" }}) }}
-                                    </div>
-
-                                    <div class='form-group'>
                                         {{ form_label(form.nombre) }}
                                         {{ form_widget(form.nombre, { attr: { 'class': 'form-control', 'pattern': "\\S{4,100}"  }}) }}
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="form_tipo" class="required">Tipo de valor</label>
-                                        <select class="form-control" id="tipo">
-                                            <option>Seleccione tipo de valor</option>
-                                            <option value="text">String</option>
-                                            <option value="number">Int|Float</option>
-                                            <option value="color">Color</option>
-                                            <option value="url">Url</option>
-                                            <option value="email">Email</option>
-                                            <option value="date">Date</option>
-                                            <option value="textarea">Array|JSON</option>
-                                        </select>
+                                    <div class='form-group'>
+                                        {{ form_label(form.tipo) }}
+                                        {{ form_widget(form.tipo, { attr: { 'class': 'form-control' }}) }}
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for="form_tipo" class="required">Valor</label>
-                                        <input id="valor" class="form-control" readonly>
+                                        <label id="valor" for="form_tipo" class="required">Valor</label>
+                                        {% if tipo == 'php' or tipo == 'html' or tipo == 'js'%}
+                                            <pre id="dynamic"></pre>
+                                        {% else %}
+                                            <input id="valor" class="form-control" readonly>
+                                        {% endif %}
                                     </div>
 
                                 </div><!-- /.box-body -->
@@ -85,24 +75,63 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ app.asset_path }}/js/plugins/phpeditor/phpeditor.min.js" type="text/javascript" ></script>
+    <script src="{{ app.asset_path }}/js/plugins/snippet/jquery.snippet.js" type="text/javascript" ></script>
+    <link rel="stylesheet" type="text/css" href="{{ app.asset_path }}/js/plugins/snippet/jquery.snippet.css" />
     <script>
         $(function() {
-            $("#valor").val($("#form_valor").val());
-            $("#tipo").change(function() {
 
-                div = $("#valor").parent();
-                $("#valor").remove();
+            // Si es valor HTML, Javascript, CSS o PHP
+            // Colocar un pre snippet dependiendo del tipo
+            valorContent = '{{ valor }}';
+            valorContent = valorContent.replace("&quot;","");
+            valorContent = valorContent.replace("&quot;","");
+            $("pre#dynamic").html(valorContent);
+            {% if tipo == 'php' %}
+                $("pre#dynamic").snippet("php", {style:"golden"});
+            {% elseif tipo == 'html' %}
+                $("pre#dynamic").snippet("html", {style:"golden"});
+            {% elseif tipo == 'js' %}
+                $("pre#dynamic").snippet("js", {style:"golden"});
+            {% else %}
+                $("input#valor").val($("#form_valor").val());
+            {% endif %}
+            // Validar el tipo de valor
+            // Si no es textarea un input del tipo seleccionado
+            $("#form_tipo").change(function() {
 
-                if ($(this).val() != "textarea") {
-                    div.append('<input id="valor" class="form-control" type="' + $(this).val() + '" required>');
+                div = $("label#valor").parent();
+                valor = $("#form_valor").val();
+
+                if ($("textarea#textareaValor").val() != undefined) {
+                    $("textarea#textareaValor").remove();
+                    $('.wysihtml5-toolbar').remove();
+                    $('.wysihtml5-sandbox').remove();
+                    $('input[name=_wysihtml5_mode]').remove();
+                } else if ($("input#valor").remove() != undefined) {
+                    $("input#valor").remove();
+                }
+
+                if ($(this).val() == "text" || $(this).val() == "number" || $(this).val() == "date" || $(this).val() == "datetime" || $(this).val() == "color" || $(this).val() == "email") {
+                    div.append('<input id="valor" class="form-control" type="' + $(this).val() + '" value="' + valor + '" required>');
                 } else {
-                    div.append('<textarea id="valor" class="form-control" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>');
+                    div.append('<textarea id="textareaValor" class="form-control" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required>' + valor + '</textarea>');
+                }
+
+                if ($(this).val() == 'html') {
+                    $('textarea#textareaValor').wysihtml5();
                 }
 
             });
-            $("form").submit(function() {
-                $("#form_valor").val($("#valor").val());
-                Pace.restart();
+
+            // Agregar valor antes de enviar valor
+            $("form[name=form]").submit(function() {
+                if ($("textarea#textareaValor").val() != undefined) {
+                    $("#form_valor").val($("textarea#textareaValor").val());
+                }
+                if ($("input#valor").val() != undefined) {
+                    $("#form_valor").val($("input#valor").val());
+                }
             });
         });
     </script>
