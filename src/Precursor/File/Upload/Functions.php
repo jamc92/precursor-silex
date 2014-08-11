@@ -3,8 +3,9 @@
  * Description of Functions.php.
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
- * @package
- * @subpackage
+ *
+ * @package Precursor
+ * @subpackage File\Upload
  */
 
 namespace Precursor\File\Upload;
