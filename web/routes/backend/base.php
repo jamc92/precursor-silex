@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/archivo.php';
 require_once __DIR__.'/auth.php';
 require_once __DIR__.'/articulo.php';
 require_once __DIR__.'/articulos_etiquetas.php';

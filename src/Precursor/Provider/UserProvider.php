@@ -1,6 +1,13 @@
 <?php
+/**
+ * Description of UserProvider.php.
+ *
+ * @author Ramon Serrano <ramon.calle.88@gmail.com>
+ * @package Precursor
+ * @subpackage Provider
+ */
 
-namespace Precursor;
+namespace Precursor\Provider;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

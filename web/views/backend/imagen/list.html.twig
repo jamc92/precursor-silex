@@ -14,7 +14,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("¿Estás seguro que desea realizar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
+            if(!confirm("¿Estás seguro que desea realizar la imagen? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -57,7 +57,7 @@
                                         <b>No hay imágenes</b>
                                     {% endif %}
                                     {% for row in rows %}
-                                        <div class="panel col-12 col-md-4 col-lg-3">
+                                        <div class="panel col-12 col-md-3 col-lg-3">
                                             <div class="panel-body">
                                                 <h4>{{ row.nombre }}</h4>
                                                 <br/>
@@ -96,6 +96,9 @@
             min-height: 350px;
             max-height: 350px;
             box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3) inset;
+        }
+        .panel-body img.img-responsive{
+            max-height: 160px;
         }
     </style>
 {% endblock %}

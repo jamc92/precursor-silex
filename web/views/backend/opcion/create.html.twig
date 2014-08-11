@@ -2,7 +2,6 @@
 
 {% block body_params %}class="skin-blue"{% endblock %}
 
-
 {% block container %}
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -46,8 +45,13 @@
                                     </div>
 
 									<div class='form-group'>
+<<<<<<< HEAD
                                         <label for="form_tipo" class="required">Valor</label>
                                         <input id="valor" class="form-control">
+=======
+                                        <label id="valor" for="form_tipo" class="required">Valor</label>
+                                        <input id="valor" class="form-control" required>
+>>>>>>> 1.0
 									</div>
 
                                 </div><!-- /.box-body -->
@@ -78,13 +82,29 @@
         $(function() {
             $("#form_tipo").change(function() {
 
+<<<<<<< HEAD
                 div = $("#valor").parent();
                 $("#valor").remove();
+=======
+                div = $("label#valor").parent();
+                if ($("textarea#textareaValor").val() != undefined) {
+                    $("textarea#textareaValor").remove();
+                    $('.wysihtml5-toolbar').remove();
+                    $('.wysihtml5-sandbox').remove();
+                    $('input[name=_wysihtml5_mode]').remove();
+                } else if ($("input#valor").remove() != undefined) {
+                    $("input#valor").remove();
+                }
+>>>>>>> 1.0
 
                 if ($(this).val() == "text" || $(this).val() == "number" || $(this).val() == "date" || $(this).val() == "datetime" || $(this).val() == "color" || $(this).val() == "email") {
                     div.append('<input id="valor" class="form-control" type="' + $(this).val() + '" required>');
                 } else {
-                    div.append('<textarea id="valor" class="form-control" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>');
+                    div.append('<textarea id="textareaValor" name="php" class="form-control" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>');
+                }
+
+                if ($(this).val() == 'html') {
+                    $('textarea#textareaValor').wysihtml5();
                 }
 
                 if ($(this).val() == 'html') {
@@ -92,9 +112,15 @@
                 }
 
             });
-            $("form").submit(function() {
-                $("#form_valor").val($("#valor").val());
-                Pace.restart();
+            $("form").submit(function(event) {
+
+                if ($("textarea#textareaValor").val() != undefined) {
+                    $("#form_valor").val($("textarea#textareaValor").val());
+                }
+                if ($("input#valor").val() != undefined) {
+                    $("#form_valor").val($("input#valor").val());
+                }
+
             });
         });
     </script>

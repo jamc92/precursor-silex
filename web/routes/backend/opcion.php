@@ -52,7 +52,11 @@ $app->match('/admin/opcion/create', function () use ($app) {
             'date'      => 'Date',
             'datetime'  => 'Datetime',
             'html'      => 'HTML',
+<<<<<<< HEAD
             'php'       => 'PHP',
+=======
+            //'php'       => 'PHP',
+>>>>>>> 1.0
             'js'      => 'JS|JSON',
             //'array-php' => 'Array'
         ),
@@ -125,7 +129,11 @@ $app->match('/admin/opcion/edit/{id}', function ($id) use ($app) {
             'date'      => 'Date',
             'datetime'  => 'Datetime',
             'html'      => 'HTML',
+<<<<<<< HEAD
             'php'       => 'PHP',
+=======
+            //'php'       => 'PHP',
+>>>>>>> 1.0
             'js'      => 'JSON',
             //'array-php' => 'Array'
         ),

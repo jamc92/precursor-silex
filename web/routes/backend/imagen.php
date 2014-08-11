@@ -2,7 +2,7 @@
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Precursor\UploadImage;
+use Precursor\File\Upload;
 
 $app->match('/admin/imagen', function () use ($app) {
     
@@ -37,18 +37,19 @@ $app->match('/admin/imagen/create', function () use ($app) {
 
     if("POST" == $app['request']->getMethod()){
 
-        $uploadImage = new UploadImage();
-        $uploadImage->upload_dir = $app['upload_dir'];
+        $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => true));
 
-        $result = $uploadImage->uploadFile($_FILES['image']);
+        $result = $upload->file()->upload($_FILES['image']);
 
-        $vars = $result['vars'];
+        if (isset($result['vars']['imagen'])) {
+            $vars = $result['vars'];
 
-        $nombreImagen = $vars['imagen'];
-        $linkImagen = "$app[upload_path]/$vars[folder]/$vars[imagen]";
+            $nombreImagen = $vars['imagen'];
+            $linkImagen = "$app[upload_path]/$vars[folder]/$vars[imagen]";
 
-        $update_query = "INSERT INTO `imagen` (`nombre`, `link`, `creado`) VALUES (?, ?, NOW())";
-        $app['db']->executeUpdate($update_query, array($nombreImagen, $linkImagen));
+            $update_query = "INSERT INTO `imagen` (`nombre`, `link`, `creado`) VALUES (?, ?, NOW())";
+            $app['db']->executeUpdate($update_query, array($nombreImagen, $linkImagen));
+        }
 
         die(json_encode(array('status' => $result['status'])));
 
@@ -126,6 +127,15 @@ $app->match('/admin/imagen/delete/{id}', function ($id) use ($app) {
         // Eliminar archivos
         $search_str = $app['upload_path'] . "/";
         $file = $app['upload_dir'] .str_replace($search_str, '', $row_sql['link']);
+
+        if (!unlink($file)) {
+            $app['session']->getFlashBag()->add(
+                'danger',
+                array(
+                    'message' => "¡Imagen <$file> no pudo ser eliminada eliminada!",
+                )
+            );
+        }
 
         // Eliminar los archivos
 
