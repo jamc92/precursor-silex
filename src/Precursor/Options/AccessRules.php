@@ -4,10 +4,10 @@
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage Secutity
+ * @subpackage Options
  */
 
-namespace Precursor\Security;
+namespace Precursor\Options;
 
 
 class AccessRules

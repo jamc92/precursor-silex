@@ -1,16 +1,16 @@
 <?php
 /**
- * Description of Options.php.
+ * Description of Doctrine.php.
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage Doctrine
+ * @subpackage Options
  */
 
-namespace Precursor\Doctrine;
+namespace Precursor\Options;
 
 
-class Options
+class Doctrine
 {
     /**
      * Get the doctrine options

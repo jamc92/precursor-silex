@@ -76,11 +76,11 @@ $app->match('/admin/archivo/create', function () use ($app) {
     if ('PUT' == $app['request']->getMethod()) {
         $form->handleRequest($app["request"]);
 
-        if ($form->valid()) {
+        if ($form->isValid()) {
             $data = $form->getData();
 
             print_r($data);
-
+            die;
             return '';
         }
 
@@ -91,7 +91,8 @@ $app->match('/admin/archivo/create', function () use ($app) {
     ));
 
 })
-->bind('archivo_create');
+->bind('archivo_create')
+->method("GET|POST|PUT");
 
 $app->match('/admin/archivo/edit/{nombre}', function ($nombre) use ($app) {
 

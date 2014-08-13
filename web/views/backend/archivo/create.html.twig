@@ -53,7 +53,7 @@
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
-                                <button type="button" class="btn btn-primary">Crear</button>
+                                <button type="button" id="crear" class="btn btn-primary">Crear</button>
                                 <button type="button" class="btn btn-default" onclick="location.href='{{ path("archivo_list") }}'">Volver</button>
                             </div>
 
@@ -96,13 +96,33 @@
         $(document).ready(function() {
             editAreaLoader.init({
                 id: "form_contenido",
+                toolbar: "save, undo, redo, select_font, fullscreen",
+                font_size: 12,
                 start_highlight: true,
                 allow_resize: 'both',
                 allow_toggle: false,
                 language: 'es',
+                save_callback: 'crear',
                 syntax: 'php'
             });
         });
+        function crear(id, contenido) {
+            $.ajax({
+                url: '{{ path("archivo_create") }}',
+                data: {
+                    'form[nombre]': $("#form_nombre").val(),
+                    'form[contenido]': contenido,
+                    'form[_token]': $("#form__token").val()
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                type: 'PUT'
+            });
+        }
     </script>
     <script src="{{ app.asset_path }}/js/plugins/filedrop/jquery.filedrop.js"></script>
     <script>

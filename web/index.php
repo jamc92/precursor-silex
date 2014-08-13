@@ -48,7 +48,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             }),
         )
     ),
-    'security.access_rules' => Precursor\Security\AccessRules::getAccessRules(),
+    'security.access_rules' => Precursor\Options\AccessRules::getAccessRules(),
     'security.encoder.digest' => $app->share(function($app) {
         return new MessageDigestPasswordEncoder('sha512');
     })
@@ -56,11 +56,16 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 # Proveedor de doctrine para base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => array(
-        'db' => \Precursor\Doctrine\Options::getOptions()
+        'db' => Precursor\Options\Doctrine::getOptions()
     )
 ));
 # Proveedor de archivos del Precursor
-$app->register(new \Precursor\Provider\PrecursorFilesProvider());
+$app->register(new Precursor\Provider\PrecursorFilesProvider(), array(
+    'explorer.options' => array(
+        'folders.public' => Precursor\Options\Explorer::getPublicFolders(),
+        'folders.protected' => Precursor\Options\Explorer::getProtectedFolders(),
+    )
+));
 
 if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
     $app['asset_path'] = 'http://precursor.esy.es/web/resources';

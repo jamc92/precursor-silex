@@ -32,20 +32,28 @@ class PrecursorFilesProvider implements ServiceProviderInterface {
             ),
             'folders.protected' => array(
                 dirname(__DIR__) . "/",
-                dirname(__DIR__) . "/Doctrine/",
                 dirname(__DIR__) . "/File/",
+                dirname(__DIR__) . "/Options/",
                 dirname(__DIR__) . "/Provider/",
-                dirname(__DIR__) . "/Security/",
             ),
             'files.public' => array(),
             'files.protected' => array(),
         );
 
+        $app['explorer.options'] = $app->share(function($app) {
+
+        });
+
         $app['explorer'] = $app->share(function($app) {
 
             $explorer = new Explorer();
-            $explorer->setFolders($app['explorer.default_options']['folders.public']);
-            $explorer->setFoldersProtected($app['explorer.default_options']['folders.protected']);
+            if (isset($app['explorer.options']) && ( isset($app['explorer.options']['folders.public']) && isset($app['explorer.options']['folders.protected']) )) {
+                $explorer->setFolders($app['explorer.options']['folders.public']);
+                $explorer->setFoldersProtected($app['explorer.options']['folders.protected']);
+            } else {
+                $explorer->setFolders($app['explorer.default_options']['folders.public']);
+                $explorer->setFoldersProtected($app['explorer.default_options']['folders.protected']);
+            }
 
             return $explorer;
         });
