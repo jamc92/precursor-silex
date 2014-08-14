@@ -32,6 +32,18 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
 
+                                    <div class='form-group' id="articulo_imagen">
+                                        <img src="{{ imagen_src }}" style="width:200px">
+                                        <button class="btn btn-default"
+                                                id="imageListButton"
+                                                type="button"
+                                                data-toggle="modal"
+                                                data-target="#imagenListModal">
+                                            <i class="fa fa-picture-o"></i>
+                                            Modificar imagen de artículo
+                                        </button>
+                                    </div>
+
 									<div class='form-group'>
 									    {{ form_label(form.titulo) }}
 									    {{ form_widget(form.titulo, { attr: { 'class': 'form-control' }}) }}
@@ -73,13 +85,76 @@
 
                             </div><!-- /.box -->
                         {{ form_end(form) }}
-
-
                     </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="imagenListModal" tabindex="-1" role="dialog" aria-labelledby="imagenListModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">Elegir imagen</h4>
+                                </div>
+                                <div class="modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="accept_image">Aceptar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal -->
                 </div>
 
             </section><!-- /.content -->
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
 
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ app.asset_path }}/js/plugins/image-picker/image-picker.css" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $("#imageListButton").click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('imagen_list_json') }}',
+                    beforeSend: function() {
+                        $(".modal-body").html('Cargando...');
+                    },
+                    statusCode: {
+                        404: function() {
+                            $(".modal-body").html('No encontrado. Intente luego.');
+                        }
+                    }
+                })
+                .done(function(data) {
+                    $(".modal-body").html(data);
+                    $("select.image-picker").imagepicker({
+                        hide_select : true,
+                        show_label : false
+                    });
+                    $("#accept_image").click(function() {
+                        $("#form_imagen").val($(".selected img").attr("src"));
+                        if ($("#form_imagen").val() != "") {
+                            $("#articulo_imagen").html('<img src=" ' + $(".selected img").attr("src") + ' " style="width:200px">' +
+                                    '<button class="btn btn-default" '+
+                                    'id="imageListButton" '+
+                                    'type="button" '+
+                                    'data-toggle="modal" '+
+                                    'data-target="#imagenListModal"> '+
+                                    '<i class="fa fa-picture-o"></i> '+
+                                    'Modificar imagen de artículo '+
+                                    '</button>');
+                            $("#articulo_imagen").fadeIn();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <script src="{{ app.asset_path }}/js/plugins/image-picker/image-picker.js"></script>
 {% endblock %}

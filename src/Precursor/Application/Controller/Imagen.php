@@ -87,7 +87,7 @@ class Imagen {
     {
         if("POST" == $request->getMethod()){
 
-            $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => true));
+            $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => false));
 
             $result = $upload->file()->upload($_FILES['image']);
 

@@ -229,6 +229,7 @@ class Articulo {
 
         return $app['twig']->render('backend/articulo/edit.html.twig', array(
             "form" => $form->createView(),
+            "imagen_src" => $row_sql['imagen'],
             "id" => $id
         ));
     }
