@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/archivo.php';
-require_once __DIR__.'/auth.php';
 require_once __DIR__.'/articulo.php';
 require_once __DIR__.'/articulos_etiquetas.php';
 require_once __DIR__.'/categoria.php';
@@ -13,9 +12,6 @@ require_once __DIR__.'/opcion.php';
 require_once __DIR__.'/perfil.php';
 require_once __DIR__.'/usuario.php';
 
-$app->match('/admin', function () use ($app) {
+$app->match('/admin', 'Precursor\\Application\\Controller\\Base::index')->bind('admin');
 
-    return $app['twig']->render('ag_dashboard.html.twig', array());
-        
-})
-->bind('admin');
+$app->match('/login', 'Precursor\\Application\\Controller\\Base::login')->bind('login');
