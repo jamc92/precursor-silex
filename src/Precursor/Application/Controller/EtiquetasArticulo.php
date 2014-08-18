@@ -26,12 +26,14 @@ class EtiquetasArticulo {
         $table_columns = array(
             'id',
             'id_etiqueta',
+            'etiqueta'
         );
 
         $primary_key = "id";
         $rows = array();
 
-        $find_sql = "SELECT * FROM `articulos_etiquetas`";
+        $find_sql = "SELECT `articulos_etiquetas`.*, `etiqueta`.nombre as etiqueta FROM `articulos_etiquetas` ";
+        $find_sql .= "INNER JOIN `etiqueta` ON id_etiqueta = `etiqueta`.id";
         $rows_sql = $app['db']->fetchAll($find_sql, array());
 
         foreach ($rows_sql as $row_key => $row_sql) {

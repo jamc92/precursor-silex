@@ -25,7 +25,7 @@ class Articulo {
         $table_columns = array(
             'id',
             'id_autor',
-            'id_categoria',
+            'categoria',
             'titulo',
             'fecha_pub',
         );
@@ -33,7 +33,8 @@ class Articulo {
         $primary_key = "id";
         $rows = array();
 
-        $find_sql = "SELECT * FROM `articulo`";
+        $find_sql = "SELECT `articulo`.*, `categoria`.nombre as categoria FROM `articulo` ";
+        $find_sql .= "INNER JOIN categoria ON `articulo`.id_categoria = `categoria`.id";
         $rows_sql = $app['db']->fetchAll($find_sql, array());
 
         foreach($rows_sql as $row_key => $row_sql){
@@ -92,7 +93,7 @@ class Articulo {
 
         $form = $form->add('categoria', 'choice', array(
             'choices' => $options_cat,
-            'required' => false
+            'required' => true
         ));
         $form = $form->add('etiquetas', 'choice', array(
             'choices' => $options_etiq,

@@ -11,7 +11,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("¿Está seguro que desea realizar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
+            if(!confirm("¿Está seguro que desea eliminar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -61,7 +61,7 @@
                                     <tbody>
                                         {% for row in rows %}
                                             <tr>
-                                                <td>{{ row.id_categoria }}</td>
+                                                <td>{{ row.categoria }}</td>
                                                 <td>{{ row.titulo }}</td>
                                                 <td>{{ row.fecha_pub }}</td>
                                                 <td>

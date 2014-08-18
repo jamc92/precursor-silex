@@ -11,7 +11,7 @@
         });
 
         function confirm_delete(){
-            if(!confirm("¿Estás seguro que desea realizar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
+            if(!confirm("¿Estás seguro que desea eliminar la etiqueta? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -48,22 +48,18 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('etiquetas_articulo_create', {articulo_id: articulo_id}) }}">Crear Etiqueta de Artículo</a><br /><br />
+                                <a class="btn btn-primary" href="{{ path('etiquetas_articulo_create', {articulo_id: articulo_id}) }}">Agregar Etiqueta de Artículo</a><br /><br />
                                 <table id="etiquetas_articulo_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Etiqueta</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for row in rows %}
                                             <tr>
-                                                {% for table_column in table_columns %}
-                                                    <td>{{ row[table_column] }}</td>
-                                                {% endfor %}
+                                                <td>{{ row.etiqueta }}</td>
                                                 <td><a href="{{ path('etiquetas_articulo_edit', { articulo_id: articulo_id, id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('etiquetas_articulo_delete', { articulo_id: articulo_id, id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
@@ -71,9 +67,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Etiqueta</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>
