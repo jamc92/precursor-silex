@@ -4,7 +4,7 @@
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * 
- * @subpackage Controller
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
