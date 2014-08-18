@@ -79,6 +79,7 @@ $app['upload_dir'] = __DIR__ . "/resources/uploads/";
 $app['debug'] = true;
 
 require_once __DIR__ . '/routes/backend/base.php';
+require_once __DIR__ . '/routes/errors.php';
 require_once __DIR__ . '/routes/frontend/base.php';
 
 $app->run();
