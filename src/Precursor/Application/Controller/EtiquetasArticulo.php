@@ -7,7 +7,7 @@
  * @package Controller
  */
 
-namespace Precursor\Aplication\Controller;
+namespace Precursor\Application\Controller;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
