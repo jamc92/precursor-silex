@@ -57,9 +57,14 @@ class Articulo {
      */
     public function agregar(Request $request, Application $app)
     {
+
+        $alias = $app['security']->getToken()->getUser()->getUsername();
+
+        $find_sql = "SELECT id FROM `usuario` WHERE alias = ?";
+        $id_usuario = $app['db']->fetchAssoc($find_sql, array($alias));
+
         // El autor del articulo debe ser el logueado
-        #$id_autor = Asignar el usuario logueado
-        $id_autor = 1;
+        $id_autor = $id_usuario['id'];
 
         // Categorías
         $find_sql = "SELECT * FROM `categoria`";
@@ -149,9 +154,13 @@ class Articulo {
      */
     public function editar(Request $request, Application $app, $id)
     {
+        $alias = $app['security']->getToken()->getUser()->getUsername();
+
+        $find_sql = "SELECT id FROM `usuario` WHERE alias = ?";
+        $id_usuario = $app['db']->fetchAssoc($find_sql, array($alias));
+
         // El autor del articulo debe ser el logueado
-        #$id_autor = Asignar el usuario logueado
-        $id_autor = 1;
+        $id_autor = $id_usuario['id'];
 
         // Categorías
         $find_sql = "SELECT * FROM `categoria`";
