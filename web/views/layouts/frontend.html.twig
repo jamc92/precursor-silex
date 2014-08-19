@@ -77,10 +77,10 @@
     {#<script src="{{ app.asset_path }}/js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>#}
     {#<!-- AdminLTE App -->#}
     {#<script src="{{ app.asset_path }}/js/AdminLTE/app.js" type="text/javascript"></script>#}
-
+    <!-- Holder -->
+    <script src="{{ app.asset_path }}/js/plugins/holder/holder.min.js"><\/script>
     <script type="text/javascript">
         $(function() {
-            $('body').append('<script src="{{ app.asset_path }}/js/plugins/holder/holder.min.js"><\/script>');
             $(".textarea").wysihtml5();
         });
     </script>

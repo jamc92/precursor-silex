@@ -114,8 +114,16 @@ class Articulo {
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $update_query = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
-                $app['db']->executeUpdate($update_query, array($data['id_autor'], $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido']));
+                $articulo_query  = "INSERT INTO `articulo` (`id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
+                $app['db']->executeUpdate($articulo_query, array($data['id_autor'], $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido']));
+
+                $last_id_query = "SELECT MAX(id) as id FROM `articulo`";
+                $last_id = $app['db']->fetchAssoc($last_id_query);
+
+                foreach($data['etiquetas'] as $etiqueta) {
+                    $etiquetas_query = "INSERT INTO `articulos_etiquetas` (`id_articulo`, `id_etiqueta`) VALUES (?, ?)";
+                    $app['db']->executeUpdate($etiquetas_query, array($last_id['id'], $etiqueta));
+                }
 
                 $app['session']->getFlashBag()->add(
                     'success',
@@ -166,6 +174,16 @@ class Articulo {
         $find_sql = "SELECT * FROM `articulo` WHERE `id` = ?";
         $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
+        // Etiquetas del articulo
+        $find_sql = "SELECT `articulos_etiquetas`.*, `etiqueta`.nombre as etiqueta FROM `articulos_etiquetas` ";
+        $find_sql .= "INNER JOIN `etiqueta` ON `etiqueta`.id = id_etiqueta ";
+        $find_sql .= "WHERE id_articulo = ?";
+        $etiquetas_sql = $app['db']->fetchAll($find_sql, array($id));
+
+        foreach($etiquetas_sql as $etiqueta_sql) {
+            $row_sql['etiquetas'][$etiqueta_sql['id_etiqueta']] = $etiqueta_sql['etiqueta'];
+        }
+
         if(!$row_sql){
             $app['session']->getFlashBag()->add(
                 'warning',
@@ -180,6 +198,7 @@ class Articulo {
         $initial_data = array(
             'id_autor' => $id_autor,
             'categoria' => $row_sql['id_categoria'],
+            'etiquetas' => $row_sql['etiquetas'],
             'imagen' => $row_sql['imagen'],
             'titulo' => $row_sql['titulo'],
             'descripcion' => $row_sql['descripcion'],
@@ -192,7 +211,7 @@ class Articulo {
 
         $form = $form->add('categoria', 'choice', array(
             'choices' => $options_cat,
-            'required' => false
+            'required' => true
         ));
         $form = $form->add('etiquetas', 'choice', array(
             'choices' => $options_etiq,
