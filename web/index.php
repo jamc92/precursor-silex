@@ -5,14 +5,20 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Silex\Application;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+use Precursor\WidgetExtension;
 
 # Objeto de la aplicacion Silex
 $app = new Application();
 
 # Provedor Twig para las vistas
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__ . '/../web/views',
+    'twig.path'   => __DIR__ . '/../web/views',
 ));
+# Extension de Widgets
+$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $twig->addExtension(new WidgetExtension());
+    return $twig;
+}));
 # Proveedor de Formularios
 $app->register(new Silex\Provider\FormServiceProvider());
 # Proveedor de Traducciones
@@ -27,31 +33,31 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 # Proveedor de seguridad de acceso a las url
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
-    'security.firewalls' => array(
+    'security.firewalls'      => array(
         'login_path' => array(
-            'pattern' => '^/login$',
+            'pattern'   => '^/login$',
             'anonymous' => true
         ),
-        'default' => array(
-            'pattern' => '^/.*$',
+        'default'    => array(
+            'pattern'   => '^/.*$',
             'anonymous' => true,
-            'form' => array(
+            'form'      => array(
                 'login_path' => '/login',
                 'check_path' => '/login_check',
             ),
-            'logout' => array(
-                'logout_path' => '/logout',
+            'logout'    => array(
+                'logout_path'        => '/logout',
                 'invalidate_session' => false
             ),
-            'users' => $app->share(function($app) {
-                return new Precursor\Provider\UserProvider($app['db']);
-            }),
+            'users'     => $app->share(function ($app) {
+                    return new Precursor\Provider\UserProvider($app['db']);
+                }),
         )
     ),
-    'security.access_rules' => Precursor\Options\AccessRules::getAccessRules(),
-    'security.encoder.digest' => $app->share(function($app) {
-        return new MessageDigestPasswordEncoder('sha512');
-    })
+    'security.access_rules'   => Precursor\Options\AccessRules::getAccessRules(),
+    'security.encoder.digest' => $app->share(function ($app) {
+            return new MessageDigestPasswordEncoder('sha512');
+        })
 ));
 # Proveedor de doctrine para base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
@@ -62,7 +68,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 # Proveedor de archivos del Precursor
 $app->register(new Precursor\Provider\PrecursorFilesProvider(), array(
     'explorer.options' => array(
-        'folders.public' => Precursor\Options\Explorer::getPublicFolders(),
+        'folders.public'    => Precursor\Options\Explorer::getPublicFolders(),
         'folders.protected' => Precursor\Options\Explorer::getProtectedFolders(),
     )
 ));
