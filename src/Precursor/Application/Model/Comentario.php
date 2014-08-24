@@ -8,9 +8,15 @@
 
 namespace Precursor\Application\Model;
 
-use Precursor\Application\Model;
+use Doctrine\DBAL\Connection,
+    Precursor\Application\Model;
 
 class Comentario extends Model
 {
+
+	function __construct(Connection $db)
+	{
+		parent::__construct($db, 'comentario');
+	}
 
 } 

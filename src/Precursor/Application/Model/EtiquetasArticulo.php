@@ -8,8 +8,15 @@
 
 namespace Precursor\Application\Model;
 
+use Doctrine\DBAL\Connection,
+    Precursor\Application\Model;
 
-class EtiquetasArticulo
+class EtiquetasArticulo extends Model
 {
-
+	
+	function __construct(Connection $db)
+	{
+		parent::__construct($db, 'articulos_etiquetas');
+	}
+	
 } 
