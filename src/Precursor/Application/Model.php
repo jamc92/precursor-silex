@@ -228,9 +228,10 @@ class Model
      */
     public function getPorId($id)
     {
-        if (!is_null($this->_table) && (!is_null($id) && is_int($id))) {
+        if (!is_null($this->_table) && !is_null($id)) {
             $this->_sql = "SELECT * FROM $this->_table WHERE id = ?;";
-            return $this->_select($this->_sql, array($id));
+            $row = $this->_select($this->_sql, array($id));
+            return $row[0];
         }
     }
 
