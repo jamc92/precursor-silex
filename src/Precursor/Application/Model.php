@@ -1,0 +1,245 @@
+<?php
+/**
+ * Description of Model.php.
+ *
+ * @author     Ramon Serrano <ramon.calle.88@gmail.com>
+ * @subpackage Application
+ */
+
+namespace Precursor\Application;
+
+use Doctrine\DBAL\Connection,
+    Doctrine\DBAL\DBALException,
+    Doctrine\DBAL\Driver\Statement,
+    \Exception;
+
+class Model
+{
+
+    /**
+     * @var int $_affectedRows Filas afectadas en el sql
+     */
+    protected $_affectedRows = 0;
+
+    /**
+     * @var Connection $_db Objeto de la conección a base de datos de Silex
+     */
+    protected $_db;
+
+    /**
+     * @var array $_errors Arreglo de errores comunes de Doctrine DBAL
+     */
+    protected $_errors = array(
+        'HY093' => 'Parámetros no dados.',
+        '42S02' => 'Tabla o vista no encontrada.',
+        '42000' => 'Error de sintaxis.'
+    );
+
+    /**
+     * @var int $_lastId Último id que fue insertado en la tabla
+     */
+    protected $_lastId = 0;
+
+    /**
+     * @var string $_sql SQL que se ejecuta al final de armarlo
+     */
+    protected $_sql = "";
+
+    /**
+     * @var Statement $_stmt
+     */
+    protected $_stmt;
+
+    /**
+     * @var string $_table Nombre de la tabla en la base de datos
+     */
+    protected $_table;
+
+    public function __construct(Connection $db, $table = "")
+    {
+        if (!is_null($db)) {
+            $this->_db = $db;
+        }
+        if (!is_null($table)) {
+            $this->_table = $table;
+        }
+    }
+
+    /**
+     * @return Connection Retorna el objeto de la conección a base de datos de Silex
+     */
+    public function db()
+    {
+        return $this->_db;
+    }
+
+    /**
+     * @param string $sql     Consulta SQL a la base de datos
+     * @param array $criteria Criterios de la consulta SQL adoptados en el WHERE
+     *
+     * @return Statement Retorna el objeto de Doctrine Statement
+     * @throws Exception Error en el SQL
+     */
+    public function _query($sql = "", array $criteria = array())
+    {
+        try {
+            // Preparar el SQL
+            $this->_stmt = $this->_db->prepare($sql);
+
+            // Agregar los parametros
+            foreach ($criteria as $param => $value) {
+                if (is_integer($param)) {
+                    $this->_stmt->bindValue(($param + 1), $value);
+                }
+                if (is_string($param)) {
+                    $this->_stmt->bindValue($param, $value);
+                }
+            }
+
+            // Ejecutar el SQL
+            $this->_stmt->execute();
+        } catch (DBALException $dbalException) {
+            #throw new Exception($dbalException->getMessage());
+        }
+
+        if (in_array($this->_stmt->errorCode(), array_keys($this->_errors))) {
+            throw new Exception($this->_errors[$this->_stmt->errorCode()] . " SQL: $sql");
+        }
+
+        return $this->_stmt;
+    }
+
+    /**
+     * @param array $criteria Criterios de la consulta DELETE adoptados en el WHERE
+     *
+     * @return int Filas afectadas
+     */
+    protected function _delete(array $criteria = array())
+    {
+        if (!is_null($this->_table)) {
+            $this->_affectedRows = $this->_db->delete($this->_table, $criteria);
+            return $this->_affectedRows;
+        }
+    }
+
+    /**
+     * @param array $data Arreglo asociativo de los campos a insertar del registro
+     *
+     * @return int Filas afectadas
+     */
+    protected function _insert(array $data = array())
+    {
+        if (!is_null($this->_table)) {
+            $this->_affectedRows = $this->_db->insert($this->_table, $data);
+            return $this->_affectedRows;
+        }
+    }
+
+    /**
+     * @param mixed $table        Tabla(s) para el sentencia INNER JOIN
+     * @param mixed $field_first  Primer(os) campo(s). Primer campo en la condición del INNER JOIN
+     * @param mixed $field_second Segundo(os) campo(s). Primer campo en la condición del INNER JOIN
+     * @param mixed $operator     Operador(es) para el INNER JOIN.
+     *
+     * @return string             Sentencia SQL INNER JOIN.
+     * @throws Exception
+     */
+    protected function _join($table, $field_first, $field_second, $operator)
+    {
+        $join = "";
+        #If the parameters are array
+        if ((is_array($table) && is_array($field_first)) && (is_array($field_second) && is_array($operator))) {
+            #If the number of keys of the parameters are iquals
+            if ((count($table) == count($field_first) && count($table) == count($field_second)) && count($table) == count($operator)) {
+                for ($i = 0; $i < count($table); $i++) {
+                    $join .= " INNER JOIN $table[$i] ON $field_first[$i] $operator[$i] $field_second[$i] ";
+                }
+            } else {
+                throw new Exception("Los parámetros no tienen el mismo número de elementos.");
+            }
+        } elseif (!is_array($table) || !is_array($field_first) || !is_array($field_second) || !is_array($operator)) {
+            $join = " INNER JOIN $table ON $field_first $operator $field_second ";
+        } else {
+            throw new Exception("Los parámetros no son del mismo tipo");
+        }
+        return $join;
+    }
+
+    /**
+     * @param array $data     Arreglo asociativo de los campos a actualizar del registro
+     * @param array $criteria Criterios de la consulta UPDATE adoptados en el WHERE
+     *
+     * @return int Filas afectadas
+     */
+    protected function _update(array $data = array(), array $criteria = array())
+    {
+        if (!is_null($this->_table)) {
+            $this->_affectedRows = $this->_db->update($this->_table, $data, $criteria);
+            return $this->_affectedRows;
+        }
+    }
+
+    /**
+     * @param string $sql     Sentencia SQL SELECT básica
+     * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
+     * @param array $join     Arreglos de los parámetros del INNER JOIN
+     *
+     * @return array $rows Arreglo asociativo de los registros
+     * @throws Exception   Lanza una exception si los valores del INNER JOIN son incorrectos
+     */
+    protected function _select($sql = "", array $criteria = array(), array $join = array())
+    {
+        if ($this->_sql != $sql)
+            $this->_sql = $sql;
+
+        if (count($join) == 4) {
+            $keys = array_keys($join);
+            $this->_sql .= $this->_join($join[$keys[0]], $join[$keys[1]], $join[$keys[2]], $join[$keys[3]]);
+        } elseif (!empty($join)) {
+            throw new Exception("Valores incorrectos del join. Array['table'], Array['field_first'], Array['field_second'], Array['operator']. Array[0], Array[1], Array[2], Array[3].");
+        }
+
+        $stmt = $this->_query($this->_sql, $criteria);
+
+        $rows = $stmt->fetchAll();
+
+        return $rows;
+    }
+
+    /**
+     * @param string $where   Sentencia SQL WHERE que identifica la condición de la consulta
+     * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
+     * @param array $join     Arreglos de los parámetros del INNER JOIN
+     *
+     * @return array
+     */
+    public function getTodo($where = "", array $criteria = array(), array $join = array())
+    {
+        if (!is_null($this->_table)) {
+            $this->_sql = "SELECT * FROM $this->_table $where";
+            return $this->_select($this->_sql, $criteria, $join);
+        }
+    }
+
+    /**
+     * @param int $id Id del registro
+     *
+     * @return array  Arreglo asociativo del registro
+     */
+    public function getPorId($id)
+    {
+        if (!is_null($this->_table) && (!is_null($id) && is_int($id))) {
+            $this->_sql = "SELECT * FROM $this->_table WHERE id = ?;";
+            return $this->_select($this->_sql, array($id));
+        }
+    }
+
+    /**
+     * @param string $table Nombre de la tabla en la base de datos
+     */
+    public function setTable($table)
+    {
+        $this->_table = $table;
+    }
+
+} 
