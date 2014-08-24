@@ -9,7 +9,9 @@
 
 namespace Precursor\Application\Controller\Frontend;
 
-use Symfony\Component\HttpFoundation\Request,
+use Precursor\Application\Model\Articulo,
+    Precursor\Application\Model\Categoria,
+    Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -24,19 +26,14 @@ class Noticia
      */
     public function ver(Request $request, Application $app, $id)
     {
-        $categorias = array();
+        
+        $categoriaModel = new Categoria($app['db']);
+        $categorias = $categoriaModel->getTodo("WHERE id > 1");
 
-        $categorias_sql = "SELECT * FROM `categoria` WHERE id > 1";
-        $categoria_sql  = $app['db']->fetchAll($categorias_sql, array());
+		$articuloModel = new Articulo($app['db']);
+		$articulo = $articuloModel->getPorId($id);
 
-        foreach ($categoria_sql as $cat_key => $cat_value) {
-            $categorias[$cat_key] = $cat_value;
-        }
-
-        $find_sql = "SELECT * FROM `articulo` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
-
-        if(!$row_sql){
+        if (empty($articulo)) {
             $app['session']->getFlashBag()->add(
                 'warning',
                 array(
@@ -46,7 +43,7 @@ class Noticia
             return $app->redirect($app['url_generator']->generate('home'));
         }
         return $app['twig']->render('frontend/noticia.html.twig', array(
-            "articulo" => $row_sql,
+            "articulo" => $articulo,
             'categorias' => $categorias,
         ));
     }
