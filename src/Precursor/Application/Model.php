@@ -203,19 +203,22 @@ class Model
 
         $rows = $stmt->fetchAll();
 
-        return $rows;
+        if (count($rows) == 1)
+            return $rows[0];
+        else
+            return $rows;
     }
 
     /**
      * @param array $fields   Arreglo de los campos del SELECT a consultar
+     * @param array $join     Arreglos de los parámetros del INNER JOIN
      * @param string $where   Sentencia SQL WHERE que identifica la condición de la consulta
      * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
-     * @param array $join     Arreglos de los parámetros del INNER JOIN
      *
      * @return array  Arreglo asociativo de los registros
      * @throws Exception   Lanza una exception si los valores del INNER JOIN son incorrectos
      */
-    protected function _selectFields(array $fields = array(), $where = "", array $criteria = array(), array $join = array())
+    protected function _selectFields(array $fields = array(), array $join = array(), $where = "", array $criteria = array())
     {
         $this->_sql = "SELECT " . implode(',', $fields) . " FROM $this->_table $where";
         return $this->_select($this->_sql, $criteria, $join);
@@ -223,13 +226,13 @@ class Model
 
     /**
      * @param array $fields   Arreglo de los campos del SELECT a consultar
+     * @param array $join     Arreglos de los parámetros del INNER JOIN
      * @param string $where   Sentencia SQL WHERE que identifica la condición de la consulta
      * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
-     * @param array $join     Arreglos de los parámetros del INNER JOIN
      *
      * @return array
      */
-    public function getTodo(array $fields = array(), $where = "", array $criteria = array(), array $join = array())
+    public function getTodo(array $fields = array(), array $join = array(), $where = "", array $criteria = array())
     {
         if (!is_null($this->_table)) {
             if (empty($fields)) {
@@ -237,7 +240,7 @@ class Model
                 return $this->_select($this->_sql, $criteria, $join);
             }
             else {
-                return $this->_selectFields($fields, $where, $criteria, $join);
+                return $this->_selectFields($fields, $join, $where, $criteria);
             }
         }
     }
@@ -251,8 +254,7 @@ class Model
     {
         if (!is_null($this->_table) && !is_null($id)) {
             $this->_sql = "SELECT * FROM $this->_table WHERE id = ?;";
-            $row = $this->_select($this->_sql, array($id));
-            return $row[0];
+            return $this->_select($this->_sql, array($id));
         }
     }
 
