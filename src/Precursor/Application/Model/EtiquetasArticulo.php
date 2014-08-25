@@ -13,10 +13,28 @@ use Doctrine\DBAL\Connection,
 
 class EtiquetasArticulo extends Model
 {
-	
-	function __construct(Connection $db)
+
+    /**
+     * @param Connection $db Objeto de la conección de doctrine con la base de datos
+     */
+    public function __construct(Connection $db)
 	{
 		parent::__construct($db, 'articulos_etiquetas');
 	}
-	
+
+    /**
+     * @param int $idArticulo Id del artículo
+     * @param int $idEtiqueta Id de la etiqueta
+     *
+     * @return int Filas afectadas
+     */
+    public function guardar($idArticulo, $idEtiqueta)
+    {
+        $data = array(
+            'id_articulo' => $idArticulo,
+            'id_etiqueta' => $idEtiqueta
+        );
+        return $this->_insert($data);
+    }
+
 } 

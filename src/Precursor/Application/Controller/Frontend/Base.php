@@ -9,33 +9,26 @@
 
 namespace Precursor\Application\Controller\Frontend;
 
-use Symfony\Component\HttpFoundation\Request,
+use Precursor\Application\Model\Articulo,
+    Precursor\Application\Model\Categoria,
+    Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Base
 {
-
-    public function index(Request $request, Application $app)
+    /**
+     * @param Application $app
+     *
+     * @return mixed
+     */
+    public function index(Application $app)
     {
+        $categoriaModel = new Categoria($app['db']);
+        $categorias = $categoriaModel->getTodo(array(), array(), "WHERE id > 1");
 
-        $categorias = array();
-
-        $categorias_sql = "SELECT * FROM `categoria` WHERE id > 1";
-        $categoria_sql = $app['db']->fetchAll($categorias_sql, array());
-
-        foreach ($categoria_sql as $cat_key => $cat_value) {
-            $categorias[$cat_key] = $cat_value;
-        }
-
-        $articulos = array();
-
-        $articulos_sql = "SELECT * FROM `articulo`";
-        $articulo_sql = $app['db']->fetchAll($articulos_sql, array());
-
-        foreach ($articulo_sql as $art_key => $art_value) {
-            $articulos[$art_key] = $art_value;
-        }
+        $articuloModel = new Articulo($app['db']);
+        $articulos = $articuloModel->getTodo();
 
         return $app['twig']->render('frontend/index.html.twig', array(
             'categorias' => $categorias,

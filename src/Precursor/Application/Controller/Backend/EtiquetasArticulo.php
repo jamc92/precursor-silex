@@ -33,8 +33,9 @@ class EtiquetasArticulo {
         $rows = array();
 
         $find_sql = "SELECT `articulos_etiquetas`.*, `etiqueta`.nombre as etiqueta FROM `articulos_etiquetas` ";
-        $find_sql .= "INNER JOIN `etiqueta` ON id_etiqueta = `etiqueta`.id";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
+        $find_sql .= "INNER JOIN `etiqueta` ON id_etiqueta = `etiqueta`.id ";
+        $find_sql .= "WHERE id_articulo = ?";
+        $rows_sql = $app['db']->fetchAll($find_sql, array($articulo_id));
 
         foreach ($rows_sql as $row_key => $row_sql) {
             for ($i = 0; $i < count($table_columns); $i++) {

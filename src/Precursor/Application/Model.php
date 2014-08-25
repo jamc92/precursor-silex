@@ -185,13 +185,14 @@ class Model
 
     /**
      * @param string $sql     Sentencia SQL SELECT básica
-     * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
      * @param array $join     Arreglos de los parámetros del INNER JOIN
+     * @param string $where   Sentencia SQL WHERE que identifica la condición de la consulta
+     * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
      *
      * @return array $rows Arreglo asociativo de los registros
      * @throws Exception   Lanza una exception si los valores del INNER JOIN son incorrectos
      */
-    protected function _select($sql = "", array $criteria = array(), array $join = array())
+    protected function _select($sql = "", array $join = array(), $where = "", array $criteria = array())
     {
         if ($this->_sql != $sql)
             $this->_sql = $sql;
@@ -203,7 +204,7 @@ class Model
             throw new Exception("Valores incorrectos del join. Array['table'], Array['field_first'], Array['field_second'], Array['operator']. Array[0], Array[1], Array[2], Array[3].");
         }
 
-        $stmt = $this->_query($this->_sql, $criteria);
+        $stmt = $this->_query("$this->_sql $where", $criteria);
 
         $rows = $stmt->fetchAll();
 
@@ -221,8 +222,8 @@ class Model
      */
     protected function _selectFields(array $fields = array(), array $join = array(), $where = "", array $criteria = array())
     {
-        $this->_sql = "SELECT " . implode(',', $fields) . " FROM $this->_table $where";
-        return $this->_select($this->_sql, $criteria, $join);
+        $this->_sql = "SELECT " . implode(',', $fields) . " FROM $this->_table";
+        return $this->_select($this->_sql, $join, $where, $criteria);
     }
 
     /**
@@ -237,8 +238,8 @@ class Model
     {
         if (!is_null($this->_table)) {
             if (empty($fields)) {
-                $this->_sql = "SELECT * FROM $this->_table $where";
-                return $this->_select($this->_sql, $criteria, $join);
+                $this->_sql = "SELECT * FROM $this->_table";
+                return $this->_select($this->_sql, $join, $where, $criteria);
             }
             else {
                 return $this->_selectFields($fields, $join, $where, $criteria);
@@ -254,8 +255,8 @@ class Model
     public function getPorId($id)
     {
         if (!is_null($this->_table) && !is_null($id)) {
-            $this->_sql = "SELECT * FROM $this->_table WHERE id = ?;";
-            $row = $this->_select($this->_sql, array($id));
+            $this->_sql = "SELECT * FROM $this->_table";
+            $row = $this->_select($this->_sql, array(), 'WHERE id = ?', array($id));
             return $row[0];
         }
     }

@@ -28,7 +28,7 @@ class Noticia
     {
         
         $categoriaModel = new Categoria($app['db']);
-        $categorias = $categoriaModel->getTodo("WHERE id > 1");
+        $categorias = $categoriaModel->getTodo(array(), array(), "WHERE id > 1");
 
 		$articuloModel = new Articulo($app['db']);
 		$articulo = $articuloModel->getPorId($id);
