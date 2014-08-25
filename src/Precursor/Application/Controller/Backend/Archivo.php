@@ -118,7 +118,39 @@ class Archivo {
         $direccion = $app['request']->get('direccion');
 
         if (!empty($direccion)) {
-            return new Response($direccion . "/$nombre");
+
+            $file = fopen($direccion . "/$nombre", 'r');
+            $contenido = fread($file, 8192);
+            fclose($file);
+
+            $initial_data = array(
+                'contenido' => $contenido,
+                'nombre'    => $nombre
+            );
+
+            $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+            $form = $form->add('contenido', 'textarea', array());
+            $form = $form->add('nombre', 'text', array('required' => true));
+
+            $form = $form->getForm();
+
+            if ('PUT' == $request->getMethod()) {
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $data = $form->getData();
+
+                    print_r($data);
+                    die;
+                    return '';
+                }
+
+            }
+
+            return $app['twig']->render('backend/archivo/create.html.twig', array(
+                'form' => $form->createView()
+            ));
         } else {
             return $app->redirect($app['url_generator']->generate('archivo_list'));
         }
