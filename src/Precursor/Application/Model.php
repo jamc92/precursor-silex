@@ -55,6 +55,10 @@ class Model
      */
     protected $_table;
 
+    /**
+     * @param Connection $db Objeto de la conección de doctrine con la base de datos
+     * @param string $table  Nombre de la tabla en la base de datos
+     */
     public function __construct(Connection $db, $table = "")
     {
         if (!is_null($db)) {
@@ -203,10 +207,7 @@ class Model
 
         $rows = $stmt->fetchAll();
 
-        if (count($rows) == 1)
-            return $rows[0];
-        else
-            return $rows;
+        return $rows;
     }
 
     /**
@@ -254,7 +255,8 @@ class Model
     {
         if (!is_null($this->_table) && !is_null($id)) {
             $this->_sql = "SELECT * FROM $this->_table WHERE id = ?;";
-            return $this->_select($this->_sql, array($id));
+            $row = $this->_select($this->_sql, array($id));
+            return $row[0];
         }
     }
 
