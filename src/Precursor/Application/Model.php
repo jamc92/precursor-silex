@@ -207,17 +207,38 @@ class Model
     }
 
     /**
+     * @param array $fields   Arreglo de los campos del SELECT a consultar
+     * @param string $where   Sentencia SQL WHERE que identifica la condición de la consulta
+     * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
+     * @param array $join     Arreglos de los parámetros del INNER JOIN
+     *
+     * @return array  Arreglo asociativo de los registros
+     * @throws Exception   Lanza una exception si los valores del INNER JOIN son incorrectos
+     */
+    protected function _selectFields(array $fields = array(), $where = "", array $criteria = array(), array $join = array())
+    {
+        $this->_sql = "SELECT " . implode(',', $fields) . " FROM $this->_table $where";
+        return $this->_select($this->_sql, $criteria, $join);
+    }
+
+    /**
+     * @param array $fields   Arreglo de los campos del SELECT a consultar
      * @param string $where   Sentencia SQL WHERE que identifica la condición de la consulta
      * @param array $criteria Criterios de la consulta SELECT adoptados en el WHERE
      * @param array $join     Arreglos de los parámetros del INNER JOIN
      *
      * @return array
      */
-    public function getTodo($where = "", array $criteria = array(), array $join = array())
+    public function getTodo(array $fields = array(), $where = "", array $criteria = array(), array $join = array())
     {
         if (!is_null($this->_table)) {
-            $this->_sql = "SELECT * FROM $this->_table $where";
-            return $this->_select($this->_sql, $criteria, $join);
+            if (empty($fields)) {
+                $this->_sql = "SELECT * FROM $this->_table $where";
+                return $this->_select($this->_sql, $criteria, $join);
+            }
+            else {
+                return $this->_selectFields($fields, $where, $criteria, $join);
+            }
         }
     }
 
