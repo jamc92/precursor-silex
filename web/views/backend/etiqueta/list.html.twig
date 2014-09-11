@@ -30,7 +30,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Etiqueta list
+                    Etiquetas
                 </h1>
             </section>
 
@@ -52,28 +52,22 @@
                                 <table id="etiqueta_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Nombre</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for row in rows %}
+                                        {% for etiqueta in etiquetas %}
                                             <tr>
-                                                {% for table_column in table_columns %}
-                                                    <td>{{ row[table_column] }}</td>
-                                                {% endfor %}
-                                                <td><a href="{{ path('etiqueta_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('etiqueta_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
+                                                <td>{{ etiqueta.nombre }}</td>
+                                                <td><a href="{{ path('etiqueta_edit', { id: etiqueta.id }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('etiqueta_delete', { id: etiqueta.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Nombre</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>

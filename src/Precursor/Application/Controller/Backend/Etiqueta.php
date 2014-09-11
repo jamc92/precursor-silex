@@ -21,31 +21,12 @@ class Etiqueta {
      * @return mixed
      */
     public function ver(Request $request, Application $app)
-    {
-        $table_columns = array(
-            'id',
-            'nombre',
-            'creado',
-            'modificado',
-        );
-
-        $primary_key = "id";
-        $rows = array();
-
-        $find_sql = "SELECT * FROM `etiqueta`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-
-        foreach ($rows_sql as $row_key => $row_sql) {
-            for ($i = 0; $i < count($table_columns); $i++) {
-
-                $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-            }
-        }
+    {        
+        $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+        $etiquetas = $etiquetaModelo->getTodo();
 
         return $app['twig']->render('backend/etiqueta/list.html.twig', array(
-            "table_columns" => $table_columns,
-            "primary_key" => $primary_key,
-            "rows" => $rows
+            "etiquetas" => $etiquetas
         ));
     }
 
@@ -57,14 +38,12 @@ class Etiqueta {
     public function agregar(Request $request, Application $app)
     {
         $initial_data = array(
-            'nombre' => '',
-            'creado' => '',
+            'nombre'     => '',
+            'creado'     => '',
             'modificado' => '',
         );
 
         $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-
 
         $form = $form->add('nombre', 'text', array('required' => true));
 
@@ -77,15 +56,17 @@ class Etiqueta {
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $update_query = "INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES (null, ?, NOW(), NOW())";
-                $app['db']->executeUpdate($update_query, array($data['nombre']));
-
-
-                $app['session']->getFlashBag()->add(
-                    'success', array(
-                        'message' => '¡Etiqueta creada!',
-                    )
-                );
+                $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+                $filasAfectadas = $etiquetaModelo->guardar($data['nombre']);
+                
+                if ($filasAfectadas == 1) {
+                    $app['session']->getFlashBag()->add(
+                        'success', array(
+                            'message' => '¡Etiqueta creada!',
+                        )
+                    );
+                }
+                
                 return $app->redirect($app['url_generator']->generate('etiqueta_list'));
             }
         }
@@ -103,51 +84,49 @@ class Etiqueta {
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `etiqueta` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+        $etiqueta = $etiquetaModelo->getPorId($id);
 
-        if (!$row_sql) {
+        if (!empty($etiqueta)) {
+            
+            $initial_data = array(
+                'nombre'     => $etiqueta['nombre'],
+                'creado'     => $etiqueta['creado'],
+                'modificado' => $etiqueta['modificado'],
+            );
+
+            $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+            $form = $form->add('nombre', 'text', array('required' => true));
+
+            $form = $form->getForm();
+
+            if ("POST" == $request->getMethod()) {
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $data = $form->getData();
+
+                    $filasAfectadas = $etiquetaModelo->modificar($id, $data['nombre']);
+
+                    if ($filasAfectadas == 1) {
+                        $app['session']->getFlashBag()->add(
+                            'info', array(
+                                'message' => '¡Etiqueta editada!',
+                            )
+                        );
+                    }
+                    return $app->redirect($app['url_generator']->generate('etiqueta_edit', array("id" => $id)));
+                }
+            }
+        } else {
             $app['session']->getFlashBag()->add(
                 'warning', array(
                     'message' => '¡Etiqueta No encontrada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('etiqueta_list'));
-        }
-
-
-        $initial_data = array(
-            'nombre' => $row_sql['nombre'],
-            'creado' => $row_sql['creado'],
-            'modificado' => $row_sql['modificado'],
-        );
-
-
-        $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-
-        $form = $form->add('nombre', 'text', array('required' => true));
-
-        $form = $form->getForm();
-
-        if ("POST" == $request->getMethod()) {
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $update_query = "UPDATE `etiqueta` SET `nombre` = ? WHERE `id` = ?";
-                $app['db']->executeUpdate($update_query, array($data['nombre'], $id));
-
-
-                $app['session']->getFlashBag()->add(
-                    'info', array(
-                        'message' => '¡Etiqueta editada!',
-                    )
-                );
-                return $app->redirect($app['url_generator']->generate('etiqueta_edit', array("id" => $id)));
-            }
         }
 
         return $app['twig']->render('backend/etiqueta/edit.html.twig', array(
@@ -164,18 +143,19 @@ class Etiqueta {
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `etiqueta` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+        $etiqueta = $etiquetaModelo->getPorId($id);
 
-        if ($row_sql) {
-            $delete_query = "DELETE FROM `etiqueta` WHERE `id` = ?";
-            $app['db']->executeUpdate($delete_query, array($id));
-
-            $app['session']->getFlashBag()->add(
-                'info', array(
-                    'message' => '¡Etiqueta eliminada!',
-                )
-            );
+        if (!empty($etiqueta)) {
+            $filasAfectadas = $etiquetaModelo->eliminar($id);
+            
+            if ($filasAfectadas == 1) {
+                $app['session']->getFlashBag()->add(
+                    'info', array(
+                        'message' => '¡Etiqueta eliminada!',
+                    )
+                );
+            }
         } else {
             $app['session']->getFlashBag()->add(
                 'warning', array(
@@ -186,4 +166,4 @@ class Etiqueta {
 
         return $app->redirect($app['url_generator']->generate('etiqueta_list'));
     }
-} 
+}
