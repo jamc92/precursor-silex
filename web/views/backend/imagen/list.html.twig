@@ -53,15 +53,15 @@
                             <div class="box-body table-responsive">
                                 <a class="btn btn-primary" href="{{ path('imagen_create') }}">Subir nueva</a><br /><br />
                                 <div class="row" style="padding-left:20px">
-                                    {% if rows == null %}
+                                    {% if imagenes == null %}
                                         <b>No hay imágenes</b>
                                     {% endif %}
-                                    {% for row in rows %}
+                                    {% for imagen in imagenes %}
                                         <div class="panel col-12 col-md-3 col-lg-3">
                                             <div class="panel-body">
-                                                <h4>{{ row.nombre }}</h4>
+                                                <h4>{{ imagen.nombre }}</h4>
                                                 <br/>
-                                                <img class="img-responsive" src="{{ row.link }}">
+                                                <img class="img-responsive" src="{{ imagen.link }}">
                                                 <br/>
                                                 <div class="input-group">
                                                     <span class="input-group-btn">
@@ -69,11 +69,11 @@
                                                             <span class="glyphicon glyphicon-link"></span>
                                                         </button>
                                                     </span>
-                                                    <input type="text" class="form-control" value="{{ row.link }}" readonly style="cursor: pointer">
+                                                    <input type="text" class="form-control" value="{{ imagen.link }}" readonly style="cursor: pointer">
                                                 </div>
                                                 <br />
-                                                <a href="{{ path('imagen_edit', { id: row.id }) }}" class="btn btn-primary btn-xs">Editar</a>
-                                                <a href="{{ path('imagen_delete', { id: row.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                <a href="{{ path('imagen_edit', { id: imagen.id }) }}" class="btn btn-primary btn-xs">Editar</a>
+                                                <a href="{{ path('imagen_delete', { id: imagen.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
                                             </div>
                                         </div>
                                     {% endfor %}
