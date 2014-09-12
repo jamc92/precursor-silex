@@ -22,29 +22,12 @@ class Imagen {
      * @return mixed
      */
     public function ver(Request $request, Application $app)
-    {
-        $table_columns = array(
-            'id',
-            'nombre',
-            'link',
-        );
-
-        $primary_key = "id";
-        $rows = array();
-
-        $find_sql = "SELECT * FROM `imagen`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-
-        foreach($rows_sql as $row_key => $row_sql){
-            for($i = 0; $i < count($table_columns); $i++){
-                $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-            }
-        }
+    {   
+        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagenes = $imagenModelo->getImagenes();
 
         return $app['twig']->render('backend/imagen/list.html.twig', array(
-            "table_columns" => $table_columns,
-            "primary_key" => $primary_key,
-            "rows" => $rows
+            "imagenes" => $imagenes
         ));
     }
 
@@ -55,27 +38,12 @@ class Imagen {
      */
     public function verJson(Request $request, Application $app)
     {
-
-        $table_columns = array(
-            'id',
-            'nombre',
-            'link',
-        );
-
-        $imagenes = array();
-
-        $find_sql = "SELECT * FROM `imagen`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-        foreach($rows_sql as $row_key => $row_sql){
-            for($i = 0; $i < count($table_columns); $i++){
-                $imagenes[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-            }
-        }
+        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagenes = $imagenModelo->getImagenes();
 
         return $app['twig']->render('backend/imagen/listJson.html.twig', array(
             'imagenes' => $imagenes
         ));
-
     }
 
     /**
@@ -94,11 +62,11 @@ class Imagen {
             if (isset($result['vars']['imagen'])) {
                 $vars = $result['vars'];
 
-                $nombreImagen = $vars['imagen'];
-                $linkImagen = "$app[upload_path]/$vars[folder]/$vars[imagen]";
+                $nombre = $vars['imagen'];
+                $link = "$app[upload_path]/$vars[folder]/$vars[imagen]";
 
-                $update_query = "INSERT INTO `imagen` (`nombre`, `link`, `creado`) VALUES (?, ?, NOW())";
-                $app['db']->executeUpdate($update_query, array($nombreImagen, $linkImagen));
+                $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+                $filasAfectadas = $imagenModelo->guardar($nombre, $link);
             }
 
             die(json_encode(array('status' => $result['status'])));
@@ -116,10 +84,43 @@ class Imagen {
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `imagen` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagen = $imagenModelo->getPorId($id);
 
-        if(!$row_sql){
+        if (!empty($imagen)) {
+            $initial_data = array(
+                'nombre' => $imagen['nombre'],
+                'link' => $imagen['link'],
+            );
+
+            $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+            $form = $form->add('nombre', 'text', array('required' => true));
+            #$form = $form->add('descripcion', 'textarea', array('required' => false));
+
+            $form = $form->getForm();
+
+            if("POST" == $request->getMethod()){
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $data = $form->getData();
+
+                    $filasAfectadas = $imagenModelo->modificar($id, $data['nombre'], $data['link']);
+                    
+                    if ($filasAfectadas == 1) {
+                        $app['session']->getFlashBag()->add(
+                            'success',
+                            array(
+                                'message' => '¡Imagen modificada!',
+                            )
+                        );
+                    }
+                    return $app->redirect($app['url_generator']->generate('imagen_edit', array("id" => $id)));
+                }
+            }
+        } else {
             $app['session']->getFlashBag()->add(
                 'danger',
                 array(
@@ -129,42 +130,9 @@ class Imagen {
             return $app->redirect($app['url_generator']->generate('imagen_list'));
         }
 
-        $initial_data = array(
-            'nombre' => $row_sql['nombre'],
-            'link' => $row_sql['link'],
-        );
-
-        $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-        $form = $form->add('nombre', 'text', array('required' => true));
-        $form = $form->add('descripcion', 'textarea', array('required' => false));
-
-        $form = $form->getForm();
-
-        if("POST" == $request->getMethod()){
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $update_query = "UPDATE `imagen` SET `nombre` = ?, `link` = ? WHERE `id` = ?";
-                $app['db']->executeUpdate($update_query, array($data['nombre'], $data['link'], $id));
-
-                $app['session']->getFlashBag()->add(
-                    'success',
-                    array(
-                        'message' => '¡Imagen modificada!',
-                    )
-                );
-                return $app->redirect($app['url_generator']->generate('imagen_edit', array("id" => $id)));
-
-            }
-        }
-
         return $app['twig']->render('backend/imagen/edit.html.twig', array(
             "form" => $form->createView(),
-            "imagen" => $row_sql,
+            "imagen" => $imagen,
             "id" => $id
         ));
     }
@@ -177,14 +145,14 @@ class Imagen {
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `imagen` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagen = $imagenModelo->getPorId($id);
 
-        if($row_sql){
+        if(!empty($imagen)){
 
             // Eliminar archivos
             $search_str = $app['upload_path'] . "/";
-            $file = $app['upload_dir'] .str_replace($search_str, '', $row_sql['link']);
+            $file = $app['upload_dir'] . str_replace($search_str, '', $imagen['link']);
 
             if (!unlink($file)) {
                 $app['session']->getFlashBag()->add(
@@ -195,17 +163,16 @@ class Imagen {
                 );
             }
 
-            // Eliminar los archivos
-
-            $delete_query = "DELETE FROM `imagen` WHERE `id` = ?";
-            $app['db']->executeUpdate($delete_query, array($id));
-
-            $app['session']->getFlashBag()->add(
-                'success',
-                array(
-                    'message' => '¡Imagen eliminada!',
-                )
-            );
+            $filasAfectadas = $imagenModelo->eliminar($id);
+            
+            if ($filasAfectadas == 1) {
+                $app['session']->getFlashBag()->add(
+                    'success',
+                    array(
+                        'message' => '¡Imagen eliminada!',
+                    )
+                );
+            }
         }
         else{
             $app['session']->getFlashBag()->add(
@@ -218,5 +185,4 @@ class Imagen {
 
         return $app->redirect($app['url_generator']->generate('imagen_list'));
     }
-
-} 
+}
