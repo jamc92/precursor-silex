@@ -41,6 +41,7 @@ class Explorer
     {
         return array(
             dirname(__DIR__) . "/",
+            dirname(__DIR__) . "/Application",
             dirname(__DIR__) . "/File/",
             dirname(__DIR__) . "/Options/",
             dirname(__DIR__) . "/Provider/",
