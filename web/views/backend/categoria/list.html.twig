@@ -52,28 +52,25 @@
                                 <table id="categoria_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Categoría</th>
+                                            <th>Nombre</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for row in rows %}
+                                        {% for categoria in categorias %}
                                             <tr>
-                                                {% for table_column in table_columns %}
-                                                    <td>{{ row[table_column] }}</td>
-                                                {% endfor %}
-                                                <td><a href="{{ path('categoria_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('categoria_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
+                                                <td>{{ categoria.categoria }}</td>
+                                                <td>{{ categoria.nombre }}</td>
+                                                <td><a href="{{ path('categoria_edit', { id: categoria.id }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('categoria_delete', { id: categoria.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Categoría</th>
+                                            <th>Nombre</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>
