@@ -38,10 +38,14 @@ class Articulo extends Model
             $join = array('etiqueta', 'id_etiqueta', 'etiqueta.id', '=');
             $etiquetas = $etiquetasArticuloModel->_selectFields($fields, $join, 'WHERE id_articulo = ?', array($id));
 
-            foreach ($etiquetas as $etiqueta) {
-                $articulo['etiquetas'][$etiqueta['id']] = $etiqueta['etiqueta'];
+            if (!empty($etiquetas)) {
+                foreach ($etiquetas as $etiqueta) {
+                    $articulo['etiquetas'][$etiqueta['id']] = $etiqueta['etiqueta'];
+                }
+            } else {
+                $articulo['etiquetas'] = array();
             }
-
+            
         }
 
         return $articulo;
@@ -125,29 +129,22 @@ class Articulo extends Model
 
         if (!empty($etiquetas)) {
             $etiquetasArticuloModel = new EtiquetasArticulo($this->_db);
-            $etiquetasArticulo = $etiquetasArticuloModel->_selectFields(array('id_etiqueta'), array(), 'WHERE id_articulo = ?', array($id));
-
-            $etiquetaAgregadas = array();
-
-            foreach ($etiquetasArticulo as $etiqueta) {
-                if (!in_array($etiqueta['id_etiqueta'], $etiquetas)) {
-                    $filasAfectadasEtiqueta = $etiquetasArticuloModel->guardar($id, $etiqueta['id_etiqueta']);
-
-                    // Agregar la etiqueta si se inserto en la tabla, para el mensaje del usuario
-                    if ($filasAfectadasEtiqueta == 1) {
-                        $etiquetaAgregadas[] = $etiqueta;
-                    }
-                }
+            
+            $etiquetasAgregadas = 0;
+            
+            foreach ($etiquetas as $etiqueta) {
+                $etiquetasAgregadas += $etiquetasArticuloModel->guardar($id, $etiqueta);
             }
+            
             return array(
                 'articulo'  => $filasAfectadas,
-                'etiquetas' => $etiquetaAgregadas
+                'etiquetas' => $etiquetasAgregadas
             );
         } else {
             return $filasAfectadas;
         }
     }
-
+    
     /**
      * @param int $id Id del artículo
      *

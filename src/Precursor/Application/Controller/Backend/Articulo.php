@@ -254,8 +254,8 @@ class Articulo
 
             if ($form->isValid()) {
                 $data = $form->getData();
-
-                $filasAfectadas = $articuloModel->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
+                
+                $filasAfectadas = $articuloModel->modificar($id, $idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
 
                 if (is_array($filasAfectadas) || (is_int($filasAfectadas) && $filasAfectadas == 1)) {
                     $app['session']->getFlashBag()->add(

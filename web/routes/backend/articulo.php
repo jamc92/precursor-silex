@@ -1,7 +1,5 @@
 <?php
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 $app->match('/admin/articulo', 'Precursor\\Application\\Controller\\Backend\\Articulo::ver')
     ->bind('articulo_list');
 
