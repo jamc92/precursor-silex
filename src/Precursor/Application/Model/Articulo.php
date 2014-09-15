@@ -33,10 +33,10 @@ class Articulo extends Model
 
         if (!empty($articulo)) {
 
-            $etiquetasArticuloModel = new EtiquetasArticulo($this->_db);
+            $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
             $fields = array('etiqueta.id', 'etiqueta.nombre as etiqueta');
             $join = array('etiqueta', 'id_etiqueta', 'etiqueta.id', '=');
-            $etiquetas = $etiquetasArticuloModel->_selectFields($fields, $join, 'WHERE id_articulo = ?', array($id));
+            $etiquetas = $etiquetasArticuloModelo->_selectFields($fields, $join, 'WHERE id_articulo = ?', array($id));
 
             if (!empty($etiquetas)) {
                 foreach ($etiquetas as $etiqueta) {
@@ -80,12 +80,12 @@ class Articulo extends Model
         if ($filasAfectadas == 1 && !empty($etiquetas)) {
             $articulo = $this->getTodo(array('MAX(id) as id'));
 
-            $etiquetasArticuloModel = new EtiquetasArticulo($this->_db);
+            $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
 
             $etiquetaAgregadas = array();
 
             foreach ($etiquetas as $etiqueta) {
-                $filasAfectadasEtiqueta = $etiquetasArticuloModel->guardar($articulo[0]['id'], $etiqueta);
+                $filasAfectadasEtiqueta = $etiquetasArticuloModelo->guardar($articulo[0]['id'], $etiqueta);
 
                 // Agregar la etiqueta si se inserto en la tabla, para el mensaje del usuario
                 if ($filasAfectadasEtiqueta == 1) {
@@ -128,12 +128,12 @@ class Articulo extends Model
         $filasAfectadas = $this->_update($data, array('id' => $id));
 
         if (!empty($etiquetas)) {
-            $etiquetasArticuloModel = new EtiquetasArticulo($this->_db);
+            $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
             
             $etiquetasAgregadas = 0;
             
             foreach ($etiquetas as $etiqueta) {
-                $etiquetasAgregadas += $etiquetasArticuloModel->guardar($id, $etiqueta);
+                $etiquetasAgregadas += $etiquetasArticuloModelo->guardar($id, $etiqueta);
             }
             
             return array(
