@@ -30,7 +30,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Usuario list
+                    Usuarios
                 </h1>
             </section>
 
@@ -52,28 +52,31 @@
                                 <table id="usuario_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Perfil</th>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Alias</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for row in rows %}
+                                        {% for usuario in usuarios %}
                                             <tr>
-                                                {% for table_column in table_columns %}
-                                                    <td>{{ row[table_column] }}</td>
-                                                {% endfor %}
-                                                <td><a href="{{ path('usuario_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('usuario_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
+                                                <td>{{ usuario.perfil }}</td>
+                                                <td>{{ usuario.nombre }}</td>
+                                                <td>{{ usuario.correo }}</td>
+                                                <td>{{ usuario.alias }}</td>
+                                                <td><a href="{{ path('usuario_edit', { id: usuario.id }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('usuario_delete', { id: usuario.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Perfil</th>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Alias</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>

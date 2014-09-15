@@ -9,14 +9,98 @@
 namespace Precursor\Application\Model;
 
 use Doctrine\DBAL\Connection,
+    Silex\Application,
     Precursor\Application\Model;
 
 class Usuario extends Model
 {
-	
-	function __construct(Connection $db)
-	{
-		parent::__construct($db, 'usuario');
-	}
 
-} 
+    /**
+     * @param Connection $db Objeto de la conección de doctrine con la base de datos
+     */
+    function __construct(Connection $db)
+    {
+        parent::__construct($db, 'usuario');
+    }
+    
+    /**
+     * @param array $fields Campos que se desean del registro
+     * @return array Arreglo de usuarios
+     */
+    public function getUsuarios(array $fields = array())
+    {
+        if (empty($fields)) {
+            $fields = array(
+                'usuario.*',
+                'perfil.nombre as perfil'
+            );
+        }
+        $join = array('perfil', 'id_perfil', 'perfil.id', '=');
+        return $this->getTodo($fields, $join);
+    }
+
+    /**
+     * @param int $idPerfil  Id del perfil del usuario
+     * @param string $nombre Nombre del usuario
+     * @param string $correo Correo electrónico del usuario
+     * @param string $alias  Alias del usuario
+     * @param string $clave  Clave encriptada del usuario
+     * @return int Filas afectadas
+     */
+    public function guardar($idPerfil, $nombre, $correo, $alias, $clave)
+    {
+        $data = array(
+            'id_perfil' => $idPerfil,
+            'nombre'    => $nombre,
+            'correo'    => $correo,
+            'alias'     => $alias,
+            'clave'     => $clave
+        );
+        return $this->_insert($data);
+    }
+    
+    /**
+     * @param int $id        Id del usuario
+     * @param int $idPerfil  Id del perfil del usuario
+     * @param string $nombre Nombre del usuario
+     * @param string $correo Correo electrónico del usuario
+     * @param string $alias  Alias del usuario
+     * @param string $clave  Clave encriptada del usuario
+     * @return int Filas afectadas
+     */
+    public function modificar($id, $idPerfil, $nombre, $correo, $alias, $clave) {
+        $data = array(
+            'id_perfil' => $idPerfil,
+            'nombre'    => $nombre,
+            'correo'    => $correo,
+            'alias'     => $alias
+        );
+
+        if ($clave != "" && !is_null($clave)) {
+            $data['clave'] = $clave;
+        }
+        
+        return $this->_update($data, array('id' => $id));
+    }
+
+    /**
+     * @param int $id Id del usuario
+     * @return int Filas afectadas
+     */
+    public function eliminar($id) {
+        $filasAfectadas = 0;
+        
+        $comentarioModelo = new Comentario($this->_db);
+        
+        $filasAfectadas += $comentarioModelo->_delete(array('id_autor' => $id));
+        
+        $articuloModelo = new Articulo($this->_db);
+        
+        $filasAfectadas += $articuloModelo->_update(array('id_autor' => ''), array('id_autor' => $id));
+        
+        $filasAfectadas += $this->_delete(array('id' => $id));
+        
+        return $filasAfectadas;
+    }
+    
+}

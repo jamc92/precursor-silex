@@ -11,7 +11,8 @@ namespace Precursor\Application\Controller\Backend;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+    Silex\Application,
+    Precursor\Application\Model\Perfil;
 
 class Usuario {
 
@@ -22,34 +23,11 @@ class Usuario {
      */
     public function ver(Request $request, Application $app)
     {
-        $table_columns = array(
-            'id',
-            'perfil',
-            'nombre',
-            'correo',
-            'alias',
-            #'clave',
-            'creado',
-            'modificado',
-        );
-
-        $primary_key = "id";
-        $rows = array();
-
-        $find_sql = "SELECT `usuario`.*, `perfil`.`nombre` as perfil FROM `usuario` INNER JOIN `perfil` ON id_perfil = `perfil`.`id`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-
-        foreach ($rows_sql as $row_key => $row_sql) {
-            for ($i = 0; $i < count($table_columns); $i++) {
-
-                $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-            }
-        }
+        $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+        $usuarios = $usuarioModelo->getUsuarios();
 
         return $app['twig']->render('backend/usuario/list.html.twig', array(
-            "table_columns" => $table_columns,
-            "primary_key" => $primary_key,
-            "rows" => $rows
+            "usuarios" => $usuarios
         ));
     }
 
@@ -69,11 +47,11 @@ class Usuario {
             $user = $token->getUser();
         }
 
-        $find_sql = "SELECT * FROM `perfil`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
+        $perfilModelo = new Perfil($app['db']);
+        $perfiles = $perfilModelo->getTodo();
 
-        foreach ($rows_sql as $row_key => $row_sql) {
-            $options[$row_sql['id']] = $row_sql['nombre'];
+        foreach ($perfiles as $perfil) {
+            $options[$perfil['id']] = $perfil['nombre'];
         }
 
         $initial_data = array(
@@ -82,8 +60,6 @@ class Usuario {
             'correo' => '',
             'alias' => '',
             'clave' => '',
-            'creado' => '',
-            'modificado' => '',
         );
 
         $form = $app['form.factory']->createBuilder('form', $initial_data);
@@ -108,16 +84,18 @@ class Usuario {
 
                 // codificar la clave
                 $clave = $encoder->encodePassword($data['clave'], $user->getSalt());
+                
+                $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+                $filasAfectadas = $usuarioModelo->guardar($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $clave);
 
-                $update_query = "INSERT INTO `usuario` (`id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES (?, ?, ?, ?, MD5(?), NOW(), NOW())";
-                $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $clave));
+                if ($filasAfectadas == 1) {
+                    $app['session']->getFlashBag()->add(
+                        'success', array(
+                            'message' => '¡Usuario creado!',
+                        )
+                    );
+                }
 
-
-                $app['session']->getFlashBag()->add(
-                    'success', array(
-                        'message' => '¡Usuario creado!',
-                    )
-                );
                 return $app->redirect($app['url_generator']->generate('usuario_list'));
             }
         }
@@ -144,70 +122,70 @@ class Usuario {
             $user = $token->getUser();
         }
 
-        $find_sql = "SELECT * FROM `usuario` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+        $usuario = $usuarioModelo->getPorId($id);
 
-        if (!$row_sql) {
+        if (!empty($usuario)) {
+            $perfilModelo = new Perfil($app['db']);
+            $perfiles = $perfilModelo->getTodo();
+
+            foreach ($perfiles as $perfil) {
+                $options[$perfil['id']] = $perfil['nombre'];
+            }
+
+            $initial_data = array(
+                'nombre' => $usuario['nombre'],
+                'correo' => $usuario['correo'],
+                'alias'  => $usuario['alias'],
+            );
+
+            $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+            $form = $form->add('id_perfil', 'choice', array(
+                'choices'  => $options,
+                'data'     => $usuario['id_perfil'],
+                'required' => true
+            ));
+            $form = $form->add('nombre', 'text', array('required' => true));
+            $form = $form->add('correo', 'text', array('required' => true));
+            $form = $form->add('alias', 'text', array('required' => true));
+            $form = $form->add('nueva_clave', 'password', array('required' => false));
+
+            $form = $form->getForm();
+
+            if ("POST" == $request->getMethod()) {
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $data = $form->getData();
+
+                    if (!empty($data['nueva_clave'])) {
+                        // codificar la clave
+                        $nueva_clave = $encoder->encodePassword($data['nueva_clave'], $user->getSalt());
+                        $filasAfectadas = $usuarioModelo->modificar($id, $data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $nueva_clave);
+                    } else {
+                        $filasAfectadas = $usuarioModelo->modificar($id, $data['id_perfil'], $data['nombre'], $data['correo'], $data['alias']);
+                    }
+
+                    if ($filasAfectadas == 1) {
+                        $app['session']->getFlashBag()->add(
+                            'info', array(
+                                'message' => '¡Usuario editado!',
+                            )
+                        );
+                    }
+
+                    return $app->redirect($app['url_generator']->generate('usuario_edit', array("id" => $id)));
+                }
+            }
+        } else {
             $app['session']->getFlashBag()->add(
                 'warning', array(
                     'message' => '¡Usuario no encontrado!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('usuario_list'));
-        }
-
-        $find_sql = "SELECT * FROM `perfil`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-
-        foreach ($rows_sql as $row_key => $row_sql2) {
-            $options[$row_sql2['id']] = $row_sql2['nombre'];
-        }
-
-        $initial_data = array(
-            'nombre' => $row_sql['nombre'],
-            'correo' => $row_sql['correo'],
-            'alias' => $row_sql['alias'],
-        );
-
-        $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-        $form = $form->add('id_perfil', 'choice', array(
-            'choices' => $options,
-            'data' => $row_sql['id_perfil'],
-            'required' => true
-        ));
-        $form = $form->add('nombre', 'text', array('required' => true));
-        $form = $form->add('correo', 'text', array('required' => true));
-        $form = $form->add('alias', 'text', array('required' => true));
-        $form = $form->add('nueva_clave', 'password', array('required' => false));
-
-        $form = $form->getForm();
-
-        if ("POST" == $request->getMethod()) {
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                // codificar la clave
-                $nueva_clave = $encoder->encodePassword($data['nueva_clave'], $user->getSalt());
-
-                if (!empty($data['nueva_clave'])) {
-                    $update_query = "UPDATE `usuario` SET `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ?, `clave` = ? WHERE `id` = ?";
-                    $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $nueva_clave, $id));
-                } else {
-                    $update_query = "UPDATE `usuario` SET `id_perfil` = ?, `nombre` = ?, `correo` = ?, `alias` = ? WHERE `id` = ?";
-                    $app['db']->executeUpdate($update_query, array($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $id));
-                }
-
-                $app['session']->getFlashBag()->add(
-                    'info', array(
-                        'message' => '¡Usuario editado!',
-                    )
-                );
-                return $app->redirect($app['url_generator']->generate('usuario_edit', array("id" => $id)));
-            }
         }
 
         return $app['twig']->render('backend/usuario/edit.html.twig', array(
@@ -224,18 +202,19 @@ class Usuario {
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `usuario` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+        $usuario = $usuarioModelo->getPorId($id);
 
-        if ($row_sql) {
-            $delete_query = "DELETE FROM `usuario` WHERE `id` = ?";
-            $app['db']->executeUpdate($delete_query, array($id));
-
-            $app['session']->getFlashBag()->add(
-                'info', array(
-                    'message' => 'Usuario eliminado!',
-                )
-            );
+        if (!empty($usuario)) {
+            $filasAfectadas = $usuarioModelo->eliminar($id);
+            
+            if ($filasAfectadas >= 1) {
+                $app['session']->getFlashBag()->add(
+                    'info', array(
+                        'message' => 'Usuario eliminado!',
+                    )
+                );
+            }
         } else {
             $app['session']->getFlashBag()->add(
                 'warning', array(
