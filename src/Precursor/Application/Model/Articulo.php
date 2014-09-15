@@ -154,16 +154,15 @@ class Articulo extends Model
     {
         $filasAfectadas = 0;
 
-        $comentarioModel = new Comentario($this->_db);
+        $comentarioModelo = new Comentario($this->_db);
 
-        $filasAfectadas = $filasAfectadas + $comentarioModel->_delete(array('id_articulo' => $id));
+        $filasAfectadas += $comentarioModelo->_delete(array('id_articulo' => $id));
 
-        $etiquetasArticuloModel = new EtiquetasArticulo($this->_db);
+        $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
 
-        $filasAfectadas = $filasAfectadas + $etiquetasArticuloModel->_delete(array('id_articulo' => $id));
+        $filasAfectadas += $etiquetasArticuloModelo->_delete(array('id_articulo' => $id));
 
-
-        $filasAfectadas = $filasAfectadas + $this->_delete(array('id' => $id));
+        $filasAfectadas += $this->_delete(array('id' => $id));
 
         return $filasAfectadas;
     }
