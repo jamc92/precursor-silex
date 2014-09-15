@@ -1,6 +1,7 @@
 <?php
 
 use \PDOException,
+    Doctrine\DBAL\DBALException,
     Symfony\Component\HttpFoundation\Response,
     Symfony\Component\Process\Exception\LogicException,
     Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException,
@@ -8,6 +9,10 @@ use \PDOException,
 
 $app->error(function (PDOException $PDOException, $code) {
     return new Response($PDOException->getMessage());
+});
+
+$app->error(function (DBALException $DBALException, $code) {
+    return new Response($DBALException->getMessage());
 });
 
 $app->error(function (LogicException $logicException, $code) {
