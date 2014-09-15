@@ -12,7 +12,8 @@ namespace Precursor\Application\Model;
 use Doctrine\DBAL\Connection,
     Precursor\Application\Model;
 
-class Categoria extends Model {
+class Categoria extends Model
+{
 
     /**
      * @param Connection $db Objeto de la conección de doctrine con la base de datos
@@ -22,6 +23,10 @@ class Categoria extends Model {
         parent::__construct($db, 'categoria');
     }
     
+    /**
+     * @param array $fields Campos que se desean del registro
+     * @return array Arreglo de usuarios
+     */
     public function getCategorias(array $fields = array())
     {
         if (empty($fields)) {
@@ -73,4 +78,5 @@ class Categoria extends Model {
     {
         return $this->_delete(array('id' => $id));
     }
+    
 }
