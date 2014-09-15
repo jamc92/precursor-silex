@@ -82,6 +82,7 @@ class Model
      * @param array $criteria Criterios de la consulta SQL adoptados en el WHERE
      *
      * @return Statement Retorna el objeto de Doctrine Statement
+     * @throws DBALException Error de Doctrine
      * @throws Exception Error en el SQL
      */
     public function _query($sql = "", array $criteria = array())
@@ -103,7 +104,7 @@ class Model
             // Ejecutar el SQL
             $this->_stmt->execute();
         } catch (DBALException $dbalException) {
-            #throw new Exception($dbalException->getMessage());
+            throw $dbalException;
         }
 
         if (in_array($this->_stmt->errorCode(), array_keys($this->_errors))) {
