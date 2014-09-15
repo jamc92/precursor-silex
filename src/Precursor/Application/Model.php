@@ -32,7 +32,8 @@ class Model
     protected $_errors = array(
         'HY093' => 'Parámetros no dados.',
         '42S02' => 'Tabla o vista no encontrada.',
-        '42000' => 'Error de sintaxis.'
+        '42000' => 'Error de sintaxis.',
+        '23000' => 'Ambigüedad.'
     );
 
     /**
@@ -104,7 +105,7 @@ class Model
             // Ejecutar el SQL
             $this->_stmt->execute();
         } catch (DBALException $dbalException) {
-            throw $dbalException;
+            #throw $dbalException;
         }
 
         if (in_array($this->_stmt->errorCode(), array_keys($this->_errors))) {
