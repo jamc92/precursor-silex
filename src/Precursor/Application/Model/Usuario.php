@@ -9,7 +9,6 @@
 namespace Precursor\Application\Model;
 
 use Doctrine\DBAL\Connection,
-    Silex\Application,
     Precursor\Application\Model;
 
 class Usuario extends Model
@@ -37,6 +36,23 @@ class Usuario extends Model
         }
         $join = array('perfil', 'id_perfil', 'perfil.id', '=');
         return $this->getTodo($fields, $join);
+    }
+    
+    /**
+     * @param string $alias Alias de usuario
+     * @return array Arreglo del usuario
+     */
+    public function getUsuarioPorAlias($alias) {
+        $fields = array(
+            'usuario.*',
+            'perfil.nombre as perfil'
+        );
+        $join = array('perfil', 'id_perfil', 'perfil.id', '=');
+        $usuario = $this->getTodo($fields, $join, 'WHERE alias = ?', array($alias));
+        
+        if (isset($usuario[0]) && !empty($usuario[0])) {
+            return $usuario[0];
+        }
     }
 
     /**
