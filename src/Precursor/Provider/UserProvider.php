@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Description of UserProvider.php.
+ * Proveedor de Autenticación de usuarios
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -9,44 +10,63 @@
 
 namespace Precursor\Provider;
 
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\User;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Doctrine\DBAL\Connection;
- 
-class UserProvider implements UserProviderInterface
-{
+use Doctrine\DBAL\Connection,
+    Precursor\Application\Model\Usuario,
+    Symfony\Component\Security\Core\User\UserProviderInterface,
+    Symfony\Component\Security\Core\User\UserInterface,
+    Symfony\Component\Security\Core\User\User,
+    Symfony\Component\Security\Core\Exception\UnsupportedUserException,
+    Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+
+class UserProvider implements UserProviderInterface {
+
+    /**
+     * @var Connection $conn
+     */
     private $conn;
- 
-    public function __construct(Connection $conn)
-    {
+
+    /**
+     * @param Connection $conn
+     */
+    public function __construct(Connection $conn) {
         $this->conn = $conn;
     }
- 
-    public function loadUserByUsername($username)
-    {
-        $stmt = $this->conn->executeQuery('SELECT `usuario`.*, `perfil`.`nombre` as perfil FROM `usuario` INNER JOIN perfil ON id_perfil = `perfil`.id WHERE alias = ?', array($username));
- 
-        if (!$user = $stmt->fetch()) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+
+    /**
+     * @param string $alias Alias del usuario
+     * @return User
+     * @throws UsernameNotFoundException
+     */
+    public function loadUserByUsername($alias) {
+        $usuarioModelo = new Usuario($this->conn);
+        $usuario = $usuarioModelo->getUsuarioPorAlias($alias);
+
+        if (empty($usuario)) {
+            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $alias));
         }
- 
-        return new User($user['alias'], $user['clave'], explode(',', $user['perfil']), true, true, true, true);
+
+        return new User($usuario['alias'], $usuario['clave'], explode(',', $usuario['perfil']), true, true, true, true);
     }
- 
-    public function refreshUser(UserInterface $user)
-    {
+
+    /**
+     * @param UserInterface $user
+     * @return User
+     * @throws UnsupportedUserException
+     */
+    public function refreshUser(UserInterface $user) {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
- 
+
         return $this->loadUserByUsername($user->getUsername());
     }
- 
-    public function supportsClass($class)
-    {
+
+    /**
+     * @param string $class
+     * @return bool
+     */
+    public function supportsClass($class) {
         return $class === 'Symfony\Component\Security\Core\User\User';
     }
+
 }
