@@ -1,16 +1,16 @@
 <?php
 /**
- * Description of ExtensionRegister.php.
+ * Interface de Extension Register
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage File\Upload
+ * @subpackage Upload
  */
 
 namespace Precursor\File\Upload;
 
-
-interface ExtensionRegister {
+interface ExtensionRegister
+{
 
     /**
      * Register the allowed extensions

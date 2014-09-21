@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Opcion.php
+ * Controlador de Opciones
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * 
- * @package Backend
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Silex\Application;
 
-class Opcion {
+class Opcion
+{
 
     /**
      * @param Request $request

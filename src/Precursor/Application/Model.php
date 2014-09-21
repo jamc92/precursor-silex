@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Model.php.
+ * Modelo
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Application

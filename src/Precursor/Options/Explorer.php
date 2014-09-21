@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of PrecursorFilesProvider.php.
+ * Opciones del Explorador de archivos
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -8,7 +8,6 @@
  */
 
 namespace Precursor\Options;
-
 
 class Explorer
 {
@@ -47,4 +46,5 @@ class Explorer
             dirname(__DIR__) . "/Provider/",
         );
     }
+    
 }

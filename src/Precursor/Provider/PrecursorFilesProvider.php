@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of PrecursorFilesProvider.php.
+ * Proveedor del Explorador de Archivos
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -13,8 +13,8 @@ use Silex\Application,
     Silex\ServiceProviderInterface,
     Precursor\File\Explorer;
 
-
-class PrecursorFilesProvider implements ServiceProviderInterface {
+class PrecursorFilesProvider implements ServiceProviderInterface
+{
 
     /**
      * Registers services on the given app.
@@ -79,4 +79,5 @@ class PrecursorFilesProvider implements ServiceProviderInterface {
     {
         // TODO: Implement boot() method.
     }
+    
 }

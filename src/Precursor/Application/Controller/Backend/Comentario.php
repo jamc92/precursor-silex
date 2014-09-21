@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Comentario.php
+ * Controlador de Comentarios de Artículos
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * 
@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\Request,
     Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Usuario;
 
-class Comentario {
+class Comentario
+{
 
     /**
      * @param Request $request

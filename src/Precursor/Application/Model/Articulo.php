@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Articulo.php.
+ * Modelo de Artículos o Noticias
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model

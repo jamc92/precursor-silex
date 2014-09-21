@@ -1,18 +1,18 @@
 <?php
 /**
- * Description of Php.php.
+ * Clase de archivos php
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage File\Upload
+ * @subpackage Upload
  */
 
 namespace Precursor\File\Upload;
 
 use Precursor\File\Upload\File;
 
-
-class Php extends File{
+class Php extends File
+{
 
     /**
      * @var array $_allowedExtensions
@@ -45,7 +45,6 @@ class Php extends File{
      */
     public function upload($file)
     {
-
         if ($file['error'] == 0) {
 
             if (!in_array($this->getExtension($file['name']), $this->_allowedExtensions) && $file['type'] != 'application/octet-stream') {
@@ -75,4 +74,4 @@ class Php extends File{
         }
     }
 
-} 
+}

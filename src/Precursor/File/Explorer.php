@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Explorer.php.
+ * Explorador de archivos
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -9,10 +9,10 @@
 
 namespace Precursor\File;
 
-use \FilesystemIterator,
-    Precursor\File\File;
+use \FilesystemIterator;
 
-class Explorer {
+class Explorer
+{
 
     /**
      * @var array $_folders
@@ -67,7 +67,8 @@ class Explorer {
      *
      * @return array
      */
-    public function getFilesProtected() {
+    public function getFilesProtected()
+    {
         $files = array();
         foreach ($this->_foldersProtected as $folder) {
             $fsi = new FilesystemIterator($folder);

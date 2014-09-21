@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Comentario.php.
+ * Modelo de Comentarios
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model
@@ -26,7 +26,8 @@ class Comentario extends Model
      * @param array $fields Campos a obtener de la tabla
      * @return array Arreglo de comentarios
      */
-    public function getComentarios(array $fields = array()) {
+    public function getComentarios(array $fields = array())
+    {
         if (empty($fields)) {
             $fields = array(
                 'comentario.*',
@@ -50,7 +51,8 @@ class Comentario extends Model
      * @param string $contenido Contenido del comentario
      * @return int Filas afectadas
      */
-    public function guardar($idArticulo, $idAutor, $asunto, $contenido) {
+    public function guardar($idArticulo, $idAutor, $asunto, $contenido)
+    {
         $data = array(
             'id_articulo' => $idArticulo,
             'id_autor'    => $idAutor,
@@ -65,7 +67,9 @@ class Comentario extends Model
      * @param int $id Id del articulo
      * @return int Filas afectadas
      */
-    public function eliminar($id) {
+    public function eliminar($id)
+    {
         return $this->_delete(array('id' => $id));
     }
+    
 }

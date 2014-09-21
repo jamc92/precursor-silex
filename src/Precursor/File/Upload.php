@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Upload.php.
+ * Clase para cargar los archivos al servidor
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -14,7 +14,6 @@ use Precursor\Collection,
     Precursor\File\Upload\Image,
     Precursor\File\Upload\Php,
     Precursor\File;
-
 
 class Upload implements ExtensionRegister
 {
@@ -49,7 +48,8 @@ class Upload implements ExtensionRegister
     /**
      * @return Image|Php|File
      */
-    public function file() {
+    public function file()
+    {
         return $this->_type;
     }
 

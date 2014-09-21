@@ -1,16 +1,15 @@
 <?php
 /**
- * Description of Image.php.
+ * Clase de archivos de imágenes
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage File\Upload
+ * @subpackage Upload
  */
 
 namespace Precursor\File\Upload;
 
 use Precursor\File\Upload\Functions;
-
 
 class Image extends Functions
 {
@@ -33,7 +32,8 @@ class Image extends Functions
     /**
      * @param array $options
      */
-    function __construct(array $options = array()) {
+    function __construct(array $options = array())
+    {
         if (isset($options['ignore_uploads'])) {
             $this->ignore_uploads = $options['ignore_uploads'];
         }
@@ -49,7 +49,6 @@ class Image extends Functions
      */
     public function upload($file)
     {
-
         if ($file['error'] == 0) {
 
             if (!in_array($this->getExtension($file['name']), $this->_allowedExtensions)) {
@@ -90,4 +89,5 @@ class Image extends Functions
             return $this->exitStatus('Something went wrong with your upload!', array(), 'array');
         }
     }
+    
 }

@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Categoria.php
+ * Controlador de Categorías
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * 
- * @package Backend
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Silex\Application;
 
-class Categoria {
+class Categoria
+{
 
     /**
      * @param Request $request

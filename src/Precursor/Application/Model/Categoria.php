@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Description of Categoria.php.
+ * Modelo de Categorías
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model

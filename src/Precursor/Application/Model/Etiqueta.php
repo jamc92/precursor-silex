@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Etiqueta.php.
+ * Modelo de Etiquetas
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model
@@ -56,4 +56,5 @@ class Etiqueta extends Model
     {
         return $this->_delete(array('id' => $id));
     }
+    
 }

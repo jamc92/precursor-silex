@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Base.php
+ * Controlador por Defecto
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  *
- * @package Backend
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
@@ -63,4 +63,5 @@ class Base
             return new Response($app['url_generator']->generate('login'));
         }
     }
+    
 } 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Imagen.php.
+ * Modelo de Imágenes
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model
@@ -86,4 +86,5 @@ class Imagen extends Model
     {
         return $this->_delete(array('id' => $id));
     }
-} 
+    
+}

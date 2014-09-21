@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Doctrine.php.
+ * Parámetros de Doctrine para la conección a base de datos
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -8,7 +8,6 @@
  */
 
 namespace Precursor\Options;
-
 
 class Doctrine
 {
@@ -28,4 +27,5 @@ class Doctrine
             'charset'  => 'utf8',
         );
     }
-} 
+    
+}

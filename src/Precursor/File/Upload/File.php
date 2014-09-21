@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of File.php.
+ * Clase para los archivos
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage File\Upload
+ * @subpackage Upload
  */
 
 namespace Precursor\File\Upload;
@@ -13,8 +13,8 @@ use Precursor\File\Reader,
     Precursor\File\Writer,
     Precursor\File\Upload\Functions;
 
-
-class File extends Functions implements Reader, Writer{
+class File extends Functions implements Reader, Writer
+{
 
     /**
      * @var string $_content
@@ -187,4 +187,5 @@ class File extends Functions implements Reader, Writer{
     {
         // TODO: Implement overwrite() method.
     }
+    
 }

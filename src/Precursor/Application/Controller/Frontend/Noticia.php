@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Noticia.php
+ * Controlador de Artículos o Noticias
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  *
- * @package Frontend
+ * @subpackage Frontend
  */
 
 namespace Precursor\Application\Controller\Frontend;
@@ -47,4 +47,5 @@ class Noticia
             'categorias' => $categorias,
         ));
     }
+    
 } 

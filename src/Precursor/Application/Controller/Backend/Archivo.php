@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Base.php
+ * Controlador de Archivos
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  *
- * @package Backend
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Precursor\File\Upload;
 
-class Archivo {
+class Archivo
+{
 
     /**
      * @param Request $request
@@ -174,6 +175,10 @@ class Archivo {
 
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function sintaxis(Request $request)
     {
         $archivo = $request->get('archivo');
@@ -191,4 +196,5 @@ class Archivo {
             return '';
         }
     }
+    
 }

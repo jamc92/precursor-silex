@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of AccessRules.php.
+ * Clase para las reglas de acceso a las rutas
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -8,7 +8,6 @@
  */
 
 namespace Precursor\Options;
-
 
 class AccessRules
 {
@@ -29,4 +28,5 @@ class AccessRules
             array('^/admin', 'ROLE_USER')
         );
     }
+    
 } 

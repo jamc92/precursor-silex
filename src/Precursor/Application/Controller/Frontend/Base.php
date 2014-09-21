@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Base.php
+ * Controlador por Defecto
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  *
- * @package Frontend
+ * @subpackage Frontend
  */
 
 namespace Precursor\Application\Controller\Frontend;

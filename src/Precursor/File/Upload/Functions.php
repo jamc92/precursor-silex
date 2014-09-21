@@ -1,14 +1,13 @@
 <?php
 /**
- * Description of Functions.php.
+ * Funciones de carga de archivos al servidor
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
- * @subpackage File\Upload
+ * @subpackage Upload
  */
 
 namespace Precursor\File\Upload;
-
 
 abstract class Functions
 {
@@ -47,4 +46,5 @@ abstract class Functions
         $ext = array_pop($ext);
         return strtolower($ext);
     }
+    
 } 

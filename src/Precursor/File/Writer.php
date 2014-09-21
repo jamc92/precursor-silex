@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Writer.php.
+ * Interface de Writter
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -9,7 +9,8 @@
 
 namespace Precursor\File;
 
-interface Writer {
+interface Writer
+{
 
     /**
      * Validate if the file is writtable

@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of EtiquetasArticulo.php.
+ * Modelo de Etiquetas de Artículos
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model

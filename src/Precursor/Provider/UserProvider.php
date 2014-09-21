@@ -18,7 +18,8 @@ use Doctrine\DBAL\Connection,
     Symfony\Component\Security\Core\Exception\UnsupportedUserException,
     Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class UserProvider implements UserProviderInterface {
+class UserProvider implements UserProviderInterface
+{
 
     /**
      * @var Connection $conn
@@ -28,7 +29,8 @@ class UserProvider implements UserProviderInterface {
     /**
      * @param Connection $conn
      */
-    public function __construct(Connection $conn) {
+    public function __construct(Connection $conn)
+    {
         $this->conn = $conn;
     }
 
@@ -37,7 +39,8 @@ class UserProvider implements UserProviderInterface {
      * @return User
      * @throws UsernameNotFoundException
      */
-    public function loadUserByUsername($alias) {
+    public function loadUserByUsername($alias)
+    {
         $usuarioModelo = new Usuario($this->conn);
         $usuario = $usuarioModelo->getUsuarioPorAlias($alias);
 
@@ -53,7 +56,8 @@ class UserProvider implements UserProviderInterface {
      * @return User
      * @throws UnsupportedUserException
      */
-    public function refreshUser(UserInterface $user) {
+    public function refreshUser(UserInterface $user)
+    {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
@@ -65,7 +69,8 @@ class UserProvider implements UserProviderInterface {
      * @param string $class
      * @return bool
      */
-    public function supportsClass($class) {
+    public function supportsClass($class)
+    {
         return $class === 'Symfony\Component\Security\Core\User\User';
     }
 

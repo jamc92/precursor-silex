@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Reader.php.
+ * Interface de Reader
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  *
@@ -9,7 +9,8 @@
 
 namespace Precursor\File;
 
-interface Reader {
+interface Reader
+{
 
     /**
      * Validate if the file is readeable

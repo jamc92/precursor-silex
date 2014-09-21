@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Usuario.php
+ * Controlador de Usuarios
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * 
- * @package Backend
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Precursor\Application\Model\Perfil;
 
-class Usuario {
+class Usuario
+{
 
     /**
      * @param Request $request

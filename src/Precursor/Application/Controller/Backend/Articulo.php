@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Articulo.php
+ * Controlador de Articulos
  *
  * @author     Ramón Serrano <ramon.calle.88@gmail.com>
  *
@@ -9,8 +9,7 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Precursor\Application\Model\EtiquetasArticulo,
-    Precursor\Application\Model\Categoria,
+use Precursor\Application\Model\Categoria,
     Precursor\Application\Model\Etiqueta,
     Precursor\Application\Model\Usuario,
     Symfony\Component\HttpFoundation\Request,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Usuario.php.
+ * Modelo de Usuarios
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @subpackage Model
@@ -42,7 +42,8 @@ class Usuario extends Model
      * @param string $alias Alias de usuario
      * @return array Arreglo del usuario
      */
-    public function getUsuarioPorAlias($alias) {
+    public function getUsuarioPorAlias($alias)
+    {
         $fields = array(
             'usuario.*',
             'perfil.nombre as perfil'
@@ -84,7 +85,8 @@ class Usuario extends Model
      * @param string $clave  Clave encriptada del usuario
      * @return int Filas afectadas
      */
-    public function modificar($id, $idPerfil, $nombre, $correo, $alias, $clave) {
+    public function modificar($id, $idPerfil, $nombre, $correo, $alias, $clave)
+    {
         $data = array(
             'id_perfil' => $idPerfil,
             'nombre'    => $nombre,
@@ -103,7 +105,8 @@ class Usuario extends Model
      * @param int $id Id del usuario
      * @return int Filas afectadas
      */
-    public function eliminar($id) {
+    public function eliminar($id)
+    {
         $filasAfectadas = 0;
         
         $comentarioModelo = new Comentario($this->_db);

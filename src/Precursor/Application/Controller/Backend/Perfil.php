@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Perfil.php
+ * Controlador de Perfiles
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * 
- * @package Backend
+ * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Silex\Application;
 
-class Perfil {
+class Perfil
+{
 
     /**
      * @param Request $request
@@ -185,4 +186,5 @@ class Perfil {
 
         return $app->redirect($app['url_generator']->generate('perfil_list'));
     }
+    
 } 
