@@ -29,9 +29,7 @@ class Articulo
     public function ver(Request $request, Application $app)
     {
         $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
-        $fields = array('articulo.*', 'categoria.nombre as categoria');
-        $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
-        $articulos = $articuloModel->getTodo($fields, $join);
+        $articulos = $articuloModel->getArticulos();
 
         return $app['twig']->render('backend/articulo/list.html.twig', array(
             "articulos" => $articulos
@@ -46,7 +44,6 @@ class Articulo
      */
     public function agregar(Request $request, Application $app)
     {
-
         $alias = $app['security']->getToken()->getUser()->getUsername();
 
         $usuarioModel = new Usuario($app['db']);

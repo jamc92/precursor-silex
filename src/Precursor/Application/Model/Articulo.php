@@ -50,6 +50,22 @@ class Articulo extends Model
 
         return $articulo;
     }
+    
+    /**
+     * @param array $fields Campos que se desean del registro
+     * @return array Arreglo de artículos
+     */
+    public function getArticulos(array $fields = array())
+    {
+        if (empty($fields)) {
+            $fields = array(
+                'articulo.*',
+                'categoria.nombre as categoria'
+            );
+        }
+        $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
+        return $this->getTodo($fields, $join);
+    }
 
     /**
      * @param int $idAutor        Id del usuario actual logueado
