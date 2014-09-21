@@ -7,11 +7,11 @@
     <!-- page script -->
     <script type="text/javascript">
         $(function() {
-            $("#etiquetas_articulo_list").dataTable();
+            $("#comentario_list").dataTable();
         });
 
         function confirm_delete(){
-            if(!confirm("¿Estás seguro que desea eliminar la etiqueta? \n ¡Esta acción no se podrá deshacer!")) {
+            if(!confirm("Esta seguro que desea eliminar el comentario? \n Esta acción no se podrá deshacer.")) {
                 return false;
             }
         }
@@ -23,14 +23,14 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'etiquetas_articulo_list'} %}
+        {% include 'menu.html.twig' with {'option': 'comentario_list'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Lista de Etiquetas de Artículo
+                    Lista de Comentarios
                 </h1>
             </section>
 
@@ -38,7 +38,7 @@
             <section class="content">
 
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-xs-12">
 
                         {% include 'ag_alerts.html.twig' %}
 
@@ -48,28 +48,38 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('etiquetas_articulo_create', {idArticulo: idArticulo}) }}">Agregar Etiqueta de Artículo</a><br /><br />
-                                <table id="etiquetas_articulo_list" class="table table-bordered table-striped">
+                                <a class="btn btn-primary" href="{{ path('comentario_create') }}">Crear Comentario</a><br /><br />
+                                <table id="comentario_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Etiqueta</th>
-                                            <th class="col-sm-4">Acciones</th>
+                                            <th>Artículo</th>
+                                            <th>Autor</th>
+                                            <th>Asunto</th>
+                                            <th>Contenido</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for etiqueta in etiquetas %}
+                                        {% for comentario in comentarios %}
                                             <tr>
-                                                <td>{{ etiqueta.etiqueta }}</td>
-                                                <td>
-                                                    <a href="{{ path('etiquetas_articulo_delete', { idArticulo: idArticulo, id: etiqueta.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
-                                                </td>
+                                                <td>{{ comentario.articulo }}</td>
+                                                <td>{{ comentario.usuario }}</td>
+                                                <td>{{ comentario.asunto }}</td>
+                                                <td>{{ comentario.contenido }}</td>
+                                                <td>{{ comentario.fecha }}</td>
+                                                <td><a href="{{ path('comentario_delete', { id: comentario.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}                                        
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Etiqueta</th>
+                                            <th>Artículo</th>
+                                            <th>Autor</th>
+                                            <th>Asunto</th>
+                                            <th>Contenido</th>
+                                            <th>Fecha</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>

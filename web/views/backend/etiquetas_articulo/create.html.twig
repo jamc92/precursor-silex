@@ -32,10 +32,10 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
 
-									<div class='form-group'>
-									    {{ form_label(form.id_etiqueta) }}
-									    {{ form_widget(form.id_etiqueta, { attr: { 'class': 'form-control' }}) }}
-									</div>
+                                    <div class='form-group'>
+                                        {{ form_label(form.id_etiqueta) }}
+                                        {{ form_widget(form.id_etiqueta, { attr: { 'class': 'form-control' }}) }}
+                                    </div>
 
                                 </div><!-- /.box-body -->
 
@@ -43,7 +43,7 @@
 
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-primary">Agregar</button>
-                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('etiquetas_articulo_list', { articulo_id: articulo_id }) }}'">Volver</button>
+                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('etiquetas_articulo_list', { idArticulo: idArticulo }) }}'">Volver</button>
                                 </div>
 
                             </div><!-- /.box -->

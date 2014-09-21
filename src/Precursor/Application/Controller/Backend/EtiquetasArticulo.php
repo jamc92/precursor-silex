@@ -20,17 +20,17 @@ class EtiquetasArticulo
     /**
      * @param Request $request
      * @param Application $app
-     * @param int $articulo_id
+     * @param int $idArticulo
      * 
      * @return mixed
      */
-    public function ver(Request $request, Application $app, $articulo_id)
+    public function ver(Request $request, Application $app, $idArticulo)
     {
         $etiquetasArticuloModelo = new \Precursor\Application\Model\EtiquetasArticulo($app['db']);
-        $etiquetas = $etiquetasArticuloModelo->getEtiquetasArticulo($articulo_id);
+        $etiquetas = $etiquetasArticuloModelo->getEtiquetasArticulo($idArticulo);
 
         return $app['twig']->render('backend/etiquetas_articulo/list.html.twig', array(
-            "articulo_id" => $articulo_id,
+            "idArticulo" => $idArticulo,
             "etiquetas"   => $etiquetas
         ));
     }
@@ -38,11 +38,11 @@ class EtiquetasArticulo
     /**
      * @param Request $request
      * @param Application $app
-     * @param $articulo_id
+     * @param $idArticulo
      * 
      * @return mixed|RedirectResponse
      */
-    public function agregar(Request $request, Application $app, $articulo_id)
+    public function agregar(Request $request, Application $app, $idArticulo)
     {
         // Etiquetas
         $etiquetaModelo = new Etiqueta($app['db']);
@@ -54,7 +54,7 @@ class EtiquetasArticulo
         }
 
         $initial_data = array(
-            'id_articulo' => $articulo_id,
+            'id_articulo' => $idArticulo,
             'id_etiqueta' => '',
         );
 
@@ -90,25 +90,25 @@ class EtiquetasArticulo
                         )
                     );
                 }
-                return $app->redirect($app['url_generator']->generate('etiquetas_articulo_list', array('articulo_id' => $articulo_id)));
+                return $app->redirect($app['url_generator']->generate('etiquetas_articulo_list', array('articulo_id' => $idArticulo)));
             }
         }
 
         return $app['twig']->render('backend/etiquetas_articulo/create.html.twig', array(
             "form" => $form->createView(),
-            "articulo_id" => $articulo_id
+            "idArticulo" => $idArticulo
         ));
     }
 
     /**
      * @param Request $request
      * @param Application $app
-     * @param int $articulo_id
+     * @param int $idArticulo
      * @param int $id
      * 
      * @return RedirectResponse
      */
-    public function eliminar(Request $request, Application $app, $articulo_id, $id)
+    public function eliminar(Request $request, Application $app, $idArticulo, $id)
     {
         $etiquetasArticuloModelo = new \Precursor\Application\Model\EtiquetasArticulo($app['db']);
         $etiquetaArticulo = $etiquetasArticuloModelo->getPorId($id);
@@ -130,7 +130,7 @@ class EtiquetasArticulo
                 )
             );
         }
-        return $app->redirect($app['url_generator']->generate('etiquetas_articulo_list', array("articulo_id" => $articulo_id)));
+        return $app->redirect($app['url_generator']->generate('etiquetas_articulo_list', array("articulo_id" => $idArticulo)));
     }
 
 } 
