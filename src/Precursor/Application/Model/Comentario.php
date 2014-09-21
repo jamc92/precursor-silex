@@ -26,7 +26,7 @@ class Comentario extends Model
      * @param array $fields Campos a obtener de la tabla
      * @return array Arreglo de comentarios
      */
-    public function getComentarios(array $fields = array())
+    public function getComentarios(array $fields = array(), array $criteria = array())
     {
         if (empty($fields)) {
             $fields = array(
@@ -41,7 +41,16 @@ class Comentario extends Model
             array('articulo.id', 'usuario.id'),
             array('=', '=')
         );
-        return $this->getTodo($fields, $join);
+        return $this->getTodo($fields, $join, '', $criteria);
+    }
+    
+    /**
+     * @param int $idArticulo Id del artículo
+     * @return array Comentarios del artículo
+     */
+    public function getComentariosArticulo($idArticulo)
+    {
+        return $this->getComentarios(array(), array('id_articulo' => $idArticulo));
     }
     
     /**
