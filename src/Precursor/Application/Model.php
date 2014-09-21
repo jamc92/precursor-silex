@@ -79,43 +79,6 @@ class Model
     }
 
     /**
-     * @param string $sql     Consulta SQL a la base de datos
-     * @param array $criteria Criterios de la consulta SQL adoptados en el WHERE
-     *
-     * @return Statement Retorna el objeto de Doctrine Statement
-     * @throws DBALException Error de Doctrine
-     * @throws Exception Error en el SQL
-     */
-    protected function _query($sql = "", array $criteria = array())
-    {
-        try {
-            // Preparar el SQL
-            $this->_stmt = $this->_db->prepare($sql);
-            
-            // Agregar los parametros
-            foreach ($criteria as $param => $value) {
-                if (is_integer($param)) {
-                    $this->_stmt->bindValue(($param + 1), $value);
-                }
-                if (is_string($param)) {
-                    $this->_stmt->bindParam($param, $value);
-                }
-            }
-
-            // Ejecutar el SQL
-            $this->_stmt->execute();
-        } catch (DBALException $dbalException) {
-            #throw $dbalException;
-        }
-
-        if (in_array($this->_stmt->errorCode(), array_keys($this->_errors))) {
-            throw new Exception($this->_errors[$this->_stmt->errorCode()] . " SQL: $sql");
-        }
-
-        return $this->_stmt;
-    }
-
-    /**
      * @param array $criteria Criterios de la consulta DELETE adoptados en el WHERE
      *
      * @return int Filas afectadas
@@ -172,17 +135,40 @@ class Model
     }
 
     /**
-     * @param array $data     Arreglo asociativo de los campos a actualizar del registro
-     * @param array $criteria Criterios de la consulta UPDATE adoptados en el WHERE
+     * @param string $sql     Consulta SQL a la base de datos
+     * @param array $criteria Criterios de la consulta SQL adoptados en el WHERE
      *
-     * @return int Filas afectadas
+     * @return Statement Retorna el objeto de Doctrine Statement
+     * @throws DBALException Error de Doctrine
+     * @throws Exception Error en el SQL
      */
-    protected function _update(array $data = array(), array $criteria = array())
+    protected function _query($sql = "", array $criteria = array())
     {
-        if (!is_null($this->_table)) {
-            $this->_affectedRows = $this->_db->update($this->_table, $data, $criteria);
-            return $this->_affectedRows;
+        try {
+            // Preparar el SQL
+            $this->_stmt = $this->_db->prepare($sql);
+            
+            // Agregar los parametros
+            foreach ($criteria as $param => $value) {
+                if (is_integer($param)) {
+                    $this->_stmt->bindValue(($param + 1), $value);
+                }
+                if (is_string($param)) {
+                    $this->_stmt->bindParam($param, $value);
+                }
+            }
+
+            // Ejecutar el SQL
+            $this->_stmt->execute();
+        } catch (DBALException $dbalException) {
+            #throw $dbalException;
         }
+
+        if (in_array($this->_stmt->errorCode(), array_keys($this->_errors))) {
+            throw new Exception($this->_errors[$this->_stmt->errorCode()] . " SQL: $sql");
+        }
+
+        return $this->_stmt;
     }
 
     /**
@@ -229,6 +215,20 @@ class Model
         }
         $this->_sql = "SELECT " . implode(',', $fields) . " FROM $this->_table";
         return $this->_select($this->_sql, $join, $where, $criteria);
+    }
+    
+    /**
+     * @param array $data     Arreglo asociativo de los campos a actualizar del registro
+     * @param array $criteria Criterios de la consulta UPDATE adoptados en el WHERE
+     *
+     * @return int Filas afectadas
+     */
+    protected function _update(array $data = array(), array $criteria = array())
+    {
+        if (!is_null($this->_table)) {
+            $this->_affectedRows = $this->_db->update($this->_table, $data, $criteria);
+            return $this->_affectedRows;
+        }
     }
 
     /**
