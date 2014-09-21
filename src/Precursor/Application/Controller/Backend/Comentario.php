@@ -11,7 +11,9 @@ namespace Precursor\Application\Controller\Backend;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+    Silex\Application,
+    Precursor\Application\Model\Articulo,
+    Precursor\Application\Model\Usuario;
 
 class Comentario {
 
@@ -22,31 +24,11 @@ class Comentario {
      */
     public function ver(Request $request, Application $app)
     {
-        $table_columns = array(
-            'id_articulo',
-            'id_autor',
-            'asunto',
-            'contenido',
-            'fecha',
-        );
-
-        $primary_key = "id_articulo";
-        $rows = array();
-
-        $find_sql = "SELECT * FROM `comentario`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-
-        foreach ($rows_sql as $row_key => $row_sql) {
-            for ($i = 0; $i < count($table_columns); $i++) {
-
-                $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-            }
-        }
+        $comentarioModelo = new \Precursor\Application\Model\Comentario($app['db']);
+        $comentarios = $comentarioModelo->getComentarios();
 
         return $app['twig']->render('backend/comentario/list.html.twig', array(
-            "table_columns" => $table_columns,
-            "primary_key" => $primary_key,
-            "rows" => $rows
+            "comentarios" => $comentarios
         ));
     }
 
@@ -57,24 +39,36 @@ class Comentario {
      */
     public function agregar(Request $request, Application $app)
     {
+        $alias = $app['security']->getToken()->getUser()->getUsername();
+
+        $usuarioModel = new Usuario($app['db']);
+        $usuario = $usuarioModel->getTodo(array('id'), array(), "WHERE alias = ?", array($alias));
+
+        // El autor del articulo debe ser el logueado
+        $idAutor = $usuario[0]['id'];
+        
+        $articuloModelo = new Articulo($app['db']);
+        $articulos = $articuloModelo->getTodo();
+        $articulosOpcion = array();
+        
+        foreach ($articulos as $articulo) {
+            $articulosOpcion[$articulo['id']] = $articulo['titulo'];
+        }
+        
         $initial_data = array(
             'id_articulo' => '',
-            'id_autor' => '',
-            'asunto' => '',
-            'contenido' => '',
-            'fecha' => '',
+            'asunto'      => '',
+            'contenido'   => ''
         );
 
         $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-
-
-        $form = $form->add('id_articulo', 'text', array('required' => true));
-        $form = $form->add('id_autor', 'text', array('required' => true));
+        $form = $form->add('id_articulo', 'choice', array(
+            'choices' => $articulosOpcion,
+            'required' => true
+        ));
         $form = $form->add('asunto', 'text', array('required' => true));
         $form = $form->add('contenido', 'textarea', array('required' => true));
-        $form = $form->add('fecha', 'text', array('required' => true));
-
 
         $form = $form->getForm();
 
@@ -85,15 +79,16 @@ class Comentario {
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $update_query = "INSERT INTO `comentario` (`id_articulo`, `id_autor`, `asunto`, `contenido`, `fecha`) VALUES (?, ?, ?, ?, ?)";
-                $app['db']->executeUpdate($update_query, array($data['id_articulo'], $data['id_autor'], $data['asunto'], $data['contenido'], $data['fecha']));
+                $comentarioModelo = new \Precursor\Application\Model\Comentario($app['db']);
+                $filasAfectadas = $comentarioModelo->guardar($data['id_articulo'], $idAutor, $data['asunto'], $data['contenido']);
 
-
-                $app['session']->getFlashBag()->add(
-                    'success', array(
-                        'message' => '¡Comentario creado!',
-                    )
-                );
+                if ($filasAfectadas == 1) {
+                    $app['session']->getFlashBag()->add(
+                        'success', array(
+                            'message' => '¡Comentario creado!',
+                        )
+                    );
+                }
                 return $app->redirect($app['url_generator']->generate('comentario_list'));
             }
         }
@@ -107,90 +102,23 @@ class Comentario {
      * @param Request $request
      * @param Application $app
      * @param $id
-     * @return mixed|RedirectResponse
-     */
-    public function editar(Request $request, Application $app, $id)
-    {
-        $find_sql = "SELECT * FROM `comentario` WHERE `id_articulo` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
-
-        if (!$row_sql) {
-            $app['session']->getFlashBag()->add(
-                'warning', array(
-                    'message' => 'Comentario no encontrado',
-                )
-            );
-            return $app->redirect($app['url_generator']->generate('comentario_list'));
-        }
-
-
-        $initial_data = array(
-            'id_articulo' => $row_sql['id_articulo'],
-            'id_autor' => $row_sql['id_autor'],
-            'asunto' => $row_sql['asunto'],
-            'contenido' => $row_sql['contenido'],
-            'fecha' => $row_sql['fecha'],
-        );
-
-
-        $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-
-        $form = $form->add('id_articulo', 'text', array('required' => true));
-        $form = $form->add('id_autor', 'text', array('required' => true));
-        $form = $form->add('asunto', 'text', array('required' => true));
-        $form = $form->add('contenido', 'textarea', array('required' => true));
-        $form = $form->add('fecha', 'text', array('required' => true));
-
-
-        $form = $form->getForm();
-
-        if ("POST" == $request->getMethod()) {
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $update_query = "UPDATE `comentario` SET `id_articulo` = ?, `id_autor` = ?, `asunto` = ?, `contenido` = ?, `fecha` = ? WHERE `id_articulo` = ?";
-                $app['db']->executeUpdate($update_query, array($data['id_articulo'], $data['id_autor'], $data['asunto'], $data['contenido'], $data['fecha'], $id));
-
-
-                $app['session']->getFlashBag()->add(
-                    'info', array(
-                        'message' => '¡Comentario editado',
-                    )
-                );
-                return $app->redirect($app['url_generator']->generate('comentario_edit', array("id" => $id)));
-            }
-        }
-
-        return $app['twig']->render('backend/comentario/edit.html.twig', array(
-            "form" => $form->createView(),
-            "id" => $id
-        ));
-    }
-
-    /**
-     * @param Request $request
-     * @param Application $app
-     * @param $id
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `comentario` WHERE `id_articulo` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $comentarioModelo = new \Precursor\Application\Model\Comentario($app['db']);
+        $comentario = $comentarioModelo->getPorId($id);
 
-        if ($row_sql) {
-            $delete_query = "DELETE FROM `comentario` WHERE `id_articulo` = ?";
-            $app['db']->executeUpdate($delete_query, array($id));
+        if (!empty($comentario)) {
+            $filasAfectadas = $comentarioModelo->eliminar($id);
 
-            $app['session']->getFlashBag()->add(
-                'info', array(
-                    'message' => '¡Comentario eliminado!',
-                )
-            );
+            if ($filasAfectadas == 1) {
+                $app['session']->getFlashBag()->add(
+                    'info', array(
+                        'message' => '¡Comentario eliminado!',
+                    )
+                );
+            }
         } else {
             $app['session']->getFlashBag()->add(
                 'warning', array(
