@@ -86,19 +86,19 @@ class Model
      * @throws DBALException Error de Doctrine
      * @throws Exception Error en el SQL
      */
-    public function _query($sql = "", array $criteria = array())
+    protected function _query($sql = "", array $criteria = array())
     {
         try {
             // Preparar el SQL
             $this->_stmt = $this->_db->prepare($sql);
-
+            
             // Agregar los parametros
             foreach ($criteria as $param => $value) {
                 if (is_integer($param)) {
                     $this->_stmt->bindValue(($param + 1), $value);
                 }
                 if (is_string($param)) {
-                    $this->_stmt->bindValue($param, $value);
+                    $this->_stmt->bindParam($param, $value);
                 }
             }
 
