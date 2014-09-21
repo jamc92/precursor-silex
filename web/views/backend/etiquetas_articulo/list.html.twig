@@ -30,7 +30,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Lista de Etiquetas de Artículos
+                    Lista de Etiquetas de Artículo
                 </h1>
             </section>
 
@@ -38,7 +38,7 @@
             <section class="content">
 
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-sm-8">
 
                         {% include 'ag_alerts.html.twig' %}
 
@@ -53,14 +53,16 @@
                                     <thead>
                                         <tr>
                                             <th>Etiqueta</th>
-                                            <th>Acciones</th>
+                                            <th class="col-sm-4">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for row in rows %}
+                                        {% for etiqueta in etiquetas %}
                                             <tr>
-                                                <td>{{ row.etiqueta }}</td>
-                                                <td><a href="{{ path('etiquetas_articulo_edit', { articulo_id: articulo_id, id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('etiquetas_articulo_delete', { articulo_id: articulo_id, id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
+                                                <td>{{ etiqueta.etiqueta }}</td>
+                                                <td>
+                                                    <a href="{{ path('etiquetas_articulo_delete', { articulo_id: articulo_id, id: etiqueta.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                </td>
                                             </tr>
                                         {% endfor %}                                        
 

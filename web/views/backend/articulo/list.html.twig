@@ -55,6 +55,7 @@
                                             <th>Categoría</th>
                                             <th>Título</th>
                                             <th>Fecha Pub.</th>
+                                            <th>Comentarios</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -64,6 +65,11 @@
                                                 <td>{{ articulo.categoria }}</td>
                                                 <td>{{ articulo.titulo }}</td>
                                                 <td>{{ articulo.fecha_pub }}</td>
+                                                <td>
+                                                    <a href="{{ path('comentarios_articulo_list', { articulo_id: articulo.id }) }}" class="btn btn-info btn-xs">
+                                                        {{ articulo.comentarios|length }} Comentarios
+                                                    </a>
+                                                </td>
                                                 <td>
                                                     <a href="{{ path('etiquetas_articulo_list', { articulo_id: articulo.id }) }}" class="btn btn-success btn-xs">Etiquetas</a>
                                                     <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs">Editar</a>
@@ -78,6 +84,7 @@
                                             <th>Categoría</th>
                                             <th>Título</th>
                                             <th>Fecha Pub.</th>
+                                            <th>Comentarios</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>

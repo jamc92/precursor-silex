@@ -29,7 +29,7 @@ class Articulo
     {
         $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
         $articulos = $articuloModel->getArticulos();
-
+        
         return $app['twig']->render('backend/articulo/list.html.twig', array(
             "articulos" => $articulos
         ));

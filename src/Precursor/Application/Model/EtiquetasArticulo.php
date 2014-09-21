@@ -21,6 +21,25 @@ class EtiquetasArticulo extends Model
     {
 	parent::__construct($db, 'articulos_etiquetas');
     }
+    
+    /**
+     * 
+     * @param int $idArticulo Id del artículo
+     * @param array $fields   Campos a seleccionar
+     * 
+     * @return array Arreglo de las etiquetas del artículo
+     */
+    public function getEtiquetasArticulo($idArticulo, array $fields = array())
+    {
+        if (empty($fields)) {
+            $fields = array(
+                'articulos_etiquetas.*',
+                'etiqueta.nombre as etiqueta'
+            );
+        }
+        $join = array('etiqueta', 'id_etiqueta', 'etiqueta.id', '=');
+        return $this->_selectFields($fields, $join, '', array('id_articulo' => $idArticulo));
+    }
 
     /**
      * @param int $idArticulo Id del artículo
@@ -36,9 +55,9 @@ class EtiquetasArticulo extends Model
         );
         
         // Consultar si existe
-        $etiqueta = $this->_select("SELECT id FROM $this->_table", array(), 'WHERE id_articulo = ? AND id_etiqueta = ?', array($idArticulo, $idEtiqueta));
+        $etiqueta = $this->_selectFields(array('id'), array(), '', array('id_articulo' => $idArticulo, 'id_etiqueta' => $idEtiqueta));
         
-        if (!empty($etiqueta)) {
+        if (isset($etiqueta[0]) && !empty($etiqueta)) {
             return 0;
         } else {
             return $this->_insert($data);
@@ -46,13 +65,13 @@ class EtiquetasArticulo extends Model
     }
     
     /**
-     * @param int $idArticulo Id de Articulo
+     * @param int $id Id de la etiqueta de artículo
      * 
-     * @return array Arreglo de etiquetas
+     * @return int Filas afectadas
      */
-    public function getEtiquetasArticulo($idArticulo)
+    public function eliminar($id)
     {
-        return $this->_selectFields(array('id_etiqueta'), array(), 'WHERE id_articulo = ?', array($idArticulo));
+        return $this->_delete(array('id' => $id));
     }
 
 }
