@@ -14,20 +14,6 @@
     </ul>
 </li>
 
-{% if is_granted('ROLE_SUPER_ADMIN') %}
-    <li class="treeview {% if option is defined and (option == 'articulos_etiquetas_list' or option == 'articulos_etiquetas_create' or option == 'articulos_etiquetas_edit') %}active{% endif %}">
-        <a href="#">
-            <i class="fa fa-tags"></i>
-            <span>Etiquetas de Artículos</span>
-            <i class="fa pull-right fa-angle-right"></i>
-        </a>
-        <ul class="treeview-menu" style="display: none;">
-            <li {% if option is defined and option == 'articulos_etiquetas_list' %}class="active"{% endif %}><a href="{{ path('articulos_etiquetas_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver etiquetas de artículos</a></li>
-            <li {% if option is defined and option == 'articulos_etiquetas_create' %}class="active"{% endif %}><a href="{{ path('articulos_etiquetas_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
-        </ul>
-    </li>
-{% endif %}
-
 <li class="treeview {% if option is defined and (option == 'categoria_list' or option == 'categoria_create' or option == 'categoria_edit') %}active{% endif %}">
     <a href="#">
         <i class="fa fa-th-list"></i>
