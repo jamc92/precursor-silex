@@ -40,17 +40,19 @@
     </ul>
 </li>
 
-<li class="treeview {% if option is defined and (option == 'comentario_list' or option == 'comentario_create' or option == 'comentario_edit') %}active{% endif %}">
-    <a href="#">
-        <i class="fa fa-comment"></i>
-        <span>Comentarios</span>
-        <i class="fa pull-right fa-angle-right"></i>
-    </a>
-    <ul class="treeview-menu" style="display: none;">
-        <li {% if option is defined and option == 'comentario_list' %}class="active"{% endif %}><a href="{{ path('comentario_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver comentarios</a></li>
-        <li {% if option is defined and option == 'comentario_create' %}class="active"{% endif %}><a href="{{ path('comentario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
-    </ul>
-</li>
+{% if is_granted('ROLE_SUPER_ADMIN') %}
+    <li class="treeview {% if option is defined and (option == 'comentario_list' or option == 'comentario_create' or option == 'comentario_edit') %}active{% endif %}">
+        <a href="#">
+            <i class="fa fa-comment"></i>
+            <span>Comentarios</span>
+            <i class="fa pull-right fa-angle-right"></i>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li {% if option is defined and option == 'comentario_list' %}class="active"{% endif %}><a href="{{ path('comentario_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver comentarios</a></li>
+            <li {% if option is defined and option == 'comentario_create' %}class="active"{% endif %}><a href="{{ path('comentario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
+        </ul>
+    </li>
+{% endif %}
 
 <li class="treeview {% if option is defined and (option == 'etiqueta_list' or option == 'etiqueta_create' or option == 'etiqueta_edit') %}active{% endif %}">
     <a href="#">

@@ -21,6 +21,7 @@ class AccessRules
     {
         return array(
             array('^/login$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/admin/comentario', 'ROLE_SUPER_ADMIN'),
             array('^/admin/perfil', 'ROLE_SUPER_ADMIN'),
             array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
             array('^/admin/opcion', 'ROLE_SUPER_ADMIN'),
