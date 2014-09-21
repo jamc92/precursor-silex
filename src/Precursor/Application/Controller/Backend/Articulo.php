@@ -28,23 +28,13 @@ class Articulo
      */
     public function ver(Request $request, Application $app)
     {
-        $table_columns = array(
-            'id',
-            'id_autor',
-            'categoria',
-            'titulo',
-            'fecha_pub',
-        );
-
         $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
         $fields = array('articulo.*', 'categoria.nombre as categoria');
         $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
         $articulos = $articuloModel->getTodo($fields, $join);
 
         return $app['twig']->render('backend/articulo/list.html.twig', array(
-            "table_columns" => $table_columns,
-            "primary_key"   => 'id',
-            "rows"          => $articulos
+            "articulos" => $articulos
         ));
     }
 
