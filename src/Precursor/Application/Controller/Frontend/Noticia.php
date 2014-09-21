@@ -28,7 +28,7 @@ class Noticia
     public function ver(Request $request, Application $app, $id)
     {
         $categoriaModelo = new Categoria($app['db']);
-        $categorias = $categoriaModel->getTodo(array(), array(), "WHERE id > 1");
+        $categorias = $categoriaModelo->getTodo(array(), array(), "WHERE id > 1");
 
         $articuloModel = new Articulo($app['db']);
         $articulo = $articuloModel->getPorId($id);
