@@ -24,30 +24,11 @@ class Opcion
      */
     public function ver(Request $request, Application $app)
     {
-        $table_columns = array(
-            'id',
-            'tipo',
-            'nombre',
-        );
-
-        $primary_key = "id";
-        $rows = array();
-
-        $find_sql = "SELECT * FROM `opcion`";
-        $rows_sql = $app['db']->fetchAll($find_sql, array());
-
-        foreach($rows_sql as $row_key => $row_sql){
-            for($i = 0; $i < count($table_columns); $i++){
-
-                $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
-
-            }
-        }
-
+        $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+        $opciones = $opcionModelo->getTodo();
+        
         return $app['twig']->render('backend/opcion/list.html.twig', array(
-            "table_columns" => $table_columns,
-            "primary_key" => $primary_key,
-            "rows" => $rows
+            "opciones" => $opciones
         ));
     }
 
@@ -94,17 +75,18 @@ class Opcion
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $update_query = "INSERT INTO `opcion` (`tipo`, `nombre`, `valor`, `creado`) VALUES (?, ?, ?, NOW())";
-                $app['db']->executeUpdate($update_query, array($data['tipo'], $data['nombre'], $data['valor']));
-
-                $app['session']->getFlashBag()->add(
-                    'success',
-                    array(
-                        'message' => '¡Opción creada con éxito!',
-                    )
-                );
+                $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+                $filasAfectadas = $opcionModelo->guardar($data['tipo'], $data['nombre'], $data['valor']);
+                
+                if ($filasAfectadas == 1) {
+                    $app['session']->getFlashBag()->add(
+                        'success',
+                        array(
+                            'message' => '¡Opción creada con éxito!',
+                        )
+                    );
+                }
                 return $app->redirect($app['url_generator']->generate('opcion_list'));
-
             }
         }
 
@@ -121,76 +103,73 @@ class Opcion
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `opcion` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+        $opcion = $opcionModelo->getPorId($id);
 
-        if(!$row_sql){
+        if (!empty($opcion)) {
+            $initial_data = array(
+                'nombre' => $opcion['nombre'],
+                'valor'  => $opcion['valor']
+            );
+
+
+            $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+            $form = $form->add('tipo', 'choice', array(
+                'choices' => array(
+                    'text'      => 'String',
+                    'number'    => 'Int|Float',
+                    'color'     => 'Color',
+                    'email'     => 'Email',
+                    'date'      => 'Date',
+                    'datetime'  => 'Datetime',
+                    'html'      => 'HTML',
+                    //'php'       => 'PHP',
+                    'js'      => 'JSON',
+                    //'array-php' => 'Array'
+                ),
+                'data'     => $opcion['tipo'],
+                'required' => true
+            ));
+            $form = $form->add('nombre', 'text', array('required' => true));
+            $form = $form->add('valor', 'hidden', array('required' => true));
+
+            $form = $form->getForm();
+
+            if("POST" == $request->getMethod()){
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $data = $form->getData();
+
+                    $filasAfectadas = $opcionModelo->modificar($id, $data['tipo'], $data['nombre'], $data['valor']);
+
+                    if ($filasAfectadas == 1) {
+                        $app['session']->getFlashBag()->add(
+                            'success',
+                            array(
+                                'message' => '¡Opción modificada con éxito!',
+                            )
+                        );
+                    }
+                    return $app->redirect($app['url_generator']->generate('opcion_edit', array("id" => $id)));
+                }
+            }
+        } else {
             $app['session']->getFlashBag()->add(
                 'danger',
                 array(
-                    'message' => '¡opcion no encontrado!',
+                    'message' => '¡Opción no encontrada!',
                 )
             );
             return $app->redirect($app['url_generator']->generate('opcion_list'));
         }
 
-
-        $initial_data = array(
-            'tipo' => $row_sql['tipo'],
-            'nombre' => $row_sql['nombre'],
-            'valor' => $row_sql['valor'],
-        );
-
-
-        $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-        $form = $form->add('tipo', 'choice', array(
-            'choices' => array(
-                'text'      => 'String',
-                'number'    => 'Int|Float',
-                'color'     => 'Color',
-                'email'     => 'Email',
-                'date'      => 'Date',
-                'datetime'  => 'Datetime',
-                'html'      => 'HTML',
-                //'php'       => 'PHP',
-                'js'      => 'JSON',
-                //'array-php' => 'Array'
-            ),
-            'required' => true
-        ));
-        $form = $form->add('nombre', 'text', array('required' => true));
-        $form = $form->add('valor', 'hidden', array('required' => true));
-
-        $form = $form->getForm();
-
-        if("POST" == $request->getMethod()){
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $update_query = "UPDATE `opcion` SET `tipo` = ?, `nombre` = ?, `valor` = ? WHERE `id` = ?";
-                $app['db']->executeUpdate($update_query, array($data['tipo'], $data['nombre'], $data['valor'], $id));
-
-
-                $app['session']->getFlashBag()->add(
-                    'success',
-                    array(
-                        'message' => '¡Opción modificada con éxito!',
-                    )
-                );
-                return $app->redirect($app['url_generator']->generate('opcion_edit', array("id" => $id)));
-
-            }
-        }
-
         return $app['twig']->render('backend/opcion/edit.html.twig', array(
             "form"  => $form->createView(),
-            "id"    => $id,
-            "tipo"  => $row_sql['tipo'],
-            "valor" => json_encode($row_sql['valor'])
+            "tipo"  => $opcion['tipo'],
+            "valor" => json_encode($opcion['valor'])
         ));
     }
 
@@ -202,19 +181,20 @@ class Opcion
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $find_sql = "SELECT * FROM `opcion` WHERE `id` = ?";
-        $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
+        $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+        $opcion = $opcionModelo->getPorId($id);
 
-        if($row_sql){
-            $delete_query = "DELETE FROM `opcion` WHERE `id` = ?";
-            $app['db']->executeUpdate($delete_query, array($id));
-
-            $app['session']->getFlashBag()->add(
-                'success',
-                array(
-                    'message' => '¡Opción eliminada con éxito!',
-                )
-            );
+        if(!empty($row_sql)) {
+            $filasAfectadas = $opcionModelo->eliminar($id);
+            
+            if ($filasAfectadas == 1) {
+                $app['session']->getFlashBag()->add(
+                    'success',
+                    array(
+                        'message' => '¡Opción eliminada con éxito!',
+                    )
+                );
+            }
         }
         else{
             $app['session']->getFlashBag()->add(

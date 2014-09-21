@@ -21,5 +21,46 @@ class Opcion extends Model
     {
         parent::__construct($db, 'opcion');
     }
+    
+    /**
+     * @param string $tipo   Tipo de opción
+     * @param string $nombre Nombre de la opción
+     * @param string $valor  Valor de la opción
+     * @return int Filas afectadas
+     */
+    public function guardar($tipo, $nombre, $valor)
+    {
+        $data = array(
+            'tipo'   => $tipo,
+            'nombre' => $nombre,
+            'valor'  => $valor
+        );
+        return $this->_insert($data);
+    }
 
+    /**
+     * @param int $id        Id de la opción
+     * @param string $tipo   Tipo de opción
+     * @param string $nombre Nombre de la opción
+     * @param string $valor  Valor de la opción
+     * @return int Filas afectadas
+     */
+    public function modificar($id, $tipo, $nombre, $valor)
+    {
+        $data = array(
+            'tipo'   => $tipo,
+            'nombre' => $nombre,
+            'valor'  => $valor
+        );
+        return $this->_update($data, array('id' => $id));
+    }
+    
+    /**
+     * @param int $id Id de la opción
+     * @return int Filas afectadas
+     */
+    public function eliminar($id)
+    {
+        return $this->_delete(array('id' => $id));
+    }
 }

@@ -61,13 +61,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for row in rows %}
+                                        {% for opcion in opciones %}
                                             <tr>
-                                                <td>{{ row.tipo }}</td>
-                                                <td>{{ row.nombre }}</td>
+                                                <td>{{ opcion.tipo }}</td>
+                                                <td>{{ opcion.nombre }}</td>
                                                 <td>
-                                                    <a href="{{ path('opcion_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a>
-                                                    <a href="{{ path('opcion_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                    <a href="{{ path('opcion_edit', { id: opcion.id }) }}" class="btn btn-primary btn-xs">Editar</a>
+                                                    <a href="{{ path('opcion_delete', { id: opcion.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}                                        
