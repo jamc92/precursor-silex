@@ -53,6 +53,7 @@ class Articulo extends Model
     
     /**
      * @param array $fields Campos que se desean del registro
+     * 
      * @return array Arreglo de artículos
      */
     public function getArticulos(array $fields = array())
@@ -64,7 +65,14 @@ class Articulo extends Model
             );
         }
         $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
-        return $this->getTodo($fields, $join);
+        $articulos = $this->getTodo($fields, $join);
+        
+        $comentarioModelo = new Comentario($this->_db);
+        foreach ($articulos as $i => $articulo) {
+            $comentarios = $comentarioModelo->getComentariosArticulo($articulo['id']);
+            $articulos[$i]['comentarios'] = $comentarios;
+        }
+        return $articulos;
     }
 
     /**
