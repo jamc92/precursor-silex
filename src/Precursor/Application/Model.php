@@ -224,6 +224,9 @@ class Model
      */
     protected function _selectFields(array $fields = array(), array $join = array(), $where = "", array $criteria = array())
     {
+        if (empty($fields)) {
+            $fields = array('*');
+        }
         $this->_sql = "SELECT " . implode(',', $fields) . " FROM $this->_table";
         return $this->_select($this->_sql, $join, $where, $criteria);
     }
