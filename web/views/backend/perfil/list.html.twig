@@ -38,7 +38,7 @@
             <section class="content">
 
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-sm-8">
 
                        {% include 'ag_alerts.html.twig' %}
 
@@ -52,28 +52,31 @@
                                 <table id="perfil_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
-                                            <th>Acciones</th>
+                                            <th>Nombre</th>
+                                            <th class="col-sm-6">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for row in rows %}
+                                        {% for perfil in perfiles %}
                                             <tr>
-                                                {% for table_column in table_columns %}
-                                                    <td>{{ row[table_column] }}</td>
-                                                {% endfor %}
-                                                <td><a href="{{ path('perfil_edit', { id: row[primary_key] }) }}" class="btn btn-primary btn-xs">Editar</a> <a href="{{ path('perfil_delete', { id: row[primary_key] }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
+                                                <td>{{ perfil.nombre }}</td>
+                                                <td>
+                                                    {% if not perfil.importante %}
+                                                        <a href="{{ path('perfil_edit', { id: perfil.id }) }}" class="btn btn-primary btn-xs">Editar</a> 
+                                                        <a href="{{ path('perfil_delete', { id: perfil.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                    {% else %}
+                                                        <div class="alert alert-warning">
+                                                            No se permite editar ni eliminar.
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
                                             </tr>
                                         {% endfor %}                                        
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            {% for table_column in table_columns %}
-                                            <th>{{ table_column }}</th>
-                                            {% endfor %}
+                                            <th>Nombre</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </tfoot>
