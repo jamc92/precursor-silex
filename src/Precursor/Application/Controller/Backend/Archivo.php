@@ -9,11 +9,11 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\HttpFoundation\RedirectResponse,
+use Precursor\File\Upload,
     Silex\Application,
-    Precursor\File\Upload;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Archivo
 {
@@ -21,6 +21,7 @@ class Archivo
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
@@ -61,6 +62,7 @@ class Archivo
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return string
      */
     public function agregar(Request $request, Application $app)
@@ -112,6 +114,7 @@ class Archivo
      * @param Request $request
      * @param Application $app
      * @param string $nombre
+     * 
      * @return RedirectResponse
      */
     public function editar(Request $request, Application $app, $nombre)
@@ -161,6 +164,7 @@ class Archivo
      * @param Request $request
      * @param Application $app
      * @param string $nombre
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $nombre)
@@ -177,6 +181,7 @@ class Archivo
 
     /**
      * @param Request $request
+     * 
      * @return string
      */
     public function sintaxis(Request $request)

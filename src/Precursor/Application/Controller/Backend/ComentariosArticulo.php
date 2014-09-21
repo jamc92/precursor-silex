@@ -2,17 +2,20 @@
 /**
  * Controlador de los Comentarios de un artículo
  *
- * @author serrano
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * 
+ * @package Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
 
-use Silex\Application,
-    Symfony\Component\HttpFoundation\Request,
-    Precursor\Application\Model\Comentario,
-    Precursor\Application\Model\Usuario;
+use Precursor\Application\Model\Comentario,
+    Precursor\Application\Model\Usuario,
+    Silex\Application,
+    Symfony\Component\HttpFoundation\Request;
 
-class ComentariosArticulo {
+class ComentariosArticulo
+{
     
     /**
      * @param Request $request

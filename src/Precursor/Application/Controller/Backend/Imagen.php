@@ -9,21 +9,24 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
+use Precursor\Application\Model\Imagen as ImagenModelo,
+    Precursor\File\Upload,
     Silex\Application,
-    Precursor\File\Upload;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
-class Imagen {
+class Imagen
+{
 
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
     {   
-        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagenModelo = new ImagenModelo($app['db']);
         $imagenes = $imagenModelo->getImagenes();
 
         return $app['twig']->render('backend/imagen/list.html.twig', array(
@@ -38,7 +41,7 @@ class Imagen {
      */
     public function verJson(Request $request, Application $app)
     {
-        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagenModelo = new ImagenModelo($app['db']);
         $imagenes = $imagenModelo->getImagenes();
 
         return $app['twig']->render('backend/imagen/listJson.html.twig', array(
@@ -49,6 +52,7 @@ class Imagen {
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function agregar(Request $request, Application $app)
@@ -65,7 +69,7 @@ class Imagen {
                 $nombre = $vars['imagen'];
                 $link = "$app[upload_path]/$vars[folder]/$vars[imagen]";
 
-                $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+                $imagenModelo = new ImagenModelo($app['db']);
                 $filasAfectadas = $imagenModelo->guardar($nombre, $link);
             }
 
@@ -80,11 +84,12 @@ class Imagen {
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return mixed|RedirectResponse
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagenModelo = new ImagenModelo($app['db']);
         $imagen = $imagenModelo->getPorId($id);
 
         if (!empty($imagen)) {
@@ -141,11 +146,12 @@ class Imagen {
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $imagenModelo = new \Precursor\Application\Model\Imagen($app['db']);
+        $imagenModelo = new ImagenModelo($app['db']);
         $imagen = $imagenModelo->getPorId($id);
 
         if(!empty($imagen)){
@@ -185,4 +191,5 @@ class Imagen {
 
         return $app->redirect($app['url_generator']->generate('imagen_list'));
     }
+    
 }

@@ -9,9 +9,10 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+use Precursor\Application\Model\Perfil as PerfilModelo,
+    Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Perfil
 {
@@ -19,11 +20,12 @@ class Perfil
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
     {
-        $perfilModelo = new \Precursor\Application\Model\Perfil($app['db']);
+        $perfilModelo = new PerfilModelo($app['db']);
         $perfiles = $perfilModelo->getTodo();
         
         $perfilesImportantes = $perfilModelo->getPerfilesImportantes();
@@ -43,6 +45,7 @@ class Perfil
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return RedirectResponse
      */
     public function agregar(Request $request, Application $app)
@@ -64,7 +67,7 @@ class Perfil
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $perfilModelo = new \Precursor\Application\Model\Perfil($app['db']);
+                $perfilModelo = new PerfilModelo($app['db']);
                 if ($perfilModelo->existe($data['nombre'])) {
                     $app['session']->getFlashBag()->add(
                         'warning', array(
@@ -95,11 +98,12 @@ class Perfil
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $perfilModelo = new \Precursor\Application\Model\Perfil($app['db']);
+        $perfilModelo = new PerfilModelo($app['db']);
         
         $perfilesImportantes = $perfilModelo->getPerfilesImportantes();
         
@@ -171,11 +175,12 @@ class Perfil
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $perfilModelo = new \Precursor\Application\Model\Perfil($app['db']);
+        $perfilModelo = new PerfilModelo($app['db']);
         $perfil = $perfilModelo->getPorId($id);
 
         if (!empty($perfil)) {

@@ -9,9 +9,10 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+use Precursor\Application\Model\Categoria as CategoriaModelo,
+    Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Categoria
 {
@@ -19,11 +20,12 @@ class Categoria
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
     {
-        $categoriaModelo = new \Precursor\Application\Model\Categoria($app['db']);
+        $categoriaModelo = new CategoriaModelo($app['db']);
         $categorias = $categoriaModelo->getCategorias();
 
         return $app['twig']->render('backend/categoria/list.html.twig', array(
@@ -34,11 +36,12 @@ class Categoria
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function agregar(Request $request, Application $app)
     {
-        $categoriaModelo = new \Precursor\Application\Model\Categoria($app['db']);
+        $categoriaModelo = new CategoriaModelo($app['db']);
         $categorias = $categoriaModelo->getTodo();
         
         $options = array();
@@ -94,11 +97,12 @@ class Categoria
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return mixed|RedirectResponse
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $categoriaModelo = new \Precursor\Application\Model\Categoria($app['db']);
+        $categoriaModelo = new CategoriaModelo($app['db']);
         
         $categoria = $categoriaModelo->getPorId($id);
         
@@ -167,11 +171,12 @@ class Categoria
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $categoriaModelo = new \Precursor\Application\Model\Categoria($app['db']);
+        $categoriaModelo = new CategoriaModelo($app['db']);
         
         $categoria = $categoriaModelo->getPorId($id);
         

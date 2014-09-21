@@ -9,10 +9,9 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request,
-    Silex\Application;
-use Symfony\Component\HttpFoundation\Response;
+use Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response;
 
 class Base
 {
@@ -20,6 +19,7 @@ class Base
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function index(Request $request, Application $app)
@@ -30,6 +30,7 @@ class Base
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function login(Request $request, Application $app)
@@ -49,6 +50,7 @@ class Base
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return Response
      */
     public function checkUser(Request $request, Application $app)

@@ -10,6 +10,7 @@
 namespace Precursor\Application\Controller\Backend;
 
 use Precursor\Application\Model\Etiqueta,
+    Precursor\Application\Model\EtiquetasArticulo as EtiquetasArticuloModelo,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,7 +27,7 @@ class EtiquetasArticulo
      */
     public function ver(Request $request, Application $app, $idArticulo)
     {
-        $etiquetasArticuloModelo = new \Precursor\Application\Model\EtiquetasArticulo($app['db']);
+        $etiquetasArticuloModelo = new EtiquetasArticuloModelo($app['db']);
         $etiquetas = $etiquetasArticuloModelo->getEtiquetasArticulo($idArticulo);
 
         return $app['twig']->render('backend/etiquetas_articulo/list.html.twig', array(
@@ -74,7 +75,7 @@ class EtiquetasArticulo
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $etiquetasArticuloModelo = new \Precursor\Application\Model\EtiquetasArticulo($app['db']);
+                $etiquetasArticuloModelo = new EtiquetasArticuloModelo($app['db']);
                 $filasAfectadas = $etiquetasArticuloModelo->guardar($data['id_articulo'], $data['id_etiqueta']);
 
                 if ($filasAfectadas == 1) {
@@ -110,7 +111,7 @@ class EtiquetasArticulo
      */
     public function eliminar(Request $request, Application $app, $idArticulo, $id)
     {
-        $etiquetasArticuloModelo = new \Precursor\Application\Model\EtiquetasArticulo($app['db']);
+        $etiquetasArticuloModelo = new EtiquetasArticuloModelo($app['db']);
         $etiquetaArticulo = $etiquetasArticuloModelo->getPorId($id);
 
         if (!empty($etiquetaArticulo)) {

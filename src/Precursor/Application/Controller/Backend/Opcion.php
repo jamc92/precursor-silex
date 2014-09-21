@@ -9,9 +9,10 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+use Precursor\Application\Model\Opcion as OpcionModelo,
+    Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Opcion
 {
@@ -24,7 +25,7 @@ class Opcion
      */
     public function ver(Request $request, Application $app)
     {
-        $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+        $opcionModelo = new OpcionModelo($app['db']);
         $opciones = $opcionModelo->getTodo();
         
         return $app['twig']->render('backend/opcion/list.html.twig', array(
@@ -75,7 +76,7 @@ class Opcion
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+                $opcionModelo = new OpcionModelo($app['db']);
                 $filasAfectadas = $opcionModelo->guardar($data['tipo'], $data['nombre'], $data['valor']);
                 
                 if ($filasAfectadas == 1) {
@@ -99,11 +100,12 @@ class Opcion
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return mixed|RedirectResponse
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+        $opcionModelo = new OpcionModelo($app['db']);
         $opcion = $opcionModelo->getPorId($id);
 
         if (!empty($opcion)) {
@@ -111,7 +113,6 @@ class Opcion
                 'nombre' => $opcion['nombre'],
                 'valor'  => $opcion['valor']
             );
-
 
             $form = $app['form.factory']->createBuilder('form', $initial_data);
 
@@ -177,14 +178,15 @@ class Opcion
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $opcionModelo = new \Precursor\Application\Model\Opcion($app['db']);
+        $opcionModelo = new OpcionModelo($app['db']);
         $opcion = $opcionModelo->getPorId($id);
 
-        if(!empty($row_sql)) {
+        if(!empty($opcion)) {
             $filasAfectadas = $opcionModelo->eliminar($id);
             
             if ($filasAfectadas == 1) {

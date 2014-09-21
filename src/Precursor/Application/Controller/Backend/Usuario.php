@@ -9,10 +9,11 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
+use Precursor\Application\Model\Perfil,
+    Precursor\Application\Model\Usuario as UsuarioModelo,
     Silex\Application,
-    Precursor\Application\Model\Perfil;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Usuario
 {
@@ -20,11 +21,12 @@ class Usuario
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
     {
-        $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+        $usuarioModelo = new UsuarioModelo($app['db']);
         $usuarios = $usuarioModelo->getUsuarios();
 
         return $app['twig']->render('backend/usuario/list.html.twig', array(
@@ -35,6 +37,7 @@ class Usuario
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed|RedirectResponse
      */
     public function agregar(Request $request, Application $app)
@@ -86,7 +89,7 @@ class Usuario
                 // codificar la clave
                 $clave = $encoder->encodePassword($data['clave'], $user->getSalt());
                 
-                $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+                $usuarioModelo = new UsuarioModelo($app['db']);
                 $filasAfectadas = $usuarioModelo->guardar($data['id_perfil'], $data['nombre'], $data['correo'], $data['alias'], $clave);
 
                 if ($filasAfectadas == 1) {
@@ -110,6 +113,7 @@ class Usuario
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return mixed|RedirectResponse
      */
     public function editar(Request $request, Application $app, $id)
@@ -123,7 +127,7 @@ class Usuario
             $user = $token->getUser();
         }
 
-        $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+        $usuarioModelo = new UsuarioModelo($app['db']);
         $usuario = $usuarioModelo->getPorId($id);
 
         if (!empty($usuario)) {
@@ -199,11 +203,12 @@ class Usuario
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+        $usuarioModelo = new UsuarioModelo($app['db']);
         $usuario = $usuarioModelo->getPorId($id);
 
         if (!empty($usuario)) {

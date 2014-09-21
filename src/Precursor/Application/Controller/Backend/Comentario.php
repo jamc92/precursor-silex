@@ -9,19 +9,20 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application,
-    Precursor\Application\Model\Articulo,
+use Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Comentario as ComentarioModelo,
-    Precursor\Application\Model\Usuario;
-
+    Precursor\Application\Model\Usuario,
+    Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
+    
 class Comentario
 {
 
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
@@ -37,6 +38,7 @@ class Comentario
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed|RedirectResponse
      */
     public function agregar(Request $request, Application $app)
@@ -103,6 +105,7 @@ class Comentario
      * @param Request $request
      * @param Application $app
      * @param $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)

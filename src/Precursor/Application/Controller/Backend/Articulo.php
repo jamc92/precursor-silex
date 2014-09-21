@@ -9,12 +9,13 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Precursor\Application\Model\Categoria,
+use Precursor\Application\Model\Articulo as ArticuloModelo,
+    Precursor\Application\Model\Categoria,
     Precursor\Application\Model\Etiqueta,
     Precursor\Application\Model\Usuario,
+    Silex\Application,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Articulo
 {
@@ -27,8 +28,8 @@ class Articulo
      */
     public function ver(Request $request, Application $app)
     {
-        $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
-        $articulos = $articuloModel->getArticulos();
+        $articuloModelo = new ArticuloModelo($app['db']);
+        $articulos = $articuloModelo->getArticulos();
         
         return $app['twig']->render('backend/articulo/list.html.twig', array(
             "articulos" => $articulos
@@ -46,14 +47,14 @@ class Articulo
         $alias = $app['security']->getToken()->getUser()->getUsername();
 
         $usuarioModel = new Usuario($app['db']);
-        $usuario = $usuarioModel->getTodo(array('id'), array(), "WHERE alias = ?", array($alias));
+        $usuario = $usuarioModel->getUsuarioPorAlias($alias);
 
         // El autor del articulo debe ser el logueado
-        $idAutor = $usuario[0]['id'];
+        $idAutor = $usuario['id'];
 
         // Categorías
-        $categoriaModel = new Categoria($app['db']);
-        $categorias = $categoriaModel->getTodo();
+        $categoriaModelo = new Categoria($app['db']);
+        $categorias = $categoriaModelo->getTodo();
         $categoriasOpcion = array();
 
         foreach ($categorias as $categoria) {
@@ -61,8 +62,8 @@ class Articulo
         }
 
         // Etiquetas
-        $etiquetaModel = new Etiqueta($app['db']);
-        $etiquetas = $etiquetaModel->getTodo();
+        $etiquetaModelo = new Etiqueta($app['db']);
+        $etiquetas = $etiquetaModelo->getTodo();
         $etiquetasOpcion = array();
 
         foreach ($etiquetas as $etiqueta) {
@@ -70,7 +71,6 @@ class Articulo
         }
 
         $initial_data = array(
-            'id_autor'          => $idAutor,
             'imagen'            => '',
             'categoria'         => '',
             'titulo'            => '',
@@ -104,8 +104,8 @@ class Articulo
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
-                $filasAfectadas = $articuloModel->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
+                $articuloModelo = new ArticuloModelo($app['db']);
+                $filasAfectadas = $articuloModelo->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
 
                 if (is_array($filasAfectadas)) {
 
@@ -166,15 +166,15 @@ class Articulo
     {
         $alias = $app['security']->getToken()->getUser()->getUsername();
 
-        $usuarioModel = new Usuario($app['db']);
-        $usuario = $usuarioModel->getTodo(array('id'), array(), "WHERE alias = ?", array($alias));
+        $usuarioModelo = new Usuario($app['db']);
+        $usuario = $usuarioModelo->getUsuarioPorAlias($alias);
 
         // El autor del articulo debe ser el logueado
-        $idAutor = $usuario[0]['id'];
+        $idAutor = $usuario['id'];
 
         // Categorías
-        $categoriaModel = new Categoria($app['db']);
-        $categorias = $categoriaModel->getTodo();
+        $categoriaModelo = new Categoria($app['db']);
+        $categorias = $categoriaModelo->getTodo();
         $categoriasOpcion = array();
 
         foreach ($categorias as $categoria) {
@@ -182,16 +182,16 @@ class Articulo
         }
 
         // Etiquetas
-        $etiquetaModel = new Etiqueta($app['db']);
-        $etiquetas = $etiquetaModel->getTodo();
+        $etiquetaModelo = new Etiqueta($app['db']);
+        $etiquetas = $etiquetaModelo->getTodo();
         $etiquetasOpcion = array();
 
         foreach ($etiquetas as $etiqueta) {
             $etiquetasOpcion[$etiqueta['id']] = $etiqueta['nombre'];
         }
 
-        $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
-        $articulo = $articuloModel->getArticuloYEtiquetas($id);
+        $articuloModelo = new ArticuloModelo($app['db']);
+        $articulo = $articuloModelo->getArticuloYEtiquetas($id);
 
         if (!$articulo) {
             $app['session']->getFlashBag()->add(
@@ -203,9 +203,7 @@ class Articulo
             return $app->redirect($app['url_generator']->generate('articulo_list'));
         }
 
-
         $initial_data = array(
-            'id_autor'    => $idAutor,
             'categoria'   => $articulo['id_categoria'],
             'etiquetas'   => $articulo['etiquetas'],
             'imagen'      => $articulo['imagen'],
@@ -214,7 +212,6 @@ class Articulo
             'contenido'   => $articulo['contenido'],
             'fecha_pub'   => $articulo['fecha_pub'],
         );
-
 
         $form = $app['form.factory']->createBuilder('form', $initial_data);
 
@@ -241,7 +238,7 @@ class Articulo
             if ($form->isValid()) {
                 $data = $form->getData();
                 
-                $filasAfectadas = $articuloModel->modificar($id, $idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
+                $filasAfectadas = $articuloModelo->modificar($id, $idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
 
                 if (is_array($filasAfectadas) || (is_int($filasAfectadas) && $filasAfectadas == 1)) {
                     $app['session']->getFlashBag()->add(
@@ -280,12 +277,12 @@ class Articulo
     public function eliminar(Request $request, Application $app, $id)
     {
 
-        $articuloModel = new \Precursor\Application\Model\Articulo($app['db']);
-        $articulo = $articuloModel->getPorId($id);
+        $articuloModelo = new ArticuloModelo($app['db']);
+        $articulo = $articuloModelo->getPorId($id);
 
         if (is_array($articulo) && !empty($articulo)) {
 
-            $filasAfectadas = $articuloModel->eliminar($id);
+            $filasAfectadas = $articuloModelo->eliminar($id);
 
             if ($filasAfectadas > 0) {
                 $app['session']->getFlashBag()->add(

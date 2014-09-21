@@ -22,16 +22,16 @@ class Noticia
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function ver(Request $request, Application $app, $id)
     {
-        
-        $categoriaModel = new Categoria($app['db']);
+        $categoriaModelo = new Categoria($app['db']);
         $categorias = $categoriaModel->getTodo(array(), array(), "WHERE id > 1");
 
-		$articuloModel = new Articulo($app['db']);
-		$articulo = $articuloModel->getPorId($id);
+        $articuloModel = new Articulo($app['db']);
+        $articulo = $articuloModel->getPorId($id);
 
         if (empty($articulo)) {
             $app['session']->getFlashBag()->add(
@@ -42,6 +42,7 @@ class Noticia
             );
             return $app->redirect($app['url_generator']->generate('home'));
         }
+        
         return $app['twig']->render('frontend/noticia.html.twig', array(
             "articulo" => $articulo,
             'categorias' => $categorias,

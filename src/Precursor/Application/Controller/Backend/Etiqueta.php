@@ -9,9 +9,10 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application;
+use Precursor\Application\Model\Etiqueta as EtiquetaModelo,
+    Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Etiqueta
 {
@@ -19,11 +20,12 @@ class Etiqueta
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed
      */
     public function ver(Request $request, Application $app)
     {        
-        $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+        $etiquetaModelo = new EtiquetaModelo($app['db']);
         $etiquetas = $etiquetaModelo->getTodo();
 
         return $app['twig']->render('backend/etiqueta/list.html.twig', array(
@@ -34,6 +36,7 @@ class Etiqueta
     /**
      * @param Request $request
      * @param Application $app
+     * 
      * @return mixed|RedirectResponse
      */
     public function agregar(Request $request, Application $app)
@@ -57,7 +60,7 @@ class Etiqueta
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+                $etiquetaModelo = new EtiquetaModelo($app['db']);
                 $filasAfectadas = $etiquetaModelo->guardar($data['nombre']);
                 
                 if ($filasAfectadas == 1) {
@@ -81,11 +84,12 @@ class Etiqueta
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return mixed|RedirectResponse
      */
     public function editar(Request $request, Application $app, $id)
     {
-        $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+        $etiquetaModelo = new EtiquetaModelo($app['db']);
         $etiqueta = $etiquetaModelo->getPorId($id);
 
         if (!empty($etiqueta)) {
@@ -140,11 +144,12 @@ class Etiqueta
      * @param Request $request
      * @param Application $app
      * @param int $id
+     * 
      * @return RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
-        $etiquetaModelo = new \Precursor\Application\Model\Etiqueta($app['db']);
+        $etiquetaModelo = new EtiquetaModelo($app['db']);
         $etiqueta = $etiquetaModelo->getPorId($id);
 
         if (!empty($etiqueta)) {
