@@ -59,7 +59,6 @@ class Comentario
         
         $initial_data = array(
             'id_articulo' => '',
-            'asunto'      => '',
             'contenido'   => ''
         );
 
@@ -82,7 +81,7 @@ class Comentario
                 $data = $form->getData();
 
                 $comentarioModelo = new ComentarioModelo($app['db']);
-                $filasAfectadas = $comentarioModelo->guardar($data['id_articulo'], $idAutor, $data['asunto'], $data['contenido']);
+                $filasAfectadas = $comentarioModelo->guardar($data['id_articulo'], $idAutor, $data['contenido']);
 
                 if ($filasAfectadas == 1) {
                     $app['session']->getFlashBag()->add(

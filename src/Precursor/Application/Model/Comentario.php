@@ -58,17 +58,15 @@ class Comentario extends Model
     /**
      * @param int $idArticulo   Id del articulo
      * @param int $idAutor      Id del usuario actual logueado
-     * @param string $asunto    Asunto del comentario
      * @param string $contenido Contenido del comentario
      * 
      * @return int Filas afectadas
      */
-    public function guardar($idArticulo, $idAutor, $asunto, $contenido)
+    public function guardar($idArticulo, $idAutor, $contenido)
     {
         $data = array(
             'id_articulo' => $idArticulo,
             'id_autor'    => $idAutor,
-            'asunto'      => $asunto,
             'contenido'   => $contenido,
             'fecha'       => date('Y-m-d H:m:s')
         );

@@ -51,13 +51,11 @@ class ComentariosArticulo {
         $idAutor = $usuario['id'];
         
         $initial_data = array(
-            'asunto'      => '',
             'contenido'   => ''
         );
 
         $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-        $form = $form->add('asunto', 'text', array('required' => true));
         $form = $form->add('contenido', 'textarea', array('required' => true));
 
         $form = $form->getForm();
@@ -70,7 +68,7 @@ class ComentariosArticulo {
                 $data = $form->getData();
 
                 $comentarioModelo = new \Precursor\Application\Model\Comentario($app['db']);
-                $filasAfectadas = $comentarioModelo->guardar($idArticulo, $idAutor, $data['asunto'], $data['contenido']);
+                $filasAfectadas = $comentarioModelo->guardar($idArticulo, $idAutor, $data['contenido']);
 
                 if ($filasAfectadas == 1) {
                     $app['session']->getFlashBag()->add(

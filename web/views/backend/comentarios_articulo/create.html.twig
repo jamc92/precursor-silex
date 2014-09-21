@@ -4,7 +4,7 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'comentario_create'} %}
+        {% include 'menu.html.twig' with {'option': 'comentarios_articulo_create'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
@@ -33,12 +33,7 @@
                                 <div class="box-body">
 
                                     <div class='form-group'>
-                                        {{ form_label(form.asunto) }}
-                                        {{ form_widget(form.asunto, { attr: { 'class': 'form-control' }}) }}
-                                    </div>
-
-                                    <div class='form-group'>
-                                        {{ form_label(form.contenido) }}
+                                        {{ form_label(form.contenido, 'Comentario') }}
                                         {{ form_widget(form.contenido, { attr: { 'class': 'form-control textarea', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
                                     </div>
 
