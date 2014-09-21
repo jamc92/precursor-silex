@@ -23,14 +23,14 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'comentario_list'} %}
+        {% include 'menu.html.twig' with {'option': 'comentarios_articulo_list'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Lista de Comentarios
+                    Lista de Comentarios de Artículo
                 </h1>
             </section>
 
@@ -48,7 +48,7 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('comentario_create') }}">Crear Comentario</a><br /><br />
+                                <a class="btn btn-primary" href="{{ path('comentarios_articulo_create', {idArticulo: idArticulo} ) }}">Crear Comentario</a><br /><br />
                                 <table id="comentario_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -68,7 +68,9 @@
                                                 <td>{{ comentario.asunto }}</td>
                                                 <td>{{ comentario.contenido }}</td>
                                                 <td>{{ comentario.fecha }}</td>
-                                                <td><a href="{{ path('comentario_delete', { id: comentario.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a></td>
+                                                <td>
+                                                    <a href="{{ path('comentarios_articulo_delete', { idArticulo: idArticulo, id: comentario.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                </td>
                                             </tr>
                                         {% endfor %}                                        
 

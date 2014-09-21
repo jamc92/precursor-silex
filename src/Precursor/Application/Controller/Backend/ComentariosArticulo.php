@@ -1,45 +1,46 @@
 <?php
 /**
- * Controlador de Comentarios de Artículos
- * 
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * 
- * @package Backend
+ * Controlador de los Comentarios de un artículo
+ *
+ * @author serrano
  */
 
 namespace Precursor\Application\Controller\Backend;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Silex\Application,
-    Precursor\Application\Model\Articulo,
-    Precursor\Application\Model\Comentario as ComentarioModelo,
+use Silex\Application,
+    Symfony\Component\HttpFoundation\Request,
+    Precursor\Application\Model\Comentario,
     Precursor\Application\Model\Usuario;
 
-class Comentario
-{
-
+class ComentariosArticulo {
+    
     /**
      * @param Request $request
      * @param Application $app
+     * @param int $idArticulo
+     * 
      * @return mixed
      */
-    public function ver(Request $request, Application $app)
+    public function ver(Request $request, Application $app, $idArticulo)
     {
-        $comentarioModelo = new ComentarioModelo($app['db']);
-        $comentarios = $comentarioModelo->getComentarios();
+        $comentarioModelo = new Comentario($app['db']);
+        $comentarios = $comentarioModelo->getComentarios(array(), array('id_articulo' => $idArticulo));
 
-        return $app['twig']->render('backend/comentario/list.html.twig', array(
-            "comentarios" => $comentarios
+        return $app['twig']->render('backend/comentarios_articulo/list.html.twig', array(
+            'comentarios' => $comentarios,
+            'idArticulo'  => $idArticulo
         ));
     }
-
+    
     /**
+     * 
      * @param Request $request
      * @param Application $app
-     * @return mixed|RedirectResponse
+     * @param int $idArticulo
+     * 
+     * @return mixed
      */
-    public function agregar(Request $request, Application $app)
+    public function agregar(Request $request, Application $app, $idArticulo)
     {
         $alias = $app['security']->getToken()->getUser()->getUsername();
 
@@ -49,26 +50,13 @@ class Comentario
         // El autor del articulo debe ser el logueado
         $idAutor = $usuario['id'];
         
-        $articuloModelo = new Articulo($app['db']);
-        $articulos = $articuloModelo->getTodo();
-        $articulosOpcion = array();
-        
-        foreach ($articulos as $articulo) {
-            $articulosOpcion[$articulo['id']] = $articulo['titulo'];
-        }
-        
         $initial_data = array(
-            'id_articulo' => '',
             'asunto'      => '',
             'contenido'   => ''
         );
 
         $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-        $form = $form->add('id_articulo', 'choice', array(
-            'choices' => $articulosOpcion,
-            'required' => true
-        ));
         $form = $form->add('asunto', 'text', array('required' => true));
         $form = $form->add('contenido', 'textarea', array('required' => true));
 
@@ -81,8 +69,8 @@ class Comentario
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $comentarioModelo = new ComentarioModelo($app['db']);
-                $filasAfectadas = $comentarioModelo->guardar($data['id_articulo'], $idAutor, $data['asunto'], $data['contenido']);
+                $comentarioModelo = new \Precursor\Application\Model\Comentario($app['db']);
+                $filasAfectadas = $comentarioModelo->guardar($idArticulo, $idAutor, $data['asunto'], $data['contenido']);
 
                 if ($filasAfectadas == 1) {
                     $app['session']->getFlashBag()->add(
@@ -91,26 +79,30 @@ class Comentario
                         )
                     );
                 }
-                return $app->redirect($app['url_generator']->generate('comentario_list'));
+                return $app->redirect($app['url_generator']->generate('comentarios_articulo_list', array('idArticulo' => $idArticulo)));
             }
         }
 
-        return $app['twig']->render('backend/comentario/create.html.twig', array(
-            "form" => $form->createView()
+        return $app['twig']->render('backend/comentarios_articulo/create.html.twig', array(
+            "form"       => $form->createView(),
+            'idArticulo' => $idArticulo
         ));
     }
-
+    
     /**
+     * 
      * @param Request $request
      * @param Application $app
-     * @param $id
-     * @return RedirectResponse
+     * @param int $idArticulo
+     * @param int $id
+     * 
+     * @return mixed
      */
-    public function eliminar(Request $request, Application $app, $id)
+    public function eliminar(Request $request, Application $app, $idArticulo, $id)
     {
-        $comentarioModelo = new ComentarioModelo($app['db']);
+        $comentarioModelo = new Comentario($app['db']);
         $comentario = $comentarioModelo->getPorId($id);
-
+        
         if (!empty($comentario)) {
             $filasAfectadas = $comentarioModelo->eliminar($id);
 
@@ -128,8 +120,8 @@ class Comentario
                 )
             );
         }
-
-        return $app->redirect($app['url_generator']->generate('comentario_list'));
+        
+        return $app->redirect($app['url_generator']->generate('comentarios_articulo_list', array('idArticulo' => $idArticulo)));
     }
-
-} 
+    
+}
