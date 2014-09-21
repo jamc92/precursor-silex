@@ -47,6 +47,7 @@ class EtiquetasArticulo extends Model
     
     /**
      * @param int $idArticulo Id de Articulo
+     * 
      * @return array Arreglo de etiquetas
      */
     public function getEtiquetasArticulo($idArticulo)
@@ -54,4 +55,4 @@ class EtiquetasArticulo extends Model
         return $this->_selectFields(array('id_etiqueta'), array(), 'WHERE id_articulo = ?', array($idArticulo));
     }
 
-} 
+}

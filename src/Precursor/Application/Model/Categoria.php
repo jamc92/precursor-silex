@@ -24,6 +24,7 @@ class Categoria extends Model
     
     /**
      * @param array $fields Campos que se desean del registro
+     * 
      * @return array Arreglo de usuarios
      */
     public function getCategorias(array $fields = array())
@@ -41,6 +42,7 @@ class Categoria extends Model
     /**
      * @param int $id_categoria Id de la categoría
      * @param string $nombre    Nombre de la categoría
+     * 
      * @return int Filas afectadas
      */
     public function guardar($id_categoria = 1, $nombre)
@@ -58,6 +60,7 @@ class Categoria extends Model
      * @param int $id           Id de la categoría
      * @param int $id_categoria Id de la categoría superior
      * @param string $nombre    Nombre de la categoría
+     * 
      * @return int Filas afectadas
      */
     public function modificar($id, $id_categoria = 1, $nombre)
@@ -71,6 +74,7 @@ class Categoria extends Model
     
     /**
      * @param int $id Id de la categoría
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)

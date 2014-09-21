@@ -32,6 +32,7 @@ class Perfil extends Model
     
     /**
      * @param string $nombre Perfil
+     * 
      * @return boolean
      */
     public function existe($nombre)
@@ -47,6 +48,7 @@ class Perfil extends Model
 
     /**
      * @param string $nombre Perfil
+     * 
      * @return int Filas afectadas
      */
     public function guardar($nombre)
@@ -61,6 +63,7 @@ class Perfil extends Model
     /**
      * @param int $id Id del perfil
      * @param string $nombre Perfil
+     * 
      * @return int Filas afectadas
      */
     public function modificar($id, $nombre)
@@ -73,6 +76,7 @@ class Perfil extends Model
     
     /**
      * @param int $id Id del perfil
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)

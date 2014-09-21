@@ -24,6 +24,7 @@ class Etiqueta extends Model
 
     /**
      * @param string $nombre Nombre de la etiqueta
+     * 
      * @return int Filas afectadas
      */
     public function guardar($nombre)
@@ -38,6 +39,7 @@ class Etiqueta extends Model
     /**
      * @param int $id        Id de la etiqueta
      * @param string $nombre Nombre de la etiqueta
+     * 
      * @return int Filas afectadas
      */
     public function modificar($id, $nombre)
@@ -50,6 +52,7 @@ class Etiqueta extends Model
     
     /**
      * @param int $id Id de la etiqueta
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)

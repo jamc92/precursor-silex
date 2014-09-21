@@ -24,6 +24,7 @@ class Usuario extends Model
     
     /**
      * @param array $fields Campos que se desean del registro
+     * 
      * @return array Arreglo de usuarios
      */
     public function getUsuarios(array $fields = array())
@@ -40,6 +41,7 @@ class Usuario extends Model
     
     /**
      * @param string $alias Alias de usuario
+     * 
      * @return array Arreglo del usuario
      */
     public function getUsuarioPorAlias($alias)
@@ -62,6 +64,7 @@ class Usuario extends Model
      * @param string $correo Correo electrónico del usuario
      * @param string $alias  Alias del usuario
      * @param string $clave  Clave encriptada del usuario
+     * 
      * @return int Filas afectadas
      */
     public function guardar($idPerfil, $nombre, $correo, $alias, $clave)
@@ -83,6 +86,7 @@ class Usuario extends Model
      * @param string $correo Correo electrónico del usuario
      * @param string $alias  Alias del usuario
      * @param string $clave  Clave encriptada del usuario
+     * 
      * @return int Filas afectadas
      */
     public function modificar($id, $idPerfil, $nombre, $correo, $alias, $clave)
@@ -103,6 +107,7 @@ class Usuario extends Model
 
     /**
      * @param int $id Id del usuario
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)

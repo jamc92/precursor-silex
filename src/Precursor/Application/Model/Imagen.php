@@ -24,6 +24,7 @@ class Imagen extends Model
     
     /**
      * @param array $fields Campos que se desean obtener
+     * 
      * @return array Arreglo de las imagenes
      */
     public function getImagenes(array $fields = array())
@@ -40,6 +41,7 @@ class Imagen extends Model
      * @param string $nombre Nombre de la imagen
      * @param string $link   URL de la imagen
      * @param string $imagen Puede ser la imagen misma en tipo MIME
+     * 
      * @return int Filas afectadas
      */
     public function guardar($nombre, $link, $imagen = '')
@@ -62,6 +64,7 @@ class Imagen extends Model
      * @param string $nombre Nombre de la imagen
      * @param string $link   URL de la imagen
      * @param string $imagen Puede se la imagen misma en tipo MIME
+     * 
      * @return int Filas afectadas
      */
     public function modificar($id, $nombre, $link, $imagen = '')
@@ -80,6 +83,7 @@ class Imagen extends Model
     
     /**
      * @param int $id Id de la imagen
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)

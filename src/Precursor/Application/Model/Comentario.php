@@ -24,6 +24,7 @@ class Comentario extends Model
     
     /**
      * @param array $fields Campos a obtener de la tabla
+     * 
      * @return array Arreglo de comentarios
      */
     public function getComentarios(array $fields = array(), array $criteria = array())
@@ -46,6 +47,7 @@ class Comentario extends Model
     
     /**
      * @param int $idArticulo Id del artículo
+     * 
      * @return array Comentarios del artículo
      */
     public function getComentariosArticulo($idArticulo)
@@ -58,6 +60,7 @@ class Comentario extends Model
      * @param int $idAutor      Id del usuario actual logueado
      * @param string $asunto    Asunto del comentario
      * @param string $contenido Contenido del comentario
+     * 
      * @return int Filas afectadas
      */
     public function guardar($idArticulo, $idAutor, $asunto, $contenido)
@@ -74,6 +77,7 @@ class Comentario extends Model
 
     /**
      * @param int $id Id del articulo
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)

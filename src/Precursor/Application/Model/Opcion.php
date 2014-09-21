@@ -26,6 +26,7 @@ class Opcion extends Model
      * @param string $tipo   Tipo de opción
      * @param string $nombre Nombre de la opción
      * @param string $valor  Valor de la opción
+     * 
      * @return int Filas afectadas
      */
     public function guardar($tipo, $nombre, $valor)
@@ -43,6 +44,7 @@ class Opcion extends Model
      * @param string $tipo   Tipo de opción
      * @param string $nombre Nombre de la opción
      * @param string $valor  Valor de la opción
+     * 
      * @return int Filas afectadas
      */
     public function modificar($id, $tipo, $nombre, $valor)
@@ -57,10 +59,12 @@ class Opcion extends Model
     
     /**
      * @param int $id Id de la opción
+     * 
      * @return int Filas afectadas
      */
     public function eliminar($id)
     {
         return $this->_delete(array('id' => $id));
     }
+    
 }
