@@ -82,7 +82,7 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
             if (typeof errorCallback == "function" && errorCallback) {
                 errorCallback(xhr, ajaxOptions, thrownError, mensaje);
             } else {
-                $(selectorJQuery)..html('').html(mensaje);
+                $(selectorJQuery).html('').html(mensaje);
             }
         }
     });
