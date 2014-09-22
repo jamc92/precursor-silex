@@ -47,7 +47,10 @@ class Usuario extends Model
     public function getUsuarioPorAlias($alias)
     {
         $fields = array(
-            'usuario.*',
+            'usuario.id',
+            'usuario.alias',
+            'usuario.nombre',
+            'usuario.correo',
             'perfil.nombre as perfil'
         );
         $join = array('perfil', 'id_perfil', 'perfil.id', '=');
