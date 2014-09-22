@@ -28,31 +28,25 @@
             </li>
         </ul>
 
-        <hr>
+        <hr class="row">
 
         <!-- the comment box -->
-        <div class="well">
+        <div class="row well">
             <h4>Comentar</h4>
-            <form role="form">
+            <form id="comentario_form">
                 <div class="form-group">
-                    <textarea class="form-control" rows="3"></textarea>
+                    <input type="hidden" name="comentario[idArticulo]" value="{{ articulo.id }}">
+                    <textarea class="form-control" name="comentario[contenido]" rows="3" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" class="btn btn-primary">Enviar comentario</button>
             </form>
         </div>
 
-        <hr>
+        <hr class="row">
 
-        <!-- the comments -->
-        <h3>Estudiante
-            <small>9:41 PM | 23 de abril de 2014</small>
-        </h3>
-        <p>Excelente justo lo que necesitabamos para la innovación tecnologica en nuestro plantel</p>
+        <!-- Los comentarios -->
+        <div class="row" id="comentarios"></div>
 
-        <h3>Patriota
-            <small>9:47 PM | 23 de abril de 2014</small>
-        </h3>
-        <p>¡El ejercito de Chávez con Maduro pa' lante!</p>
     </div>
     <div class="col-12 col-sm-4 col-lg-4 pull-right" id="sidebar">
         <div class="well">
@@ -117,4 +111,45 @@
         </div> -->
         <!-- /well -->
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            var url = '{{ path("comentarios_articulo_ajax", {idArticulo:articulo.id} ) }}';
+            var success = function(response) {
+                comentarios = JSON.parse(response);
+
+                for (var i = 0; i < comentarios.length; i++) {
+                    $('#comentarios').append('<div class="comentario"><h3>' + comentarios[i]['usuario'] + ' <small>' + comentarios[i]['fecha'] + '</small></h3><p>' + comentarios[i]['contenido'] + '</p></div>');
+                }
+            };
+            ajaxRequest('#comentarios', url, null, false, false, null, null, null, success);
+        });
+        $('#comentario_form').submit(function(event) {
+            event.preventDefault();
+            
+            var url = '{{ path("guardar_comentario") }}';
+            var data = $(this).serialize();
+            var fecha = new Date();
+            var fecha_texto = getHoraFormateada() + ' | ' + fecha.getDate() + ' de ' + getMes(fecha.getMonth()) + ' de ' + fecha.getFullYear();
+            var success = function(response) {
+                response = JSON.parse(response);
+
+                if (response.usuario) {
+                    var usuario = response.usuario;
+                }
+
+                if (response.estatus == 200 && response.mensaje == 'Comentario guardado.') {
+                    $('#comentarios').append('<div class="comentario"><h3>' + usuario.nombre + ' <small>' + fecha_texto + '</small></h3><p>' + $('#comentario_form textarea').val() + '</p></div>');
+                } else if (response.estatus == 200 && response.mensaje == 'Comentario no guardado.') {
+
+                } else if (response.estatus == 403) {
+                    $('#comentarios').append('Debe loguearse.');
+                }
+            };
+
+            ajaxRequest('#comentarios', url, data, false, false, null, null, null, success);
+        });
+    </script>
 {% endblock %}

@@ -23,7 +23,8 @@ class Comentario extends Model
     }
     
     /**
-     * @param array $fields Campos a obtener de la tabla
+     * @param array $fields   Campos a obtener de la tabla
+     * @param array $criteria Arreglo para criterios de condición
      * 
      * @return array Arreglo de comentarios
      */
