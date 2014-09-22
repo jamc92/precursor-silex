@@ -30,43 +30,41 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
         dataType: responseFormat,
         data: data,
         beforeSend: function() {
-            if (loadingEfect) {
-                var html = "<div class='padding-5 center'>Cargando...</div>";
-                $(selectorJQuery).html(html);
-            }
             if (typeof beforeSendCallback == "function" && beforeSendCallback) {
                 beforeSendCallback();
+            } else if (loadingEfect) {
+                var html = "<div class='padding-5 center'>Cargando...</div>";
+                $(selectorJQuery).html('').html(html);
             }
         },
         success: function(response, estatusCode, dom) {
-            if (showResponse) {
-                $(selectorJQuery).html(html);
-            }
             if (typeof successCallback == "function" && successCallback) {
                 successCallback(response, estatusCode, dom);
+            } else if (showResponse) {
+                $(selectorJQuery).html('').html(response);
             }
         },
         statusCode: {
             404: function() {
-                $(selectorJQuery).html("404: No se ha encontrado el recurso solicitado. Recargue la P&aacute;gina e intentelo de nuevo.");
+                $(selectorJQuery).html('').html("404: No se ha encontrado el recurso solicitado. Recargue la P&aacute;gina e intentelo de nuevo.");
             },
             400: function() {
-                $(selectorJQuery).html("400: Error en la petici&oacute;n, comuniquese con el Administrador del Sistema para correcci&oacute;n de este posible error.");
+                $(selectorJQuery).html('').html("400: Error en la petici&oacute;n, comuniquese con el Administrador del Sistema para correcci&oacute;n de este posible error.");
             },
             401: function() {
-                $(selectorJQuery).html("401: Datos insuficientes para efectuar esta acci&oacute;n.");
+                $(selectorJQuery).html('').html("401: Datos insuficientes para efectuar esta acci&oacute;n.");
             },
             403: function() {
-                $(selectorJQuery).html("403: Usted no est&aacute; autorizado para efectuar esta acci&oacute;n.");
+                $(selectorJQuery).html('').html("403: Usted no est&aacute; autorizado para efectuar esta acci&oacute;n.");
             },
             500: function() {
-                $(selectorJQuery).html("500: Se ha producido un error en el sistema, Comuniquese con el Administrador del Sistema para correcci&oacute;n del m&iacute;smo.");
+                $(selectorJQuery).html('').html("500: Se ha producido un error en el sistema, Comuniquese con el Administrador del Sistema para correcci&oacute;n del m&iacute;smo.");
             },
             503: function() {
-                $(selectorJQuery).html("503: El servidor web se encuentra fuera de servicio. Comuniquese con el Administrador del Sistema para correcci&oacute;n del error.");
+                $(selectorJQuery).html('').html("503: El servidor web se encuentra fuera de servicio. Comuniquese con el Administrador del Sistema para correcci&oacute;n del error.");
             },
             999: function(resp) {
-                $(selectorJQuery).html(resp.status + ': ' + resp.responseText);
+                $(selectorJQuery).html('').html(resp.status + ': ' + resp.responseText);
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -82,7 +80,9 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
                 var mensaje = "El servidor web se encuentra fuera de servicio. Comuniquese con el Administrador del Sistema para correcci&oacute;n del error.";
             }
             if (typeof errorCallback == "function" && errorCallback) {
-                errorCallback(xhr, ajaxOptions, thrownError);
+                errorCallback(xhr, ajaxOptions, thrownError, mensaje);
+            } else {
+                $(selectorJQuery)..html('').html(mensaje);
             }
         }
     });
