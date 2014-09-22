@@ -51,6 +51,7 @@ class Usuario extends Model
             'usuario.alias',
             'usuario.nombre',
             'usuario.correo',
+            'usuario.clave',
             'perfil.nombre as perfil'
         );
         $join = array('perfil', 'id_perfil', 'perfil.id', '=');
