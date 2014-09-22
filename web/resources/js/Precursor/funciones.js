@@ -4,7 +4,7 @@
  * @param string selectorJQuery       Indica el string selector jquery, ya sea por clases o por id, donde se mostrará el resultado.
  * @param string uri                  Dirección a donde se efectuará la petición Ajax.
  * @param string|JSON data            Datos a enviar junto a la petición ajax, puede estar en formato string serializado o en formato json...
- * @param boolean loadindEfect        Indica si muestra el efecto de cargando o no.
+ * @param boolean loadingEfect        Indica si muestra el efecto de cargando o no.
  * @param boolean showResponse        Indica si muestra el Resultado de la petición Ajax o no.
  * @param string method               POST, GET, PUT, DELETE entre otros...
  * @param string responseFormat       json, html, xml...
@@ -14,7 +14,7 @@
  * 
  * @returns void
  */
-function ajaxRequest(selectorJQuery, uri, data, loadindEfect, showResponse, method, responseFormat, beforeSendCallback, successCallback, errorCallback) {
+function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, method, responseFormat, beforeSendCallback, successCallback, errorCallback) {
     
     if (!method) {
         method = "POST";
