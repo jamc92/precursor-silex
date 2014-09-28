@@ -13,7 +13,7 @@
 }
 
 /*-------------------------
-	Image Previews
+        Image Previews
 --------------------------*/
 
 #dropbox .preview{
@@ -39,7 +39,7 @@
     position:relative;
 }
 
-#dropbox .uploaded{
+#dropbox .uploaded {
     position: absolute;
     top:0;
     left:0;
@@ -49,12 +49,17 @@
     display: none;
 }
 
-#dropbox .preview.done .uploaded{
+#dropbox .preview.done .uploaded {
+    display: block;
+}
+
+#dropbox .preview.error .uploaded {
+    background: url('../../img/error.png') no-repeat center center rgba(255,255,255,0.5);
     display: block;
 }
 
 /*-------------------------
-	Progress Bars
+        Progress Bars
 --------------------------*/
 
 #dropbox .progressHolder{
@@ -64,7 +69,6 @@
     width:100%;
     left:0;
     bottom: 0;
-
     box-shadow:0 0 2px #000;
 }
 
@@ -75,10 +79,10 @@
     left:0;
     width:0;
     box-shadow: 0 0 1px rgba(255, 255, 255, 0.4) inset;
-    -moz-transition:0.25s;
     -webkit-transition:0.25s;
-    -o-transition:0.25s;
-    transition:0.25s;
+       -moz-transition:0.25s;
+         -o-transition:0.25s;
+            transition:0.25s;
 }
 
 #dropbox .preview.done .progress{
