@@ -12,31 +12,31 @@ namespace Precursor\File\Upload;
 abstract class Functions
 {
     /**
-     * @param $status
-     * @param $vars
-     * @param $type
+     * @param string $result
+     * @param array $vars
+     * @param string $type
      *
      * @return JSON|string
      */
-    protected function exitStatus($status, $vars = array(), $type = 'json')
+    protected function exitStatus($result, array $vars = array(), $type = 'json')
     {
         if (strtolower($type) == 'json') {
             return json_encode(
                 array(
-                    'status' => $status,
+                    'result' => $result,
                     'vars'   => $vars
                 )
             );
         } else {
             return array(
-                'status' => $status,
+                'result' => $result,
                 'vars'   => $vars
             );
         }
     }
 
     /**
-     * @param $file_name
+     * @param string $file_name
      *
      * @return string
      */
