@@ -34,6 +34,17 @@
                                 <div class="row" id="dropbox">
                                     <span class="message">Arrastra las imágenes para subir. <br /><i>Luego de arrastralas se subirán al servidor automáticamente</i></span>
                                 </div>
+                                
+                                <div class="archivos row">
+                                    <form id="form_image" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <input type="file" name="image" id="image"  accept="image/*">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Subir imagen</button>
+                                        </div>
+                                    </form>
+                                </div>
 
                             </div><!-- /.box-body -->
 
@@ -56,68 +67,70 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ app.asset_path }}/css/filedrop/filedrop.css" rel="stylesheet" type="text/css">
+    <style>
+        .archivos {
+            margin: 20px 20px 0 20px;
+        }
+    </style>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ app.asset_path }}/js/plugins/filedrop/jquery.filedrop.js"></script>
     <script>
-        $(function(){
+        $(function() {
 
+            /** Funciones de Drop Box */
             var dropbox = $('#dropbox'),
                     message = $('.message', dropbox);
 
             dropbox.filedrop({
                 // The name of the $_FILES entry:
                 paramname:'image',
-
                 maxfiles: 5,
                 maxfilesize: 2,
                 url: 'create',
-
                 uploadFinished:function(i,file,response){
-                    if (response.status == 'File was uploaded successfuly!') {
+                    if (response.result == 'File was uploaded successfuly!') {
                         $.data(file).addClass('done');
+                    } else if (response.result == 'Uploads are not permited.') {
+                        message.html('Subida de archivos no permitida.').show();
+                        $.data(file).addClass('error');
                     } else {
                         $.data(file).addClass('error');
                     }
                     // response is the JSON object that post_file.php returns
                 },
-
                 error: function(err, file) {
                     switch(err) {
                         case 'BrowserNotSupported':
-                            showMessage('Your browser does not support HTML5 file uploads!');
+                            showMessage('¡Tu navegador no soporta HTML5!');
                             break;
                         case 'TooManyFiles':
-                            alert('Too many files! Please select 5 at most! (configurable)');
+                            alert('¡Sólo se permiten subir 5 archivos a la vez!');
                             break;
                         case 'FileTooLarge':
-                            alert(file.name+' is too large! Please upload files up to 2mb (configurable).');
+                            alert('¡' + file.name + ' es demasiado grande! Sólo se permite un máximo de 2mb por archivo.');
                             break;
                         default:
                             break;
                     }
                 },
-
                 // Called before each upload is started
                 beforeEach: function(file){
                     if(!file.type.match(/^image\//)){
-                        alert('Only images are allowed!');
+                        alert('¡Sólo imágenes permitidas!');
 
                         // Returning false will cause the
                         // file to be rejected
                         return false;
                     }
                 },
-
                 uploadStarted:function(i, file, len){
                     createImage(file);
                 },
-
                 progressUpdated: function(i, file, progress) {
                     $.data(file).find('.progress').width(progress);
                 }
-
             });
 
             var template = '<div class="preview col-12 col-md-3 col-lg-3">'+
@@ -130,22 +143,19 @@
                     '</div>'+
                     '</div>';
 
-
-            function createImage(file){
+            function createImage(file, js) {
 
                 var preview = $(template),
-                        image = $('img', preview);
+                      image = $('img', preview);
 
                 var reader = new FileReader();
 
                 image.width = 100;
                 image.height = 100;
-
-                reader.onload = function(e){
-
+                
+                reader.onload = function(e) {
                     // e.target.result holds the DataURL which
                     // can be used as a source of the image:
-
                     image.attr('src',e.target.result);
                 };
 
@@ -159,12 +169,45 @@
                 // Associating a preview container
                 // with the file, using jQuery's $.data():
 
-                $.data(file,preview);
+                $.data(file, preview);
+                if (js) {
+                    $.data(file).find('.progressHolder').remove();
+                }
             }
 
             function showMessage(msg){
                 message.html(msg);
             }
+            /** Fin Funciones Drop Box **/
+            
+            $('form#form_image').submit(function(evt) {
+                evt.preventDefault();
+
+                var file = evt.target[0].files[0];
+                
+                createImage(file, true);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path("imagen_create") }}',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        Pace.restart();
+                    },
+                    success: function(response) {
+                        response = JSON.parse(response);
+                        if (response.result == 'Ninguna imagen') {
+                            message.html('No fue enviada ninguna imagen. Vuelva a intentar luego.');
+                        } else if (response.result == 'File was uploaded successfuly!') {
+                            $.data(file).addClass('done');
+                        } else {
+                            $.data(file).addClass('error');
+                        }
+                    }
+                });
+            });
 
         });
     </script>

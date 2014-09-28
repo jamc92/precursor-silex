@@ -57,24 +57,27 @@ class Imagen
      */
     public function agregar(Request $request, Application $app)
     {
-        if("POST" == $request->getMethod()){
+        if("POST" == $request->getMethod()) {
+            if (isset($_FILES['image'])) {
+                
+                $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => false));
 
-            $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => false));
+                $result = $upload->file()->upload($_FILES['image']);
 
-            $result = $upload->file()->upload($_FILES['image']);
+                if (isset($result['vars']['imagen'])) {
+                    $vars = $result['vars'];
 
-            if (isset($result['vars']['imagen'])) {
-                $vars = $result['vars'];
+                    $nombre = $vars['imagen'];
+                    $link = "$app[upload_path]/$vars[folder]/$vars[imagen]";
 
-                $nombre = $vars['imagen'];
-                $link = "$app[upload_path]/$vars[folder]/$vars[imagen]";
-
-                $imagenModelo = new ImagenModelo($app['db']);
-                $filasAfectadas = $imagenModelo->guardar($nombre, $link);
+                    $imagenModelo = new ImagenModelo($app['db']);
+                    $filasAfectadas = $imagenModelo->guardar($nombre, $link);
+                }
+                die(json_encode(array('result' => $result['result'])));
+                
+            } else {
+                die(json_encode(array('result' => 'Ninguna imagen')));
             }
-
-            die(json_encode(array('status' => $result['status'])));
-
         }
 
         return $app['twig']->render('backend/imagen/create.html.twig', array());
