@@ -14,7 +14,7 @@
                 <a class="thumbnail" href="{{ path('noticia', { id: articulo.id }) }}">
                     <img class="img-responsive" {% if articulo.imagen != null %} src="{{ articulo.imagen }}" {% else %} src="holder.js/300x200/auto/text:Imagen" {% endif %} alt="Sin imagen">
                     <h4 class="text-primary">{{ articulo.titulo }}</h4>
-                    <p>23 de abril de 2014 |<b>10:00 AM</b></p>
+                    <p>{{ articulo.fecha_pub }}</p>
                     <p>{{ articulo.descripcion }}</p>
                 </a>
             </div>

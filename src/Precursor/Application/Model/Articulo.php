@@ -29,9 +29,14 @@ class Articulo extends Model
      */
     public function getArticuloYEtiquetas($id)
     {
-        $articulo = $this->getPorId($id);
+        $fields = array('articulo.*', 'usuario.nombre as autor');
+        $join   = array('usuario', 'id_autor', 'usuario.id', '=');
+        $where  = "WHERE articulo.id = $id";
+        $articulo = $this->getTodo($fields, $join, $where);
 
-        if (!empty($articulo)) {
+        if (isset($articulo[0]) && !empty($articulo[0])) {
+
+            $articulo = $articulo[0];
 
             $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
             $fields = array('etiqueta.id', 'etiqueta.nombre as etiqueta');

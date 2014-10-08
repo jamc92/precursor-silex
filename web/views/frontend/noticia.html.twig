@@ -8,7 +8,7 @@
         <!-- the actual blog post: title/author/date/content -->
         <h1 class="page-header">{{ articulo.titulo }}</h1>
         <p>
-            Por <a href="index.php">Admin</a> <span class="glyphicon glyphicon-time"></span> 23 de abril de 2014 | 10:00 AM
+            Por <a href="index.php">{{ articulo.autor }}</a> <span class="glyphicon glyphicon-time"></span> {{ articulo.fecha_pub }}
         </p>
         <hr>
         <img {% if articulo.imagen != null %} src="{{ articulo.imagen }}" {% else %} src="holder.js/600x400/auto/text:Imagen" {% endif %} class="img-responsive">
