@@ -16,7 +16,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "silex/silex": "1.2.1"
+        "silex/silex": "1.2.1",
+        "lusitanian/oauth": ">=0.2.3"
     },
     "minimum-stability": "dev",
     "autoload": {
