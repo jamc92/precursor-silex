@@ -34,7 +34,10 @@ return array(
     'Symfony\\Bridge\\Monolog\\' => array($vendorDir . '/symfony/monolog-bridge'),
     'Silex' => array($vendorDir . '/silex/silex/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'Precursor\\' => array($baseDir . '/src'),
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
+    'OAuth\\Unit' => array($vendorDir . '/lusitanian/oauth/tests'),
+    'OAuth' => array($vendorDir . '/lusitanian/oauth/src'),
     'Doctrine\\DBAL' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
@@ -42,5 +45,4 @@ return array(
     'Doctrine\\Common\\Cache\\' => array($vendorDir . '/doctrine/cache/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'Doctrine\\Common\\' => array($vendorDir . '/doctrine/common/lib'),
-    'Precursor\\' => array($baseDir . '/src'),
 );
