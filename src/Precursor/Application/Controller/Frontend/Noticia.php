@@ -31,7 +31,7 @@ class Noticia
         $categorias = $categoriaModelo->getTodo(array(), array(), "WHERE id > 1");
 
         $articuloModel = new Articulo($app['db']);
-        $articulo = $articuloModel->getPorId($id);
+        $articulo = $articuloModel->getArticuloYEtiquetas($id);
 
         if (empty($articulo)) {
             $app['session']->getFlashBag()->add(
@@ -41,6 +41,10 @@ class Noticia
                 )
             );
             return $app->redirect($app['url_generator']->generate('home'));
+        } else {
+            $fechaPublicacion = date('d-F-Y | h:m:s A', strtotime($articulo['fecha_pub']));
+            $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
+            $articulo['fecha_pub'] = $fechaPublicacion;
         }
         
         return $app['twig']->render('frontend/noticia.html.twig', array(
@@ -48,5 +52,5 @@ class Noticia
             'categorias' => $categorias,
         ));
     }
-    
+
 } 

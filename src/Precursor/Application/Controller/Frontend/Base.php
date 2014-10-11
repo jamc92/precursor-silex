@@ -30,10 +30,15 @@ class Base
         $articuloModel = new Articulo($app['db']);
         $articulos = $articuloModel->getTodo();
 
+        foreach ($articulos as $index => $articulo) {
+            $fechaPublicacion      = date('d-F-Y | h:m:s A', strtotime($articulo['fecha_pub']));
+            $fechaPublicacion      = str_replace('-', ' de ', $fechaPublicacion);
+            $articulos[$index]['fecha_pub'] = $fechaPublicacion;
+        }
+
         return $app['twig']->render('frontend/index.html.twig', array(
             'categorias' => $categorias,
             'articulos' => $articulos
         ));
     }
-
 } 
