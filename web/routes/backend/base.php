@@ -13,7 +13,3 @@ require_once __DIR__.'/perfil.php';
 require_once __DIR__.'/usuario.php';
 
 $app->match('/admin', 'Precursor\\Application\\Controller\\Backend\\Base::index')->bind('admin');
-
-$app->match('/login', 'Precursor\\Application\\Controller\\Backend\\Base::login')->bind('login');
-
-$app->match('/checkUser', 'Precursor\\Application\\Controller\\Backend\\Base::checkUser')->bind('checkUser');

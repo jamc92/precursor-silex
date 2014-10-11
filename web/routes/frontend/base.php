@@ -3,7 +3,10 @@
 $app->match('/', 'Precursor\\Application\\Controller\\Frontend\\Base::index')
     ->bind('home');
 
-$app->match('/registrarse', 'Precursor\\Application\\Controller\\Frontend\\Usuario::signup')
+$app->match('/login', 'Precursor\\Application\\Controller\\Frontend\\Usuario::login')
+    ->bind('login');
+
+$app->match('/signup', 'Precursor\\Application\\Controller\\Frontend\\Usuario::signup')
     ->bind('signup');
 
 $app->match('/noticia/{id}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::ver')

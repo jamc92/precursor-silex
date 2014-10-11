@@ -16,16 +16,39 @@ use Precursor\Application\Model\Comentario,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\JsonResponse;;
 
-class Usuario extends Controller
+class Usuario
 {
 
-    function __construct() {
-        parent::__construct(new Route());
+    /**
+     * @param Request $request
+     * @param Application $app
+     * 
+     * @return mixed
+     */
+    public function login(Request $request, Application $app)
+    {
+        
+        $error_msg = "";
+        if ($app['security.last_error']($request) == "Bad credentials") {
+            $error_msg = "Usuario o contraseña incorrectos.";
+        }
+
+        return $app['twig']->render('backend/auth/login.html.twig', array(
+            'error' => $error_msg,
+            'last_username' => $app['session']->get('_security.last_username'),
+        ));
     }
     
+    /**
+     * Función para registrarse como usuario
+     * @param Application $app
+     * @param Request $request
+     * @return mixed
+     */
     public function signup(Application $app, Request $request)
     {
-        return 'asdasdsa';
+        
     }
+    
 
 }

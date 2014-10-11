@@ -12,7 +12,7 @@ $app = new Application();
 
 # Provedor Twig para las vistas
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path'   => __DIR__ . '/../web/views',
+    'twig.path' => __DIR__ . '/../web/views',
 ));
 # Extension de Widgets
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
@@ -31,6 +31,15 @@ $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 # Proveedor para el uso de variables de sesion
 $app->register(new Silex\Provider\SessionServiceProvider());
+# Obtener el usuario en todo lugar
+$app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($app) {
+    $token = $app['security']->getToken();
+    $app['user'] = null;
+
+    if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
+        $app['user'] = $token->getUser();
+    }
+});
 # Proveedor de seguridad de acceso a las url
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls'      => array(
@@ -47,17 +56,17 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             ),
             'logout'    => array(
                 'logout_path'        => '/logout',
-                'invalidate_session' => false
+                'invalidate_session' => true
             ),
             'users'     => $app->share(function ($app) {
-                    return new Precursor\Provider\UserProvider($app['db']);
-                }),
+                return new Precursor\Provider\UserProvider($app['db']);
+            }),
         )
     ),
     'security.access_rules'   => Precursor\Options\AccessRules::getAccessRules(),
     'security.encoder.digest' => $app->share(function ($app) {
-            return new MessageDigestPasswordEncoder('sha512');
-        })
+        return new MessageDigestPasswordEncoder('sha512');
+    })
 ));
 # Proveedor de doctrine para base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
