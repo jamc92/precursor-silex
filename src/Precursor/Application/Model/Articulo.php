@@ -49,7 +49,7 @@ class Articulo extends Model
         $fields = array('articulo.*', 'usuario.nombre as autor');
         $join   = array('usuario', 'id_autor', 'usuario.id', '=');
         $where  = "WHERE articulo.id = $id";
-        $articulo = $this->getTodo($fields, $join, $where);
+        $articulo = parent::getTodo($fields, $join, $where);
 
         if (isset($articulo[0]) && !empty($articulo[0])) {
 
