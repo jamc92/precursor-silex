@@ -30,13 +30,18 @@ class Base
         $articuloModel = new Articulo($app['db']);
         $articulos = $articuloModel->getTodo();
         
-        $meses        = cal_info(0);
+        $mesesIngles  = cal_info(0);
         $mesesEspanol = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 
         foreach ($articulos as $index => $articulo) {
+            
+            // Poner sólo la primera en mayúscula el título
+            $articulos[$index]['titulo']    = strtolower($articulo['titulo']);
+            $articulos[$index]['titulo'][0] = strtoupper($articulo['titulo'][0]);
+            
             $fechaPublicacion = date('d-F-Y | h:m:s A', strtotime($articulo['fecha_pub']));
             $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
-            $fechaPublicacion = str_replace($meses['months'], $mesesEspanol, $fechaPublicacion);
+            $fechaPublicacion = str_replace($mesesIngles['months'], $mesesEspanol, $fechaPublicacion);
             
             $articulos[$index]['fecha_pub'] = $fechaPublicacion;
         }

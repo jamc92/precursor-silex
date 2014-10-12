@@ -32,6 +32,9 @@ class Noticia
 
         $articuloModel = new Articulo($app['db']);
         $articulo = $articuloModel->getArticuloYEtiquetas($id);
+        
+        $mesesIngles  = cal_info(0);
+        $mesesEspanol = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 
         if (empty($articulo)) {
             $app['session']->getFlashBag()->add(
@@ -44,6 +47,8 @@ class Noticia
         } else {
             $fechaPublicacion = date('d-F-Y | h:m:s A', strtotime($articulo['fecha_pub']));
             $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
+            $fechaPublicacion = str_replace($mesesIngles['months'], $mesesEspanol, $fechaPublicacion);
+            
             $articulo['fecha_pub'] = $fechaPublicacion;
         }
         
