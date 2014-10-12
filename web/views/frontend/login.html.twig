@@ -1,50 +1,188 @@
 {% extends 'layouts/frontend.html.twig' %}
 
-{% block title %}Inicio de sesión{% endblock %}
+{% block title %}Inicio de sesión - El Precursor{% endblock %}
 
-{% block body_params%}class="skin-blue" id="login"{% endblock %}
+{% block menu %}
+    {% include 'frontend/menu.html.twig' with {'option': 'login'} %}
+{% endblock %}
 
-{% block container%}
-	<div class="wrapper row-offcanvas row-offcanvas-left">
-		<div class="container">
-            <form class="form-signin" action="{{ path('login_check') }}" method="post">
-                {% if error != null %}
-                    <div class="callout callout-danger">
-                        <button type="button" class="close" onclick="$('.callout').fadeOut(2000)">×</button>
-                        <h4>Error</h4>
-                        <p>{{ error }}</p>
-                    </div>
-                {% endif %}
-                <h2 class="form-signin-heading">Iniciar sesión</h2>
-                <div class=" input-group">
-                    <span class="input-group-addon glyphicon glyphicon-user"></span>
-                    <input type="text"
-                           class="form-control"
-                           id="_username"
-                           name="_username"
-                           value="{{ last_username }}"
-                           placeholder="Usuario o Correo"
-                           required autofocus>
+{% block body_params %}class="skin-blue" id="user-login-signup"{% endblock %}
+
+{% block content %}
+    <div class="col-sm-12 forms">
+        <form class="form-signin" action="{{ path('login_check') }}" method="post">
+            {% if error != null %}
+                <div class="callout callout-danger">
+                    <button type="button" class="close" onclick="$('.callout').fadeOut(2000)">×</button>
+                    <h4>Error</h4>
+                    <p>{{ error }}</p>
                 </div>
-                <br/>
-                <div class=" input-group">
-                    <span class="input-group-addon glyphicon glyphicon-lock"></span>
-                    <input type="password"
-                           class="form-control" 
-                           id="_password"
-                           name="_password"
-                           placeholder="Clave"
-                           required>
-                </div>
-                <label class="checkbox">
+            {% endif %}
+            <h1 class="page-header">Iniciar sesión</h1>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <span class="input-group-addon glyphicon glyphicon-user"></span>
+                <input type="text"
+                       class="form-control"
+                       id="_username"
+                       name="_username"
+                       value="{{ last_username }}"
+                       placeholder="Usuario o Correo"
+                       required autofocus>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <span class="input-group-addon glyphicon glyphicon-lock"></span>
+                <input type="password"
+                       class="form-control" 
+                       id="_password"
+                       name="_password"
+                       placeholder="Clave"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <label>
                     <input type="checkbox" 
                            id="remember_me"
                            name="remember_me" value=1 > Mantenerme conectado
                 </label>
-                <div style="text-align: center;">
-                    <button class="btn btn-large btn-primary" type="submit">Iniciar sesión</button>
-                </div>
-            </form>
-        </div>
-	</div>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <button class="btn btn-primary" type="submit">Iniciar sesión</button>
+                &nbsp;
+                <button class="btn btn-success" id="signup" type="button">Registrarse</button>
+            </div>
+        </form>
+        <form class="form-signup">
+            <h2 class="page-header">Registrarse</h2>
+            <div class="input-group">
+                <a class="btn btn-primary" href="{{ path('auth_service', {service: 'facebook'}) }}"><span class="ion-social-facebook" style="font-size: 20px;"></span> Registrarse con Facebook</a>
+                &nbsp;
+                <a class="btn btn-danger" href="{{ path('auth_service', {service: 'google'}) }}"><span class="ion-social-googleplus" style="font-size: 20px;"></span> Registrarse con Google</a>
+            </div>
+            <hr>
+            <div class="input-group">
+                <label for="Usuario_nombre" class="btn btn-default input-group-addon"><b>Nombre:</b></label>
+                <input type="text"
+                       class="form-control"
+                       id="Usuario_nombre"
+                       name="Usuario[nombre]"
+                       placeholder="Introduzca su nombre"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <label for="Usuario_apellido" class="btn btn-default input-group-addon"><b>Apellido:</b></label>
+                <input type="text"
+                       class="form-control"
+                       id="Usuario_apellido"
+                       name="Usuario[apellido]"
+                       placeholder="Introduzca su apellido"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <label for="Usuario_correo" class="btn btn-default input-group-addon"><b>Correo:</b></label>
+                <input type="email"
+                       class="form-control"
+                       id="Usuario_correo"
+                       name="Usuario[correo]"
+                       placeholder="Introduzca su correo electrónico"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <label for="Usuario_alias" class="btn btn-default input-group-addon"><b>Alias:</b></label>
+                <input type="text"
+                       class="form-control"
+                       id="Usuario_alias"
+                       name="Usuario[alias]"
+                       placeholder="Introduzca su alias de usuario"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <label for="Usuario_clave" class="btn btn-default input-group-addon"><b>Clave:</b></label>
+                <input type="password"
+                       class="form-control"
+                       id="Usuario_clave"
+                       name="Usuario[clave]"
+                       placeholder="Introduzca su clave"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <label for="Usuario_clave2" class="btn btn-default input-group-addon"><b>Repetir clave:</b></label>
+                <input type="password"
+                       class="form-control"
+                       id="Usuario_clave2"
+                       name="Usuario[clave2]"
+                       placeholder="Repita su clave"
+                       required>
+            </div>
+            <div>&nbsp;</div>
+            <div class="input-group">
+                <button class="btn btn-success" type="submit">Registrarse</button>
+                &nbsp;
+                <button class="btn btn-primary" id="login" type="button">Iniciar sesión</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ app.asset_path }}/js/Precursor/funciones.js"></script>
+    <script>
+        $(function() {
+            $('.form-signup').submit(function(evt) {
+                evt.preventDefault();
+                
+                $('.response').html("<div class='padding-5 center'><span class='ion-looping'></span></div>");
+                
+                if ($('#Usuario_clave').val() != $('#Usuario_clave2').val()) {
+                    $('.response').html('<div class="alert alert-danger"><i class="fa ion-close"></i><b>Claves no coinciden.</b></div>');
+                    return;
+                }
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path("signup") }}',
+                    data: $(this).serialize(),
+                    beforeSend: function() {
+                        $('.response').html("<div class='padding-5 center'><span class='ion-looping'></span></div>");
+                    },
+                    success: function(response) {
+                        $('.response').html('<div class="alert alert-success"><i class="fa fa-check"></i><b>' + response + '</b></div>');
+                        $('input').each(function() {
+                            $(this).val('');
+                        });
+                    },
+                    error: function(xhr) {
+                        
+                        var response = JSON.parse(xhr.responseText);
+                        
+                        if (xhr.status == 400) {
+                            $('.response').html('<div class="alert alert-danger"><i class="fa ion-close"></i><b>' + response.mensaje + '</b></div>');
+                        } else if (xhr.status == 500) {
+                            $('.response').html(xhr.response);
+                        } else {
+                            $('.response').html(xhr.response);
+                        }
+                    }
+                });
+            });
+            
+            $('#signup').click(function() {
+                $('.form-signin').hide();
+                $('.form-signup').show();
+            });
+            
+            $('#login').click(function() {
+                $('.form-signup').hide();
+                $('.form-signin').show();
+            });
+        });
+    </script>
 {% endblock %}

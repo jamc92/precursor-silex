@@ -2,6 +2,10 @@
 
 {% block title %}Inicio - El Precursor{% endblock %}
 
+{% block menu %}
+    {% include 'frontend/menu.html.twig' with {'option': 'home'} %}
+{% endblock %}
+
 {% block content %}
     <div class="col-12 col-sm-8 col-lg-8">
 
