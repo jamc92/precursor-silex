@@ -33,7 +33,7 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
             if (typeof beforeSendCallback == "function" && beforeSendCallback) {
                 beforeSendCallback();
             } else if (loadingEfect) {
-                var html = "<div class='padding-5 center'>Cargando...</div>";
+                var html = "<div class='padding-5 center'><span class='ion-looping'></span></div>";
                 $(selectorJQuery).html('').html(html);
             }
         },
