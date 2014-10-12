@@ -61,6 +61,27 @@ class Usuario extends Model
             return $usuario[0];
         }
     }
+    
+    /**
+     * @param string $alias  Alias del usuario
+     * @param string $correo Correo electrónico del usuario
+     * 
+     * @return boolean
+     */
+    public function existe($alias, $correo = null)
+    {
+        if ($alias && !$correo) {
+            $where = "WHERE alias = '$alias'";
+        } else if (!$alias && $correo) {
+            $where = "WHERE correo = '$correo'";
+        } else if ($alias && $correo) {
+            $where = "WHERE alias = '$alias' AND correo = '$correo'";
+        }
+        
+        $usuario = $this->getTodo(array(), array(), $where);
+        
+        return (isset($usuario[0]) && !empty($usuario[0])) ? true : false;
+    }
 
     /**
      * @param int $idPerfil  Id del perfil del usuario
@@ -75,6 +96,26 @@ class Usuario extends Model
     {
         $data = array(
             'id_perfil' => $idPerfil,
+            'nombre'    => $nombre,
+            'correo'    => $correo,
+            'alias'     => $alias,
+            'clave'     => $clave
+        );
+        return $this->_insert($data);
+    }
+    
+    /**
+     * @param string $nombre Nombre del usuario
+     * @param string $correo Correo electrónico del usuario
+     * @param string $alias  Alias del usuario
+     * @param string $clave  Clave encriptada del usuario
+     * 
+     * @return int Filas afectadas
+     */
+    public function guardarUsuario($nombre, $correo, $alias, $clave)
+    {   
+        $data = array(
+            'id_perfil' => 4,
             'nombre'    => $nombre,
             'correo'    => $correo,
             'alias'     => $alias,

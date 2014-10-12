@@ -31,6 +31,16 @@ class Perfil extends Model
     }
     
     /**
+     * @param string $nombre Nombre del perfil
+     * @return array Arreglo del perfil
+     */
+    public function getPerfil($nombre)
+    {
+        $perfil = $this->_selectFields(array(), array(), "WHERE nombre = '$nombre'");
+        return (isset($perfil[0])) ? $perfil[0] : false;
+    }        
+    
+    /**
      * @param string $nombre Perfil
      * 
      * @return boolean
