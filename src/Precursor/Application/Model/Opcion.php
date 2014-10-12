@@ -23,6 +23,24 @@ class Opcion extends Model
     }
     
     /**
+     * @param int $id        Id de la opción
+     * @param string $nombre Nombre de la opción
+     * @return array Arreglo de la opción
+     */
+    public function getOpcion($id, $nombre = null) {
+        if (!is_null($id) && !is_null($nombre)) {
+            $result = $this->getTodo(array(), array(), "WHERE id = $id AND nombre = '$nombre'");
+        } else if (is_null($nombre)) {
+            return $this->getPorId($id);
+        } else if (is_null($id) && !is_null($nombre)) {
+            $result = $this->getTodo(array(), array(), "WHERE nombre = '$nombre'");
+        }
+        if (isset($result[0]) && !empty($result[0])) {
+            return $result[0];
+        }
+    }
+    
+    /**
      * @param string $tipo   Tipo de opción
      * @param string $nombre Nombre de la opción
      * @param string $valor  Valor de la opción
@@ -34,7 +52,8 @@ class Opcion extends Model
         $data = array(
             'tipo'   => $tipo,
             'nombre' => $nombre,
-            'valor'  => $valor
+            'valor'  => $valor,
+            'creado' => date('Y-m-d H:m:s')
         );
         return $this->_insert($data);
     }

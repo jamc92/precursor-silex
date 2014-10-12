@@ -3,9 +3,10 @@
 # Autocargador del framework
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Silex\Application;
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
-use Precursor\WidgetExtension;
+use Precursor\WidgetExtension,
+    Silex\Application,
+    Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder,
+    Precursor\Application\Model\Usuario;
 
 # Objeto de la aplicacion Silex
 $app = new Application();
@@ -31,15 +32,6 @@ $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 # Proveedor para el uso de variables de sesion
 $app->register(new Silex\Provider\SessionServiceProvider());
-# Obtener el usuario en todo lugar
-$app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($app) {
-    $token = $app['security']->getToken();
-    $app['user'] = null;
-
-    if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
-        $app['user'] = $token->getUser();
-    }
-});
 # Proveedor de seguridad de acceso a las url
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls'      => array(
@@ -81,6 +73,21 @@ $app->register(new Precursor\Provider\PrecursorFilesProvider(), array(
         'folders.protected' => Precursor\Options\Explorer::getProtectedFolders(),
     )
 ));
+# Obtener el usuario en todo lugar
+$app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($app) {
+    $token = $app['security']->getToken();
+    $app['user'] = null;
+
+    if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
+        $app['user']  = $token->getUser();
+        
+        $usuarioModel = new Usuario($app['db']);
+        
+        $usuario = $usuarioModel->getUsuarioPorAlias($app['user']->getUsername());
+        
+        $app['user'] = $usuario;
+    }
+});
 
 if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
     $app['asset_path'] = 'http://precursor.esy.es/web/resources';
@@ -91,7 +98,7 @@ if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
 }
 
 $app['upload_dir'] = __DIR__ . "/resources/uploads/";
-$app['debug'] = true;
+$app['debug'] = false;
 
 require_once __DIR__ . '/routes/backend/base.php';
 require_once __DIR__ . '/routes/errors.php';

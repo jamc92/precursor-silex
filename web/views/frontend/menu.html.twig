@@ -14,6 +14,22 @@
                 <li {% if option is defined and option == 'home' %}class="active"{% endif %}>
                     <a href="{{ path('home') }}">Inicio</a>
                 </li>
+                {% for menu_item in menu_items %}
+                    <li class="{% if menu_item.dropdown %}dropdown{% endif %}{% if option is defined and option == menu_item.texto %}active{% endif %}">
+                        {% if menu_item.dropdown %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu_item.texto }} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                {% for submenu_item in menu_item.items %}
+                                    <li {% if option is defined and option == submenu_item.texto %}class="active"{% endif %}>
+                                        <a href="{{ submenu_item.link }}">{{ submenu_item.texto }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <a href="{{ menu_item.link }}">{{ menu_item.texto }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
                 {#<li>#}
                     {#<a href="#about">About</a>#}
                 {#</li>#}
@@ -36,7 +52,7 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.nombre }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
                                 <li>

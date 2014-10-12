@@ -11,6 +11,7 @@ namespace Precursor\Application\Controller\Frontend;
 
 use Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Categoria,
+    Precursor\Application\Model\Opcion\Menu,
     Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,11 +25,16 @@ class Base
      */
     public function index(Application $app)
     {
-        $categoriaModel = new Categoria($app['db']);
-        $categorias = $categoriaModel->getTodo(array(), array(), "WHERE id > 1");
+        $categoriaModelo = new Categoria($app['db']);
+        $categorias = $categoriaModelo->getTodo(array(), array(), "WHERE id > 1");
+        
+        $menuModelo = new Menu($app['db']);
+        $menuModelo->setMenu(1, 'menu');
+        
+        $menuItems = $menuModelo->getItems();
 
-        $articuloModel = new Articulo($app['db']);
-        $articulos = $articuloModel->getTodo();
+        $articuloModelo = new Articulo($app['db']);
+        $articulos = $articuloModelo->getTodo();
         
         $mesesIngles  = cal_info(0);
         $mesesEspanol = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
@@ -45,10 +51,11 @@ class Base
             
             $articulos[$index]['fecha_pub'] = $fechaPublicacion;
         }
-
+        
         return $app['twig']->render('frontend/index.html.twig', array(
+            'articulos'  => $articulos,
             'categorias' => $categorias,
-            'articulos' => $articulos
+            'menu_items' => $menuItems
         ));
     }
 } 

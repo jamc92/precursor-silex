@@ -280,12 +280,7 @@ class Model
     public function getPorId($id)
     {       
         if (!is_null($this->_table) && !is_null($id)) {
-            $this->_sql = $this->_queryBuilder
-                           ->select('*')
-                           ->from($this->_table, $this->_alias)
-                           ->where('WHERE id = :id')
-                           ->setParameter('id', $id)
-                           ->getSQL();
+            $this->_sql = "SELECT * FROM $this->_table WHERE id = $id";
             $row = $this->_select($this->_sql);
             return $row[0];
         }
