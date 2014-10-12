@@ -11,6 +11,7 @@ namespace Precursor\Application;
 use Doctrine\DBAL\Connection,
     Doctrine\DBAL\DBALException,
     Doctrine\DBAL\Driver\Statement,
+    Doctrine\DBAL\Query\QueryBuilder,
     \Exception;
 
 class Model
@@ -40,6 +41,11 @@ class Model
      * @var int $_lastId Último id que fue insertado en la tabla
      */
     protected $_lastId = 0;
+    
+    /**
+     * @var QueryBuilder $_queryBuilder
+     */
+    protected $_queryBuilder;
 
     /**
      * @var string $_sql SQL que se ejecuta al final de armarlo
@@ -64,6 +70,7 @@ class Model
     {
         if (!is_null($db)) {
             $this->_db = $db;
+            $this->_queryBuilder = $this->_db->createQueryBuilder();
         }
         if (!is_null($table)) {
             $this->_table = $table;
@@ -76,6 +83,14 @@ class Model
     public function db()
     {
         return $this->_db;
+    }
+    
+    /**
+     * @return QueryBuilder
+     */
+    public function queryBuilder()
+    {
+        return $this->_queryBuilder;
     }
 
     /**
@@ -272,6 +287,10 @@ class Model
     public function setTable($table)
     {
         $this->_table = $table;
+    }
+    
+    public function getTable() {
+        return $this->_table;
     }
 
 } 
