@@ -16,6 +16,7 @@ use OAuth\OAuth2\Service\Facebook,
     OAuth\ServiceFactory,
     OAuth\Common\Http\Exception\TokenResponseException,
     Precursor\Application\Model\Comentario,
+    Precursor\Application\Model\Opcion\Menu,
     Precursor\Application\Model\Usuario as UsuarioModelo,
     Precursor\Options\SocialsCredentials,
     Silex\Application,
@@ -70,6 +71,11 @@ class Usuario
             $serviceAuth = $serviceFactory->createService('google', $googleCredentials, $storage, array('userinfo_email', 'userinfo_profile'));
         }
         
+        $menuModelo = new Menu($app['db']);
+        $menuModelo->setMenu(1, 'menu');
+        
+        $menuItems = $menuModelo->getItems();
+        
         if ($request->get('code') && $service == 'facebook') {
             try {
                 // Callback de facebook para obtener el access token
@@ -84,7 +90,8 @@ class Usuario
             $usuario['service'] = 'facebook';
             
             return $app['twig']->render('frontend/signup.html.twig', array(
-                'usuario' => $usuario
+                'menu_items' => $menuItems,
+                'usuario'    => $usuario
             ));
         } else if ($request->get('code') && $service == 'google') {
             
@@ -101,7 +108,8 @@ class Usuario
             $usuario['service'] = 'google';
             
             return $app['twig']->render('frontend/signup.html.twig', array(
-                'usuario' => $usuario
+                'menu_items' => $menuItems,
+                'usuario'    => $usuario
             ));
         } else {
             return "<script> location.href = '{$serviceAuth->getAuthorizationUri()}'; </script>";
@@ -123,9 +131,15 @@ class Usuario
             $error_msg = "Usuario o contraseña incorrectos.";
         }
         
+        $menuModelo = new Menu($app['db']);
+        $menuModelo->setMenu(1, 'menu');
+        
+        $menuItems = $menuModelo->getItems();
+        
         return $app['twig']->render('frontend/login.html.twig', array(
-            'error' => $error_msg,
+            'error'         => $error_msg,
             'last_username' => $app['session']->get('_security.last_username'),
+            'menu_items'    => $menuItems
         ));
     }
     

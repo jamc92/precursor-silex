@@ -11,6 +11,7 @@ namespace Precursor\Application\Controller\Frontend;
 
 use Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Categoria,
+    Precursor\Application\Model\Opcion\Menu,
     Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,9 +53,15 @@ class Noticia
             $articulo['fecha_pub'] = $fechaPublicacion;
         }
         
+        $menuModelo = new Menu($app['db']);
+        $menuModelo->setMenu(1, 'menu');
+        
+        $menuItems = $menuModelo->getItems();
+        
         return $app['twig']->render('frontend/noticia.html.twig', array(
-            "articulo" => $articulo,
+            "articulo"   => $articulo,
             'categorias' => $categorias,
+            'menu_items' => $menuItems
         ));
     }
 
