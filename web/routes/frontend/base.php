@@ -9,6 +9,10 @@ $app->match('/login', 'Precursor\\Application\\Controller\\Frontend\\Usuario::lo
 $app->match('/signup', 'Precursor\\Application\\Controller\\Frontend\\Usuario::signup')
     ->bind('signup');
 
+$app->match('/auth/{service}', 'Precursor\\Application\\Controller\\Frontend\\Usuario::auth')
+    ->assert('service', '[a-z]+')
+    ->bind('auth_service');
+
 $app->match('/noticia/{id}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::ver')
     ->assert('idArticulo', '\d+')
     ->bind('noticia');
