@@ -21,6 +21,23 @@ class Articulo extends Model
     {
         parent::__construct($db, 'articulo');
     }
+    
+    /**
+     * @param string $orderBy
+     * @return array
+     */
+    public function getTodo($orderBy = 'fecha_pub')
+    {
+        $this->_queryBuilder
+                ->select(array('a.*', 'usuario.nombre as autor'))
+                ->from($this->_table, 'a')
+                ->innerJoin('a', 'usuario', '', 'a.id_autor = usuario.id')
+                ->orderBy($orderBy, 'DESC');
+        
+        $sql = $this->_queryBuilder->getSQL();
+        
+        return $this->_select($sql);
+    }
 
     /**
      * @param int $id Id del artículo

@@ -21,6 +21,11 @@ class Model
      * @var int $_affectedRows Filas afectadas en el sql
      */
     protected $_affectedRows = 0;
+    
+    /**
+     * @var string $_alias Alias de la tabla del modelo 
+     */
+    protected $_alias;
 
     /**
      * @var Connection $_db Objeto de la conección a base de datos de Silex
@@ -273,12 +278,25 @@ class Model
      * @return array  Arreglo asociativo del registro
      */
     public function getPorId($id)
-    {
+    {       
         if (!is_null($this->_table) && !is_null($id)) {
-            $this->_sql = "SELECT * FROM $this->_table";
-            $row = $this->_select($this->_sql, array(), 'WHERE id = ?', array($id));
+            $this->_sql = $this->_queryBuilder
+                           ->select('*')
+                           ->from($this->_table, $this->_alias)
+                           ->where('WHERE id = :id')
+                           ->setParameter('id', $id)
+                           ->getSQL();
+            $row = $this->_select($this->_sql);
             return $row[0];
         }
+    }
+
+    /**
+     * @param string $alias Alias de la tabla
+     */
+    public function setAlias($alias)
+    {
+        $this->_alias = $alias;
     }
 
     /**
@@ -287,10 +305,6 @@ class Model
     public function setTable($table)
     {
         $this->_table = $table;
-    }
-    
-    public function getTable() {
-        return $this->_table;
     }
 
 } 
