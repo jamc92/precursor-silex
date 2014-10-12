@@ -1,14 +1,13 @@
-
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Oct 08, 2014 at 02:14 PM
--- Server version: 10.0.12-MariaDB
--- PHP Version: 5.2.17
+-- Servidor: localhost
+-- Tiempo de generación: 12-10-2014 a las 17:33:48
+-- Versión del servidor: 5.6.16
+-- Versión de PHP: 5.5.11
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -18,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `precursorbd`
+-- Base de datos: `precursorbd`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `articulo`
+-- Estructura de tabla para la tabla `articulo`
 --
 
 CREATE TABLE IF NOT EXISTS `articulo` (
@@ -44,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `articulo` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=7 ;
 
 --
--- Dumping data for table `articulo`
+-- Volcado de datos para la tabla `articulo`
 --
 
 INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`, `modificado`) VALUES
@@ -58,7 +57,7 @@ INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `imagen`, `titulo`, `d
 -- --------------------------------------------------------
 
 --
--- Table structure for table `articulos_etiquetas`
+-- Estructura de tabla para la tabla `articulos_etiquetas`
 --
 
 CREATE TABLE IF NOT EXISTS `articulos_etiquetas` (
@@ -71,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `articulos_etiquetas` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `articulos_etiquetas`
+-- Volcado de datos para la tabla `articulos_etiquetas`
 --
 
 INSERT INTO `articulos_etiquetas` (`id`, `id_articulo`, `id_etiqueta`) VALUES
@@ -80,7 +79,7 @@ INSERT INTO `articulos_etiquetas` (`id`, `id_articulo`, `id_etiqueta`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categoria`
+-- Estructura de tabla para la tabla `categoria`
 --
 
 CREATE TABLE IF NOT EXISTS `categoria` (
@@ -94,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=8 ;
 
 --
--- Dumping data for table `categoria`
+-- Volcado de datos para la tabla `categoria`
 --
 
 INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`) VALUES
@@ -108,7 +107,7 @@ INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`)
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comentario`
+-- Estructura de tabla para la tabla `comentario`
 --
 
 CREATE TABLE IF NOT EXISTS `comentario` (
@@ -124,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `comentario` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `comentario`
+-- Volcado de datos para la tabla `comentario`
 --
 
 INSERT INTO `comentario` (`id`, `id_articulo`, `id_autor`, `asunto`, `contenido`, `fecha`) VALUES
@@ -133,7 +132,7 @@ INSERT INTO `comentario` (`id`, `id_articulo`, `id_autor`, `asunto`, `contenido`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `etiqueta`
+-- Estructura de tabla para la tabla `etiqueta`
 --
 
 CREATE TABLE IF NOT EXISTS `etiqueta` (
@@ -145,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `etiqueta` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=10 ;
 
 --
--- Dumping data for table `etiqueta`
+-- Volcado de datos para la tabla `etiqueta`
 --
 
 INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
@@ -161,7 +160,7 @@ INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `imagen`
+-- Estructura de tabla para la tabla `imagen`
 --
 
 CREATE TABLE IF NOT EXISTS `imagen` (
@@ -175,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `imagen` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Imágenes del periódico' AUTO_INCREMENT=9 ;
 
 --
--- Dumping data for table `imagen`
+-- Volcado de datos para la tabla `imagen`
 --
 
 INSERT INTO `imagen` (`id`, `nombre`, `link`, `imagen`, `creado`, `modificado`) VALUES
@@ -189,7 +188,7 @@ INSERT INTO `imagen` (`id`, `nombre`, `link`, `imagen`, `creado`, `modificado`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `opcion`
+-- Estructura de tabla para la tabla `opcion`
 --
 
 CREATE TABLE IF NOT EXISTS `opcion` (
@@ -201,12 +200,19 @@ CREATE TABLE IF NOT EXISTS `opcion` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `opcion`
+--
+
+INSERT INTO `opcion` (`id`, `tipo`, `nombre`, `valor`, `creado`, `modificado`) VALUES
+(1, 'js', 'menu', '[{"texto":"adsadsa","link":"http:\\/\\/link","dropdown":false},{"texto":"adsadsa","link":"http:\\/\\/link","dropdown":true, "items": [{"texto":"adsadsa","link":"http:\\/\\/link","dropdown":false}, {"texto":"adsadsa","link":"http:\\/\\/link","dropdown":false}]}]', '0000-00-00 00:00:00', '2014-10-12 21:35:05');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `perfil`
+-- Estructura de tabla para la tabla `perfil`
 --
 
 CREATE TABLE IF NOT EXISTS `perfil` (
@@ -218,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `perfil` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `perfil`
+-- Volcado de datos para la tabla `perfil`
 --
 
 INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
@@ -229,7 +235,7 @@ INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `usuario`
 --
 
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -243,10 +249,10 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la modificación del registro',
   PRIMARY KEY (`id`),
   KEY `id_perfil` (`id_perfil`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=10 ;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES
@@ -254,7 +260,8 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 (2, 1, 'Javier Madrid', 'javiermadrid19@hotmail.com', 'jamc92', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:12:15', '2014-07-03 19:02:24'),
 (3, 1, 'Sander Rodríguez', 'sander@gmail.com', 'sander', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:15:08', '2014-07-03 19:02:30'),
 (4, 2, 'Administrador', 'admin@precursor', 'admin', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-14 15:30:14', '2014-07-14 20:00:24'),
-(5, 3, 'Usuario', 'usuario@precursor', 'usuario', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:16:05', '2014-07-14 19:59:31');
+(5, 3, 'Usuario', 'usuario@precursor', 'usuario', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', '2014-07-03 13:16:05', '2014-07-14 19:59:31'),
+(9, 4, 'Ramón', 'ramon_calle-88@hotmail.com', 'admin1', 'nhDr7OyKlXQju+Ge/WKGrPQ9lPBSUFfpK+B1xqx/+8zLZqRNX0+5G1zBQklXUFy86lCpkAofsExlXiorUcKSNQ==', '0000-00-00 00:00:00', '2014-10-12 08:23:22');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
