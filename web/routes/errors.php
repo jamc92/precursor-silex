@@ -26,3 +26,7 @@ $app->error(function (NotFoundHttpException $notFoundHttpException, $code) {
 $app->error(function (MethodNotAllowedHttpException $methodNotAllowedHttpException, $code) {
     return new Response($methodNotAllowedHttpException->getMessage());
 });
+
+$app->error(function (Twig_Error_Loader $twigError) {
+    return new Response($twigError->getMessage());
+});
