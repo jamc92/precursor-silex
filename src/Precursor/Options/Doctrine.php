@@ -28,4 +28,21 @@ class Doctrine
         );
     }
     
+    /**
+     * Get the production doctrine options
+     *
+     * @return array
+     */
+    static function getProductionOptions()
+    {
+        return array(
+            'driver'   => 'pdo_mysql',
+            'dbname'   => 'u135147224_bd',
+            'host'     => 'mysql.hostinger.es',
+            'user'     => 'u135147224_bd',
+            'password' => 'precursor',
+            'charset'  => 'utf8',
+        );
+    }
+    
 }

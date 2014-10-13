@@ -63,7 +63,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 # Proveedor de doctrine para base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => array(
-        'db' => Precursor\Options\Doctrine::getOptions()
+        'db' => Precursor\Options\Doctrine::getProductionOptions()
     )
 ));
 # Proveedor de archivos del Precursor

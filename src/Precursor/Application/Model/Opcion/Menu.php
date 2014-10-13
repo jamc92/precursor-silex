@@ -60,8 +60,14 @@ class Menu extends Opcion {
         return $this->_items;
     }
 
+	/**
+	 * @param string $texto        Texto que muestra el item
+	 * @param string $link         Url relativo o específico item
+	 * @param boolean $dropdown    Dropdown o no
+	 * @param array $dropdownItems Dropdown items
+	 */
     public function guardarItem($texto, $link, $dropdown = false, array $dropdownItems = array()) {
-        if (!empty(func_get_args())) {
+        if ((!is_null($texto) && !is_null($link))) {
             $itemMenu = new stdClass();
             
             $itemMenu->texto    = $texto;
