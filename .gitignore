@@ -1,5 +1,6 @@
 /.idea/
 /nbproject/
+/src/Precursor/Options/Doctrine.php
 /src/app.php
 /web/index.php
 /web/resources/uploads
