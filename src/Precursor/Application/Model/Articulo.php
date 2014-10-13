@@ -87,7 +87,7 @@ class Articulo extends Model
             );
         }
         $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
-        $articulos = $this->getTodo($fields, $join);
+        $articulos = parent::getTodo($fields, $join);
         
         $comentarioModelo = new Comentario($this->_db);
         foreach ($articulos as $i => $articulo) {
@@ -124,7 +124,7 @@ class Articulo extends Model
         $filasAfectadas = $this->_insert($data);
 
         if ($filasAfectadas == 1 && !empty($etiquetas)) {
-            $articulo = $this->getTodo(array('MAX(id) as id'));
+            $articulo = parent::getTodo(array('MAX(id) as id'));
 
             $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
 
