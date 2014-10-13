@@ -46,7 +46,7 @@ class Noticia
             );
             return $app->redirect($app['url_generator']->generate('home'));
         } else {
-            $fechaPublicacion = date('d-F-Y | h:m:s A', strtotime($articulo['fecha_pub']));
+            $fechaPublicacion = date('d-F-Y | h:m A', strtotime($articulo['fecha_pub']));
             $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
             $fechaPublicacion = str_replace($mesesIngles['months'], $mesesEspanol, $fechaPublicacion);
             
