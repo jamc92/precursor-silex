@@ -47,12 +47,15 @@
                                             <ol class="dd-list">
                                                 {% for menu_item in menu_items %}
                                                     <li class="dd-item dd3-item" data-id="{{ menu_item.id }}" data-link="{{ menu_item.link }}" data-texto="{{ menu_item.texto }}">
-                                                        <div class="dd-handle dd3-handle">Arrastra</div><div class="dd3-content">{{ menu_item.texto }}</div>
+                                                        <div class="dd-handle dd3-handle">Arrastra</div>
+                                                        <div class="dd3-content">{{ menu_item.texto }}</div>
                                                         {% if menu_item.children is defined %}
                                                             <ol class="dd-list">
                                                                 {% for submenu_item in menu_item.children %}
                                                                     <li class="dd-item dd3-item" data-id="{{ submenu_item.id }}" data-link="{{ submenu_item.link }}" data-texto="{{ submenu_item.texto }}">
-                                                                        <div class="dd-handle dd3-handle">Arrastra</div><div class="dd3-content">{{ submenu_item.texto }}</div>
+                                                                        <div class="dd-handle dd3-handle">Arrastra</div>
+                                                                        <div class="dd3-content">{{ submenu_item.texto }}</div>
+                                                                        <div class="dd3-remove">Eliminar</div>
                                                                     </li>
                                                                 {% endfor%}
                                                             </ol>
@@ -70,8 +73,9 @@
                                 {% if esEjemplo %}
                                     <button type="button" id="guardar" class="btn btn-primary">Guardar</button>
                                 {% else %}
-                                    <button type="button" id="actualizar" class="btn btn-primary">Actualizar</button>
+                                    <button type="button" id="guardar" class="btn btn-primary">Actualizar</button>
                                 {% endif %}
+                                <div class="response"></div>
                             </div>
                         </div><!-- /.box -->
                 </div>
@@ -105,7 +109,11 @@
             updateOutput($('#menu').data('output', $('#menu-output')));
 
             $('#guardar').click(function() {
-                
+                var items = $('#menu-output').val();
+                var success = function(response) {
+                    $('.response').html(response).fadeOut(10000);
+                };
+                ajaxRequest('.response', '{{ path("menu_guardar") }}', { 'items': items }, true, true, false, false, false, success);
             });
             
             $('form#agregar-item').submit(function(evt) {
@@ -124,6 +132,10 @@
                 $('#link').val('');
                 
                 $('#menu ol:first').append(lista)
+            });
+            
+            $('.dd3-remove').click(function() {
+                $(this).parent().remove();
             });
             
         });

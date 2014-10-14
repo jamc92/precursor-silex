@@ -32,11 +32,12 @@ class Menu extends Opcion {
 
     /**
      * @param Connection $db Objeto de la conección de doctrine con la base de datos
+     * @param int $id        Id de la opción
      */
-    public function __construct(Connection $db) {
+    public function __construct(Connection $db, $id = null) {
         parent::__construct($db);
         
-        $this->_id     = 1;
+        $this->_id     = $id;
         $this->_nombre = 'menu';
         
         $opcion  = $this->getOpcion($this->_id, $this->_nombre);
@@ -45,6 +46,22 @@ class Menu extends Opcion {
             $this->_items = json_decode($opcion['valor']);
         }
         
+    }
+    
+    /**
+     * @param int $id Id del menú
+     */
+    public function setId($id)
+    {
+        $this->_id = $id;
+    }
+
+    /**
+     * @param int $nombre Nombre del menú
+     */
+    public function setNombre($nombre)
+    {
+        $this->_nombre = $nombre;
     }
     
     /**

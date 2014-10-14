@@ -11,7 +11,8 @@ namespace Precursor\Application\Controller\Backend;
 
 use Precursor\Application\Model\Opcion\Menu as MenuModelo,
     Silex\Application,
-    Symfony\Component\HttpFoundation\Request;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response;
 
 class Menu
 {
@@ -47,18 +48,35 @@ class Menu
         }
     }
     
+    /**
+     * @param Application $app
+     * @param Request $request
+     * 
+     * @return Response
+     */
     public function guardar(Application $app, Request $request)
     {
         $menuModelo = new MenuModelo($app['db']);
         
-        $menuItems = $menuModelo->getItems();
-        
-        if (!empty($menuItems)) {
-            
-        }
+        $itemsActual = $menuModelo->getItems();
         
         $items = $request->get('items');
         
+        if (!empty($itemsActual)) {
+            $menu = $menuModelo->getOpcion(null, 'menu');
+            
+            $menuModelo->setId($menu['id']);
+            
+            $filasAfectadas = $menuModelo->modificar($items);
+        } else {
+            $filasAfectadas = $menuModelo->guardar($items);
+        }
+        
+        if ($filasAfectadas) {
+            return new Response('Guardado exitosamente.');
+        } else {
+            return new Response('');
+        }
     }
     
 }
