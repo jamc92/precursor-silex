@@ -15,8 +15,8 @@
                     <a href="{{ path('home') }}">Inicio</a>
                 </li>
                 {% for menu_item in menu_items %}
-                    <li class="{% if menu_item.dropdown %}dropdown{% endif %}{% if option is defined and option == menu_item.texto %}active{% endif %}">
-                        {% if menu_item.dropdown %}
+                    <li class="{% if menu_item.children is defined %}dropdown{% endif %}{% if option is defined and option == menu_item.texto %}active{% endif %}">
+                        {% if menu_item.children is defined %}
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu_item.texto }} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 {% for submenu_item in menu_item.items %}

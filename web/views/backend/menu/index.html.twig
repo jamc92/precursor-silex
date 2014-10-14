@@ -49,6 +49,7 @@
                                                     <li class="dd-item dd3-item" data-id="{{ menu_item.id }}" data-link="{{ menu_item.link }}" data-texto="{{ menu_item.texto }}">
                                                         <div class="dd-handle dd3-handle">Arrastra</div>
                                                         <div class="dd3-content">{{ menu_item.texto }}</div>
+                                                        <div class="dd3-remove">Eliminar</div>
                                                         {% if menu_item.children is defined %}
                                                             <ol class="dd-list">
                                                                 {% for submenu_item in menu_item.children %}
@@ -66,7 +67,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <textarea id="menu-output" cols="100" class="hide"></textarea>
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
@@ -109,7 +109,7 @@
             updateOutput($('#menu').data('output', $('#menu-output')));
 
             $('#guardar').click(function() {
-                var items = $('#menu-output').val();
+                var items = $('#menu').nestable('serialize');
                 var success = function(response) {
                     $('.response').html(response).fadeOut(10000);
                 };

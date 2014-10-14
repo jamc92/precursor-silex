@@ -79,7 +79,7 @@ class Menu extends Opcion {
      */
     public function guardar($items)
     {
-        return parent::guardar('js', $this->_nombre, $items);
+        return parent::guardar('js', $this->_nombre, json_encode($items));
     }
     
     /**
@@ -89,7 +89,7 @@ class Menu extends Opcion {
      */
     public function modificar($items)
     {
-        return parent::modificar($this->_id, 'js', $this->_nombre, $items);
+        return parent::modificar($this->_id, 'js', $this->_nombre, json_encode($items));
     }
 
 }
