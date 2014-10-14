@@ -45,7 +45,7 @@ class Base
             $articulos[$index]['titulo']    = strtolower($articulo['titulo']);
             $articulos[$index]['titulo'][0] = strtoupper($articulo['titulo'][0]);
             
-            $fechaPublicacion = date('d-F-Y | h:m:s A', strtotime($articulo['fecha_pub']));
+            $fechaPublicacion = date('d-F-Y | h:m A', strtotime($articulo['fecha_pub']));
             $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
             $fechaPublicacion = str_replace($mesesIngles['months'], $mesesEspanol, $fechaPublicacion);
             
