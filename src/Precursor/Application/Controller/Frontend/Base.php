@@ -27,11 +27,6 @@ class Base
     {
         $categoriaModelo = new Categoria($app['db']);
         $categorias = $categoriaModelo->getTodo(array(), array(), "WHERE id > 1");
-        
-        $menuModelo = new Menu($app['db']);
-        $menuModelo->setMenu(1, 'menu');
-        
-        $menuItems = $menuModelo->getItems();
 
         $articuloModelo = new Articulo($app['db']);
         $articulos = $articuloModelo->getTodo();
@@ -51,6 +46,10 @@ class Base
             
             $articulos[$index]['fecha_pub'] = $fechaPublicacion;
         }
+        
+        $menuModelo = new Menu($app['db']);
+        
+        $menuItems = $menuModelo->getItems();
         
         return $app['twig']->render('frontend/index.html.twig', array(
             'articulos'  => $articulos,

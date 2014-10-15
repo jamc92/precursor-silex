@@ -9,13 +9,10 @@
 
 namespace Precursor\Application\Controller\Frontend;
 
-use OAuth\OAuth2\Service\Facebook,
-    OAuth\OAuth2\Service\Google,
-    OAuth\Common\Storage\Session,
+use OAuth\Common\Storage\Session,
     OAuth\Common\Consumer\Credentials,
     OAuth\ServiceFactory,
     OAuth\Common\Http\Exception\TokenResponseException,
-    Precursor\Application\Model\Comentario,
     Precursor\Application\Model\Opcion\Menu,
     Precursor\Application\Model\Usuario as UsuarioModelo,
     Precursor\Options\SocialsCredentials,
@@ -132,7 +129,6 @@ class Usuario
         }
         
         $menuModelo = new Menu($app['db']);
-        $menuModelo->setMenu(1, 'menu');
         
         $menuItems = $menuModelo->getItems();
         
