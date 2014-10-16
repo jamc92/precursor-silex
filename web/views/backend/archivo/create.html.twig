@@ -92,14 +92,26 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ app.asset_path }}/css/filedrop/filedrop.css" rel="stylesheet" type="text/css">
+    <style>
+        #editor {
+            position:absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ app.asset_path }}/js/plugins/ace/ace.js" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
-            
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/php");
         });
+        
         function crear(id, contenido) {
             $.ajax({
                 url: '{{ path("archivo_create") }}',
