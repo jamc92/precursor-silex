@@ -31,8 +31,8 @@ class Menu
 
         if (!empty($menuItems)) {
             return $app['twig']->render('backend/menu/index.html.twig', array(
-                        'menu_items' => $menuItems,
-                        'esEjemplo'  => false
+                'menu_items' => $menuItems,
+                'esEjemplo'  => false
             ));
         } else {
             // Mostrar ejemplo de menú
@@ -42,8 +42,8 @@ class Menu
             $menuItems = json_decode($menu);
 
             return $app['twig']->render('backend/menu/index.html.twig', array(
-                        'menu_items' => $menuItems,
-                        'esEjemplo'  => true
+                'menu_items' => $menuItems,
+                'esEjemplo'  => true
             ));
         }
     }
