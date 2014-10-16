@@ -113,6 +113,19 @@
             <li {% if option is defined and option == 'usuario_create' %}class="active"{% endif %}><a href="{{ path('usuario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
         </ul>
     </li>
+{% elseif is_granted('ROLE_ADMIN') %}
+    <li class="treeview {% if option is defined and option == 'menu' %}active{% endif %}">
+        <a href="#">
+            <i class="fa fa-gears"></i>
+            <span>Opciones</span>
+            <i class="fa pull-right fa-angle-right"></i>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li {% if option is defined and option == 'menu' %}class="active"{% endif %}>
+                <a href="{{ path('menu_index') }}" style="margin-left: 10px;"><i class="fa fa-bars"></i> Menú</a>
+            </li>
+        </ul>
+    </li>
 {% endif %}
 
 <li>

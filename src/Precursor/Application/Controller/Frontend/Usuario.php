@@ -69,7 +69,6 @@ class Usuario
         }
         
         $menuModelo = new Menu($app['db']);
-        $menuModelo->setMenu(1, 'menu');
         
         $menuItems = $menuModelo->getItems();
         
