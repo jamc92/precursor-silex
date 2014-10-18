@@ -37,13 +37,12 @@
 {% block container %}
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <div class="container-fluid">
-            <div class="row-fluid col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12">
-                {% block menu %}
-                    {% include 'frontend/menu.html.twig' %}
-                {% endblock %}
-                <div class="container">
-                    {% block content %}{% endblock %}
-                </div>
+            {% block menu %}
+                {% include 'frontend/menu.html.twig' %}
+            {% endblock %}
+            {% block slider %}{% endblock %}
+            <div class="container">
+                {% block content %}{% endblock %}
             </div>
         </div>
     </div>
