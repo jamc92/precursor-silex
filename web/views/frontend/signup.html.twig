@@ -26,7 +26,7 @@
                        placeholder="Introduzca su nombre"
                        required>
             </div>
-            <div>&nbsp;</div>
+            <div class="input-group">&nbsp;</div>
             <div class="input-group">
                 <label for="Usuario_apellido" class="btn btn-default input-group-addon"><b>Apellido:</b></label>
                 <input type="text"
@@ -41,7 +41,7 @@
                        placeholder="Introduzca su apellido"
                        required>
             </div>
-            <div>&nbsp;</div>
+            <div class="input-group">&nbsp;</div>
             <div class="input-group">
                 <label for="Usuario_correo" class="btn btn-default input-group-addon"><b>Correo:</b></label>
                 <input type="email"
@@ -52,7 +52,7 @@
                        placeholder="Introduzca su correo electrónico"
                        required>
             </div>
-            <div>&nbsp;</div>
+            <div class="input-group">&nbsp;</div>
             <div class="input-group">
                 <label for="Usuario_alias" class="btn btn-default input-group-addon"><b>Alias:</b></label>
                 <input type="text"
@@ -62,7 +62,7 @@
                        placeholder="Introduzca su alias de usuario"
                        required>
             </div>
-            <div>&nbsp;</div>
+            <div class="input-group">&nbsp;</div>
             <div class="input-group">
                 <label for="Usuario_clave" class="btn btn-default input-group-addon"><b>Clave:</b></label>
                 <input type="password"
@@ -72,7 +72,7 @@
                        placeholder="Introduzca su clave"
                        required>
             </div>
-            <div>&nbsp;</div>
+            <div class="input-group">&nbsp;</div>
             <div class="input-group">
                 <label for="Usuario_clave2" class="btn btn-default input-group-addon"><b>Repetir clave:</b></label>
                 <input type="password"
@@ -82,7 +82,7 @@
                        placeholder="Repita su clave"
                        required>
             </div>
-            <div>&nbsp;</div>
+            <div class="input-group">&nbsp;</div>
             <div class="response"></div>
             <div class="input-group">
                 <button class="btn btn-success" type="submit">Registrarse</button>
@@ -118,15 +118,11 @@
                     },
                     success: function(response) {
                         $('.response').html('<div class="alert alert-success"><i class="fa fa-check"></i><b>' + response + '</b></div>');
-                        $('input').each(function() {
-                            $(this).val('');
-                        });
+                        $('form.form-signup .input-group, form.form-signup h2.page-header, form.form-signup hr').hide();
                     },
                     error: function(xhr) {
-                        
-                        var response = JSON.parse(xhr.responseText);
-                        
                         if (xhr.status == 400) {
+                            var response = JSON.parse(xhr.responseText);
                             $('.response').html('<div class="alert alert-danger"><i class="fa ion-close"></i><b>' + response.mensaje + '</b></div>');
                         } else if (xhr.status == 500) {
                             $('.response').html(xhr.response);
