@@ -37,16 +37,12 @@
                                         {{ form_errors(form) }}
 
                                         <div class='form-group'>
-                                            {{ form_label(form.nombre) }}
+                                            {{ form_label(form.nombre, 'Nombre del archivo') }}
                                             {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
                                         </div>
-
-                                        <div class='form-group'>
-                                            {{ form_label(form.contenido) }}
-                                            {{ form_widget(form.contenido, { attr: { 'class': 'form-control', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
-                                        </div>
                                         
-                                        <div class='form-group'>
+                                        <div class='form-group row-fluid editorContent'>
+                                            <label for="editor">Contenido del archivo</label>
                                             <div id="editor"></div>
                                         </div>
 
@@ -93,12 +89,14 @@
     {{ parent() }}
     <link href="{{ app.asset_path }}/css/filedrop/filedrop.css" rel="stylesheet" type="text/css">
     <style>
+        .editorContent {
+            height: 200px;
+            position: relative;
+            margin-bottom: 50px;
+        }
         #editor {
-            position:absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 {% endblock %}
@@ -110,25 +108,32 @@
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/php");
+            // obtener contenido
+            //editor.getValue()
         });
         
-        function crear(id, contenido) {
-            $.ajax({
-                url: '{{ path("archivo_create") }}',
-                data: {
-                    'form[nombre]': $("#form_nombre").val(),
-                    'form[contenido]': contenido,
-                    'form[_token]': $("#form__token").val()
-                },
-                error: function(xhr) {
-                    console.log(xhr);
-                },
-                success: function(data) {
-                    console.log(data);
-                },
-                type: 'PUT'
-            });
-        }
+        $('#crear').on('click', function() {
+            
+            var contenido = ace.edit('editor').getValue();
+            
+            if (contenido != "") {
+                $.ajax({
+                    url: '{{ path("archivo_create") }}',
+                    data: {
+                        'form[nombre]': $("#form_nombre").val(),
+                        'form[contenido]': contenido,
+                        'form[_token]': $("#form__token").val()
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    type: 'POST'
+                });
+            }
+        });
     </script>
     <script src="{{ app.asset_path }}/js/plugins/filedrop/jquery.filedrop.js"></script>
     <script>
