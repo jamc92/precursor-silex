@@ -22,7 +22,13 @@ header, .header, footer, .footer {
     min-height:1em;
     padding: 1em 2em 2em;
 }
-
+/* thumbnail */
+.thumbnail {
+    height: 400px;
+}
+.thumbnail img {
+    height: 200px;
+}
 /* Sidebar admin */
 div.container .row-fluid .sidebar {
     background-color: rgba(0,0,0,.05);
