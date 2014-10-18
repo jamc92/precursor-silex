@@ -175,6 +175,25 @@ class Usuario
                 $filasAfectadas = $usuarioModelo->guardarUsuario($data['nombre'], $data['correo'], $data['alias'], $clave);
 
                 if ($filasAfectadas == 1) {
+                    # Transporte SMTP/Gmail con ssl
+                    $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+                            ->setUsername("ramon.calle.88@gmail.com")
+                            ->setPassword("ramoncito.1");
+                    # Instancia de Swift_Mailer
+                    $mailer = Swift_Mailer::newInstance($transport);
+                    # Instancia de Swift_Message que sera el mensae del correo
+                    $mailMessage = Swift_Message::newInstance($asunto)
+                            ->setFrom(array($correo => $nombre))
+                            ->setTo('tania_1019@hotmail.com')
+                            ->setBody($mensaje, 'text/html');
+                    $result = $mailer->send($mailMessage);
+                    
+                    if ($result) {
+                        
+                    } else {
+                        
+                    }
+                    
                     return new JsonResponse('El registro fue exitoso.');
                 } else {
                     return new JsonResponse('Ocurrió un problema en el servidor y no se pudo registrar el usuario. Intente más tarde.', 500);

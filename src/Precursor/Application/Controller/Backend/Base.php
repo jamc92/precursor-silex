@@ -27,4 +27,11 @@ class Base
         return $app['twig']->render('ag_dashboard.html.twig', array());
     }
     
+    public function pruebas(Request $request, Application $app)
+    {
+        $log = new \Precursor\Provider\PrecursorLog();
+        
+        var_dump($log);
+    }
+    
 }
