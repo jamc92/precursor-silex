@@ -20,6 +20,11 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $twig->addExtension(new WidgetExtension());
     return $twig;
 }));
+# Proveedor de logs
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.name'    => 'El Precursor',
+    'monolog.logfile' => __DIR__ . '/elprecursor.log'
+));
 # Proveedor de Formularios
 $app->register(new Silex\Provider\FormServiceProvider());
 # Proveedor de Traducciones
@@ -32,6 +37,8 @@ $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 # Proveedor para el uso de variables de sesion
 $app->register(new Silex\Provider\SessionServiceProvider());
+# Proveedor para el envío de correos
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
 # Proveedor de seguridad de acceso a las url
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls'      => array(
