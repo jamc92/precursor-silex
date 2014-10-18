@@ -120,6 +120,9 @@ class Model
     {
         if (!is_null($this->_table)) {
             $this->_affectedRows = $this->_db->insert($this->_table, $data);
+            if ($this->_affectedRows > 0) {
+                $this->_lastId = $this->_db->lastInsertId();
+            }
             return $this->_affectedRows;
         }
     }
