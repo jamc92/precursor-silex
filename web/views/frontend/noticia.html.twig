@@ -6,7 +6,7 @@
     <div class="col-12 col-sm-8 col-lg-8">
 
         <!-- the actual blog post: title/author/date/content -->
-        <h1 class="page-header">{{ articulo.titulo }}</h1>
+        <h1 class="blog-title">{{ articulo.titulo|capitalize }}</h1>
         <p>
             Por <a href="index.php">{{ articulo.autor }}</a> <span class="glyphicon glyphicon-time"></span> {{ articulo.fecha_pub }}
         </p>
@@ -15,11 +15,41 @@
         <hr>
         <p class="lead">{{ articulo.descripcion }}</p>
 
-        <div class="row" style="overflow: hidden">
+        <div class="row-fluid" style="overflow: hidden">
             {{ articulo.contenido|raw }}
         </div>
+        
+        <div class="row-fluid compartir">
+            <div class="lead">Compartir: </div>
+            <div class="redes-sociales">
+                <a href="http://www.facebook.com/sharer/sharer.php?url={{ app.request.uri }}" 
+                   class="btn btn-primary facebook" 
+                   target="_blank" 
+                   title="Compartir en facebook">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="https://plus.google.com/share?url={{ app.request.uri }}" 
+                   class="btn btn-danger google" 
+                   target="_blank" 
+                   title="Compartir en Google Plus">
+                    <i class="fa fa-google-plus"></i>
+                </a>
+                <a href="https://twitter.com/share={{ app.request.uri }}" 
+                   class="btn btn-info twitter" 
+                   target="_blank"
+                   title="Compartir en Twitter">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <a href="mailto:body={{ app.request.uri }}" 
+                   class="btn btn-success correo"
+                   title="Enviar por correo electrónico">
+                    <i class="fa fa-envelope"></i>
+                </a>
+            </div>
+        </div>
 
-        <p><strong>Noticias Relacionadas</strong>
+        <p>
+            <strong>Noticias Relacionadas</strong>
         </p>
         <ul>
             <li><a href="http://spaceipsum.com/">Tecnología</a>
@@ -28,10 +58,10 @@
             </li>
         </ul>
 
-        <hr class="row">
+        <hr class="row-fluid">
 
         <!-- the comment box -->
-        <div class="row well">
+        <div class="row-fluid well">
             <h4>Comentar</h4>
             <form id="comentario_form">
                 <div class="form-group">
@@ -42,10 +72,10 @@
             </form>
         </div>
 
-        <hr class="row">
+        <hr class="row-fluid">
 
         <!-- Los comentarios -->
-        <div class="row" id="comentarios"></div>
+        <div class="row-fluid" id="comentarios"></div>
 
     </div>
     <div class="col-12 col-sm-4 col-lg-4 pull-right" id="sidebar">
@@ -142,5 +172,6 @@
 
             ajaxRequest('#comentarios', url, data, false, false, null, null, null, success);
         });
+        $('.redes-sociales a').tooltip();
     </script>
 {% endblock %}

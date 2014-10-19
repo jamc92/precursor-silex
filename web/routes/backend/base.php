@@ -15,3 +15,6 @@ require_once __DIR__ . '/usuario.php';
 
 $app->match('/admin', 'Precursor\\Application\\Controller\\Backend\\Base::index')
     ->bind('admin');
+
+$app->match('/admin/pruebas', 'Precursor\\Application\\Controller\\Backend\\Base::pruebas')
+    ->bind('pruebas');

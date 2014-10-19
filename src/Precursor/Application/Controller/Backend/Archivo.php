@@ -67,42 +67,37 @@ class Archivo
      */
     public function agregar(Request $request, Application $app)
     {
-        if("POST" == $request->getMethod()){
-
-            $upload = new Upload('\\Precursor\\File\\Upload\\Php', array(
-                'ignore_uploads' => true,
-                'upload_dir'     => dirname(dirname(__DIR__)) . "/DeveloperFile/"
-            ));
-
-            $result = $upload->file()->upload($_FILES['php']);
-
-            die(json_encode(array('status' => $result['status'])));
-
-        }
-
         $initial_data = array(
-            'contenido' => '',
             'nombre'    => ''
         );
 
+        /* @var Symfony\Component\Form\FormFactory */
         $form = $app['form.factory']->createBuilder('form', $initial_data);
 
-        $form = $form->add('contenido', 'textarea', array());
         $form = $form->add('nombre', 'text', array('required' => true));
 
         $form = $form->getForm();
+        
+        if("POST" == $request->getMethod()) {
+            if (!empty($_FILES)) {
+                $upload = new Upload('\\Precursor\\File\\Upload\\Php', array(
+                    'ignore_uploads' => true,
+                    'upload_dir'     => dirname(dirname(__DIR__)) . "/DeveloperFile/"
+                ));
 
-        if ('PUT' == $request->getMethod()) {
-            $form->handleRequest($request);
+                $result = $upload->file()->upload($_FILES['php']);
 
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                print_r($data);
-                die;
-                return '';
+                die(json_encode(array('status' => $result['status'])));
+            } else {
+                $form->handleRequest($request);
+                
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    print_r($data);die;
+                } else {
+                    
+                }
             }
-
         }
 
         return $app['twig']->render('backend/archivo/create.html.twig', array(

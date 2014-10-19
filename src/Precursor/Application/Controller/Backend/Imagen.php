@@ -28,6 +28,10 @@ class Imagen
     {   
         $imagenModelo = new ImagenModelo($app['db']);
         $imagenes = $imagenModelo->getImagenes();
+        
+        foreach ($imagenes as $index => $imagen) {
+            $imagenes[$index]['nombre'] = substr($imagen['nombre'], 0, 15);
+        }
 
         return $app['twig']->render('backend/imagen/list.html.twig', array(
             "imagenes" => $imagenes
@@ -62,6 +66,10 @@ class Imagen
                 
                 $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => false));
 
+                if ($_FILES['image'] > 2097152) {
+                    die(json_encode(array('result' => 'Tamaño máximo de la imagen 2MB.')));
+                }
+                
                 $result = $upload->file()->upload($_FILES['image']);
 
                 if (isset($result['vars']['imagen'])) {

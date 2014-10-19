@@ -109,6 +109,12 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ app.asset_path }}/js/plugins/image-picker/image-picker.css" type="text/css" rel="stylesheet">
+    <style>
+        #imagenListModal .modal-body {
+            height: 360px;
+            overflow-y: auto;
+        }
+    </style>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

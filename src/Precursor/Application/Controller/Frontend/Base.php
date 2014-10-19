@@ -36,7 +36,7 @@ class Base
 
         foreach ($articulos as $index => $articulo) {
             
-            // Poner sólo la primera en mayúscula el título
+            # Poner sólo la primera en mayúscula el título
             $articulos[$index]['titulo']    = strtolower($articulo['titulo']);
             $articulos[$index]['titulo'][0] = strtoupper($articulo['titulo'][0]);
             

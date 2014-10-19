@@ -172,10 +172,67 @@ class Usuario
                 // codificar la clave
                 $clave = $encoder->encodePassword($data['clave'], $user->getSalt());
 
-                $filasAfectadas = $usuarioModelo->guardarUsuario($data['nombre'], $data['correo'], $data['alias'], $clave);
+                $filasAfectadas = $usuarioModelo->guardarUsuario("$data[nombre] $data[apellido]", $data['correo'], $data['alias'], $clave);
 
                 if ($filasAfectadas == 1) {
-                    return new JsonResponse('El registro fue exitoso.');
+                    # Asunto para administrador y usuario
+                    $asunto = "Registro de usuario - El Precursor";
+                    
+                    # Administrador
+                    $mensajeAdmin  = '<div style="margin:auto;position: relative;background: #FFF;border-top: 2px solid #00C0EF;margin-bottom: 20px;border-radius: 3px;width: 90%;box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);padding: 20px 30px">';
+                    $mensajeAdmin .= "<p>Se ha registrado un usuario nuevo en El Precursor.</p>";
+                    $mensajeAdmin .= "<p>Detalles del usuario:</p>";
+                    $mensajeAdmin .= "<div style=\"background-color: #F0F7FD;margin: 0px 0px 20px;padding: 15px 30px 15px 15px;border-left: 5px solid #D0E3F0;\"><b>Nombre:</b> $data[nombre] $data[apellido] <a href=\"mailto:$data[correo]\">$data[correo]</a> </div>";
+                    $mensajeAdmin .= '</div>';
+                    
+                    # Para el usuario registrado
+                    $mensajeUsuario  = '<div style="margin:auto;position: relative;background: #FFF;border-top: 2px solid #00C0EF;margin-bottom: 20px;border-radius: 3px;width: 90%;box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);padding: 20px 30px">';
+                    $mensajeUsuario .= "<p>Usted se ha registrado exitosamente en El Precursor.</p>";
+                    $mensajeUsuario .= "<div style=\"background-color: #F0F7FD;margin: 0px 0px 20px;padding: 15px 30px 15px 15px;border-left: 5px solid #D0E3F0;\">";
+                    $mensajeUsuario .= "<p>Confirme su registro haciendo click en el siguiente link <a href=\"#\">Link</a>.</p>";
+                    $mensajeUsuario .= "</div>";
+                    $mensajeUsuario .= '</div>';
+                    
+                    try {
+                        # Transporte SMTP/Gmail con ssl
+                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+                                ->setUsername("ramon.calle.88@gmail.com")
+                                ->setPassword("ramoncito.1");
+
+                        # Instancia de Swift_Mailer
+                        $mailer = \Swift_Mailer::newInstance($transport);
+
+                        # Instancia de Swift_Message que sera el mensaje del correo
+                        # Mensaje al correo de la pagina
+                        $mailMessage = \Swift_Message::newInstance($asunto)
+                                ->setFrom(array($data['correo'] => $data['nombre']))
+                                ->setTo('ramon.calle.88@gmail.com')
+                                ->setBody($mensajeAdmin, 'text/html');
+
+                        # Enviar el mensaje de la pagina
+                        $resultAdmin = $mailer->send($mailMessage);
+
+                        # Mensaje al correo del usuario
+                        $mailMessage = \Swift_Message::newInstance($asunto)
+                                ->setFrom('ramon.calle.88@gmail.com')
+                                ->setTo(array($data['correo'] => $data['nombre']))
+                                ->setBody($mensajeUsuario, 'text/html');
+
+                        # Enviar el mensaje del usuario
+                        $resultUsuario = $mailer->send($mailMessage);
+                    } catch (\Swift_TransportException $ste) {
+
+                    } catch (\Swift_SwiftException $sse) {
+                        
+                    }
+                    
+                    if ($resultAdmin && $resultUsuario) {
+                        return new JsonResponse('El registro fue exitoso. Se ha enviado un correo electrónico para confirmar la cuenta.');
+                    } else {
+                        $usuarioModelo->eliminar($usuarioModelo->id);
+                        
+                        return new JsonResponse('Ocurrió un error al tratar de enviar el correo electrónico para confirmar la cuenta. <button type="button" class="btn btn-primary" onclick="$(\'form.form-signup\').submit();">Enviar datos nuevamente</button>');
+                    }
                 } else {
                     return new JsonResponse('Ocurrió un problema en el servidor y no se pudo registrar el usuario. Intente más tarde.', 500);
                 }
