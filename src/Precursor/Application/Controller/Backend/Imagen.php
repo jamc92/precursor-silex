@@ -28,6 +28,10 @@ class Imagen
     {   
         $imagenModelo = new ImagenModelo($app['db']);
         $imagenes = $imagenModelo->getImagenes();
+        
+        foreach ($imagenes as $index => $imagen) {
+            $imagenes[$index]['nombre'] = substr($imagen['nombre'], 0, 15);
+        }
 
         return $app['twig']->render('backend/imagen/list.html.twig', array(
             "imagenes" => $imagenes
