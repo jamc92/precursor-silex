@@ -38,7 +38,7 @@
                                 <div class="archivos row">
                                     <form id="form_image" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <input type="file" name="image" id="image"  accept="image/*">
+                                            <input type="file" name="image" id="image" accept="image/*" required>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary">Subir imagen</button>
@@ -199,10 +199,11 @@
                     success: function(response) {
                         response = JSON.parse(response);
                         if (response.result == 'Ninguna imagen') {
-                            message.html('No fue enviada ninguna imagen. Vuelva a intentar luego.');
+                            message.html('No fue enviada ninguna imagen. Vuelva a intentar luego.').fadeIn();
                         } else if (response.result == 'File was uploaded successfuly!') {
                             $.data(file).addClass('done');
                         } else {
+                            message.html(response.result).fadeIn();
                             $.data(file).addClass('error');
                         }
                     }
