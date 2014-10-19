@@ -193,32 +193,38 @@ class Usuario
                     $mensajeUsuario .= "</div>";
                     $mensajeUsuario .= '</div>';
                     
-                    # Transporte SMTP/Gmail con ssl
-                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
-                            ->setUsername("ramon.calle.88@gmail.com")
-                            ->setPassword("ramoncito.1");
-                    
-                    # Instancia de Swift_Mailer
-                    $mailer = \Swift_Mailer::newInstance($transport);
-                    
-                    # Instancia de Swift_Message que sera el mensaje del correo
-                    # Mensaje al correo de la pagina
-                    $mailMessage = \Swift_Message::newInstance($asunto)
-                            ->setFrom(array($data['correo'] => $data['nombre']))
-                            ->setTo('ramon.calle.88@gmail.com')
-                            ->setBody($mensajeAdmin, 'text/html');
-                    
-                    # Enviar el mensaje de la pagina
-                    $resultAdmin = $mailer->send($mailMessage);
-                    
-                    # Mensaje al correo del usuario
-                    $mailMessage = \Swift_Message::newInstance($asunto)
-                            ->setFrom('ramon.calle.88@gmail.com')
-                            ->setTo(array($data['correo'] => $data['nombre']))
-                            ->setBody($mensajeUsuario, 'text/html');
-                    
-                    # Enviar el mensaje del usuario
-                    $resultUsuario = $mailer->send($mailMessage);
+                    try {
+                        # Transporte SMTP/Gmail con ssl
+                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+                                ->setUsername("ramon.calle.88@gmail.com")
+                                ->setPassword("ramoncito.1");
+
+                        # Instancia de Swift_Mailer
+                        $mailer = \Swift_Mailer::newInstance($transport);
+
+                        # Instancia de Swift_Message que sera el mensaje del correo
+                        # Mensaje al correo de la pagina
+                        $mailMessage = \Swift_Message::newInstance($asunto)
+                                ->setFrom(array($data['correo'] => $data['nombre']))
+                                ->setTo('ramon.calle.88@gmail.com')
+                                ->setBody($mensajeAdmin, 'text/html');
+
+                        # Enviar el mensaje de la pagina
+                        $resultAdmin = $mailer->send($mailMessage);
+
+                        # Mensaje al correo del usuario
+                        $mailMessage = \Swift_Message::newInstance($asunto)
+                                ->setFrom('ramon.calle.88@gmail.com')
+                                ->setTo(array($data['correo'] => $data['nombre']))
+                                ->setBody($mensajeUsuario, 'text/html');
+
+                        # Enviar el mensaje del usuario
+                        $resultUsuario = $mailer->send($mailMessage);
+                    } catch (\Swift_TransportException $ste) {
+
+                    } catch (\Swift_SwiftException $sse) {
+                        
+                    }
                     
                     if ($resultAdmin && $resultUsuario) {
                         return new JsonResponse('El registro fue exitoso. Se ha enviado un correo electrónico para confirmar la cuenta.');

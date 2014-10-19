@@ -115,11 +115,12 @@ class Usuario extends Model
     public function guardarUsuario($nombre, $correo, $alias, $clave)
     {   
         $data = array(
-            'id_perfil' => 4,
+            'id_perfil' => 3,
             'nombre'    => $nombre,
             'correo'    => $correo,
             'alias'     => $alias,
-            'clave'     => $clave
+            'clave'     => $clave,
+            'creado'    => new \DateTime('Y-m-d H:m:s')
         );
         return $this->_insert($data);
     }
