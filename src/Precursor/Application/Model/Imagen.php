@@ -31,7 +31,7 @@ class Imagen extends Model
     {
         if (empty($fields)) {
             $fields = array(
-                'id', 'nombre', 'link'
+                'id', 'nombre', 'link', 'fuente_autor',
             );
         }
         return $this->_selectFields($fields);
@@ -41,14 +41,16 @@ class Imagen extends Model
      * @param string $nombre Nombre de la imagen
      * @param string $link   URL de la imagen
      * @param string $imagen Puede ser la imagen misma en tipo MIME
+     * @param string $fuente_autor Autor o fuente de la imagen
      * 
      * @return int Filas afectadas
      */
-    public function guardar($nombre, $link, $imagen = '')
+    public function guardar($nombre, $link, $fuente_autor, $imagen = '')
     {
         $data = array(
             'nombre' => $nombre,
             'link'   => $link,
+            'fuente_autor' => $fuente_autor,
             'creado' => date('Y-m-d H:m:s')
         );
         
@@ -64,14 +66,17 @@ class Imagen extends Model
      * @param string $nombre Nombre de la imagen
      * @param string $link   URL de la imagen
      * @param string $imagen Puede se la imagen misma en tipo MIME
+     * @param string $fuente_autor Autor o fuente de la imagen
      * 
      * @return int Filas afectadas
      */
-    public function modificar($id, $nombre, $link, $imagen = '')
+    public function modificar($id, $nombre, $link, $fuente_autor, $imagen = '')
     {
         $data = array(
             'nombre' => $nombre,
-            'link'   => $link
+            'link'   => $link,
+            'fuente_autor' => $fuente_autor,
+            'modificado' => date('Y-m-d H:m:s')
         );
         
         if ($imagen != '' && !is_null($imagen)) {

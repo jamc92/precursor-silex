@@ -77,9 +77,11 @@ class Imagen
 
                     $nombre = $vars['imagen'];
                     $link = "$app[upload_path]/$vars[folder]/$vars[imagen]";
+                    $form = $app['form.factory']->createBuilder('form');
+                    $fuente_autor = $form->add('fuente_autor', 'text', array('required' => true));
 
                     $imagenModelo = new ImagenModelo($app['db']);
-                    $filasAfectadas = $imagenModelo->guardar($nombre, $link);
+                    $filasAfectadas = $imagenModelo->guardar($nombre, $link, $fuente_autor);
                 }
                 die(json_encode(array('result' => $result['result'])));
                 
