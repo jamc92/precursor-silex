@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 3.4.11.1deb2+deb7u1
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 12-10-2014 a las 17:33:48
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.11
+-- Host: localhost
+-- Generation Time: Oct 19, 2014 at 09:05 PM
+-- Server version: 5.5.38
+-- PHP Version: 5.4.4-14+deb7u14
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `precursorbd`
+-- Database: `precursorbd`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `articulo`
+-- Table structure for table `articulo`
 --
 
 CREATE TABLE IF NOT EXISTS `articulo` (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `articulo` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=7 ;
 
 --
--- Volcado de datos para la tabla `articulo`
+-- Dumping data for table `articulo`
 --
 
 INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `imagen`, `titulo`, `descripcion`, `contenido`, `fecha_pub`, `creado`, `modificado`) VALUES
@@ -57,7 +57,7 @@ INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `imagen`, `titulo`, `d
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `articulos_etiquetas`
+-- Table structure for table `articulos_etiquetas`
 --
 
 CREATE TABLE IF NOT EXISTS `articulos_etiquetas` (
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `articulos_etiquetas` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
--- Volcado de datos para la tabla `articulos_etiquetas`
+-- Dumping data for table `articulos_etiquetas`
 --
 
 INSERT INTO `articulos_etiquetas` (`id`, `id_articulo`, `id_etiqueta`) VALUES
@@ -79,7 +79,7 @@ INSERT INTO `articulos_etiquetas` (`id`, `id_articulo`, `id_etiqueta`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `categoria`
+-- Table structure for table `categoria`
 --
 
 CREATE TABLE IF NOT EXISTS `categoria` (
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=8 ;
 
 --
--- Volcado de datos para la tabla `categoria`
+-- Dumping data for table `categoria`
 --
 
 INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`) VALUES
@@ -107,7 +107,7 @@ INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `creado`, `modificado`)
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comentario`
+-- Table structure for table `comentario`
 --
 
 CREATE TABLE IF NOT EXISTS `comentario` (
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `comentario` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
--- Volcado de datos para la tabla `comentario`
+-- Dumping data for table `comentario`
 --
 
 INSERT INTO `comentario` (`id`, `id_articulo`, `id_autor`, `asunto`, `contenido`, `fecha`) VALUES
@@ -132,7 +132,7 @@ INSERT INTO `comentario` (`id`, `id_articulo`, `id_autor`, `asunto`, `contenido`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `etiqueta`
+-- Table structure for table `etiqueta`
 --
 
 CREATE TABLE IF NOT EXISTS `etiqueta` (
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `etiqueta` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=10 ;
 
 --
--- Volcado de datos para la tabla `etiqueta`
+-- Dumping data for table `etiqueta`
 --
 
 INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
@@ -160,7 +160,7 @@ INSERT INTO `etiqueta` (`id`, `nombre`, `creado`, `modificado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `imagen`
+-- Table structure for table `imagen`
 --
 
 CREATE TABLE IF NOT EXISTS `imagen` (
@@ -168,27 +168,28 @@ CREATE TABLE IF NOT EXISTS `imagen` (
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre de la imagen',
   `link` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Dirección URL de la imagen',
   `imagen` mediumtext COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Imagen transformada para el navegador',
+  `fuente_autor` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Autor o fuente de la Imagen',
   `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Imágenes del periódico' AUTO_INCREMENT=9 ;
 
 --
--- Volcado de datos para la tabla `imagen`
+-- Dumping data for table `imagen`
 --
 
-INSERT INTO `imagen` (`id`, `nombre`, `link`, `imagen`, `creado`, `modificado`) VALUES
-(6, 'EL CUFM AL CUMPLIR 37 AÑOS FORTALECE LA TRANSFORMACION UNIVERSITARIA PARA EL SOCIALISMO 6.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/EL CUFM AL CUMPLIR 37 AÑOS FORTALECE LA TRANSFORMACION UNIVERSITARIA PARA EL SOCIALISMO 6.png', '', '2014-10-07 01:10:25', '2014-10-07 01:54:24'),
-(3, 'universidad en transformacion.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/universidad en transformacion.png', '', '2014-10-05 18:10:57', '2014-10-05 18:58:55'),
-(4, 'plan rector garantiza la formacion humanistica integral del hombre nuevo.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/plan rector garantiza la formacion humanistica integral del hombre nuevo.png', '', '2014-10-05 23:10:41', '2014-10-05 23:31:39'),
-(5, 'estudiantes del cufm presentaron proyectos en beneficio de las comunidades 1.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/estudiantes del cufm presentaron proyectos en beneficio de las comunidades 1.png', '', '2014-10-05 23:10:13', '2014-10-05 23:50:11'),
-(7, 'EL DEPARTAMENTO DE SERVICIO COMUNITARIO CUMPLIO 4 AÑOS VINCULANDO A LOS ESTUDIANTES CON LAS COMUNIDADES DE CARACAS.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/EL DEPARTAMENTO DE SERVICIO COMUNITARIO CUMPLIO 4 AÑOS VINCULANDO A LOS ESTUDIANTES CON LAS COMUNIDADES DE CARACAS.png', '', '2014-10-07 02:10:47', '2014-10-07 02:08:46'),
-(8, 'HOY MÁS QUE NUNCA AMÉRICA.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/HOY MÁS QUE NUNCA AMÉRICA.png', '', '2014-10-07 02:10:27', '2014-10-07 02:29:26');
+INSERT INTO `imagen` (`id`, `nombre`, `link`, `imagen`, `fuente_autor`, `creado`, `modificado`) VALUES
+(6, 'EL CUFM AL CUMPLIR 37 AÑOS FORTALECE LA TRANSFORMACION UNIVERSITARIA PARA EL SOCIALISMO.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/EL CUFM AL CUMPLIR 37 AÑOS FORTALECE LA TRANSFORMACION UNIVERSITARIA PARA EL SOCIALISMO 6.png', '', '', '2014-10-07 01:10:25', '2014-10-19 23:40:52'),
+(3, 'universidad en transformacion.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/universidad en transformacion.png', '', '', '2014-10-05 18:10:57', '2014-10-05 18:58:55'),
+(4, 'plan rector garantiza la formacion humanistica integral del hombre nuevo.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/plan rector garantiza la formacion humanistica integral del hombre nuevo.png', '', '', '2014-10-05 23:10:41', '2014-10-05 23:31:39'),
+(5, 'estudiantes del cufm presentaron proyectos en beneficio de las comunidades 1.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/estudiantes del cufm presentaron proyectos en beneficio de las comunidades 1.png', '', '', '2014-10-05 23:10:13', '2014-10-05 23:50:11'),
+(7, 'EL DEPARTAMENTO DE SERVICIO COMUNITARIO CUMPLIO 4 AÑOS VINCULANDO A LOS ESTUDIANTES CON LAS COMUNIDADES DE CARACAS.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/EL DEPARTAMENTO DE SERVICIO COMUNITARIO CUMPLIO 4 AÑOS VINCULANDO A LOS ESTUDIANTES CON LAS COMUNIDADES DE CARACAS.png', '', '', '2014-10-07 02:10:47', '2014-10-07 02:08:46'),
+(8, 'HOY MÁS QUE NUNCA AMÉRICA.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/HOY MÁS QUE NUNCA AMÉRICA.png', '', '', '2014-10-07 02:10:27', '2014-10-07 02:29:26');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `opcion`
+-- Table structure for table `opcion`
 --
 
 CREATE TABLE IF NOT EXISTS `opcion` (
@@ -203,16 +204,16 @@ CREATE TABLE IF NOT EXISTS `opcion` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
--- Volcado de datos para la tabla `opcion`
+-- Dumping data for table `opcion`
 --
 
 INSERT INTO `opcion` (`id`, `tipo`, `nombre`, `valor`, `creado`, `modificado`) VALUES
-(1, 'js', 'menu', '[{"texto":"adsadsa","link":"http:\\/\\/link","dropdown":false},{"texto":"adsadsa","link":"http:\\/\\/link","dropdown":true, "items": [{"texto":"adsadsa","link":"http:\\/\\/link","dropdown":false}, {"texto":"adsadsa","link":"http:\\/\\/link","dropdown":false}]}]', '0000-00-00 00:00:00', '2014-10-12 21:35:05');
+(1, 'js', 'menu', '[{"texto":"adsadsa","link":"http:\\/\\/link","id":""},{"texto":"adsadsa","link":"http:\\/\\/link","id":""}]', '0000-00-00 00:00:00', '2014-10-20 00:25:22');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `perfil`
+-- Table structure for table `perfil`
 --
 
 CREATE TABLE IF NOT EXISTS `perfil` (
@@ -224,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `perfil` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
--- Volcado de datos para la tabla `perfil`
+-- Dumping data for table `perfil`
 --
 
 INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
@@ -235,7 +236,7 @@ INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -252,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=10 ;
 
 --
--- Volcado de datos para la tabla `usuario`
+-- Dumping data for table `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, `creado`, `modificado`) VALUES
