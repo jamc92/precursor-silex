@@ -163,3 +163,257 @@ function getHoraFormateada() {
 
     return hora + ':' + minutos + ':' + segundos;
 }
+
+function keyAlphaNum(element, with_space, with_spanhol) {
+
+    if (with_space && with_spanhol) {
+        if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\- ]/g)) {
+            element.value = element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\- ]/g, '');
+        }
+//alert('1.- '+with_space+with_spanhol);
+    } else if (with_spanhol) {
+        if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-]/g)) {
+            element.value = element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-]/g, '');
+        }
+//alert('2.- '+with_space+with_spanhol);
+    } else if (with_space) {
+        if (element.value.match(/[^0-9a-zA-Z\- ]/g)) {
+            element.value = element.value.replace(/[^0-9a-zA-Z\- ]/g, '');
+        }
+//alert('3.- '+with_space+with_spanhol);
+    } else {
+        if (element.value.match(/[^0-9a-zA-Z\-]/g)) {
+            element.value = element.value.replace(/[^0-9a-zA-Z\-]/g, '');
+        }
+//alert('4.- '+with_space+with_spanhol);
+    }
+
+}
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (Texto). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyText(this, true);
+ * });
+ *
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ * @param Boolean with_spanhol Denota si debe o no tener SÃ­mbolos o Letras del EspaÃ±ol lo que se ingrese mediante teclado en el campo.
+ */
+function keyText(element, with_spanhol) {
+    if (with_spanhol) {
+        if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;:_/º ]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;:_/º ]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^0-9a-zA-Z\-.(),;:_ ]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-Z\-.(),;:_ ]/g, ''));
+        }
+    }
+}
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (Texto). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyText(this, true);
+ * });
+ *
+ * PERMITE ADICIONAL A LOS CARACTERES COMUNES LAS LETRAS Ññ, - (GUION), () Y ACENTOS.
+ *
+ * @param Javascript Element element Puede Ser un Campo de Texto. Ej.: this
+ * @param Boolean with_spanhol Denota si debe o no tener SÃ­mbolos o Letras del EspaÃ±ol lo que se ingrese mediante teclado en el campo.
+ */
+function keyTextDash(element, with_spanhol, with_space) {
+    if (with_space && with_spanhol) {
+        if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-() ]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-() ]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^0-9a-zA-Z\-.()]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-Z-() ]/g, ''));
+
+        }
+    }
+}
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (Texto). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyTextOnly(this);
+ * });
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ */
+function keyTextOnly(element) {
+    if (element.value.match(/[^a-zA-Z]/g)) {
+        element.value = $.trim(element.value.replace(/[^a-zA-Z]/g, ''));
+    }
+}
+function keyAlpha(element, with_spanhol) {
+    if (with_spanhol) {
+        if (element.value.match(/[^a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;: ]/g)) {
+            element.value = $.trim(element.value.replace(/[^a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;: ]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^a-zA-Z]/g)) {
+            element.value = $.trim(element.value.replace(/[^a-zA-Z]/g, ''));
+        }
+    }
+}
+
+function keyLettersAndSpaces(element, with_spanhol) {
+    if (with_spanhol) {
+        if (element.value.match(/[^a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\ ]/g)) {
+            element.value = $.trim(element.value.replace(/[^a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\ ]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\ ]/g)) {
+            element.value = $.trim(element.value.replace(/[^a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\ ]/g, ''));
+        }
+    }
+}
+
+
+function keyHexa(element, with_dash) {
+    if (with_dash) {
+        if (element.value.match(/[^0-9a-fA-F\-]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-fA-F\-]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^0-9a-fA-F]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-fA-F]/g, ''));
+        }
+    }
+}
+
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (NÃºmeros). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyNum(this, false);
+ * });
+ *
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ * @param Boolean with_point Denota si debe o no tener puntos (.) lo que se ingrese mediante teclado en el campo.
+ */
+function keyNum(element, with_point, negative) {
+
+    if (with_point) {
+        if (negative) {
+            if (element.value.match(/[^0-9.\-]/g)) {
+                element.value = $.trim(element.value.replace(/[^0-9.\-]/g, ''));
+            }
+        }
+        else {
+            if (element.value.match(/[^0-9.]/g)) {
+                element.value = $.trim(element.value.replace(/[^0-9.]/g, ''));
+            }
+        }
+    } else {
+        if (negative) {
+            if (element.value.match(/[^0-9\-]/g)) {
+                element.value = $.trim(element.value.replace(/[^0-9\-]/g, ''));
+            }
+        } else {
+            if (element.value.match(/[^0-9]/g)) {
+                element.value = $.trim(element.value.replace(/[^0-9]/g, ''));
+            }
+        }
+    }
+}
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (NÃºmeros). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyNum(this, false);
+ * });
+ *
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ * @param Boolean with_point Denota si debe o no tener puntos (.) lo que se ingrese mediante teclado en el campo.
+ */
+function keyNumCompare(element, with_point) {
+
+    if (with_point) {
+        if (element.value.match(/[^0-9.<>=]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9.<>=]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^0-9<>=]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9<>=]/g, ''));
+        }
+    }
+}
+
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (Texto). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyTwitter(this, true);
+ * });
+ *
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ * @param Boolean with_spanhol Denota si debe o no tener SÃ­mbolos o Letras del EspaÃ±ol lo que se ingrese mediante teclado en el campo.
+ */
+function keyTwitter(element, with_spanhol) {
+    if (with_spanhol) {
+        if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ_@]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ_@]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^0-9a-zA-Z_@]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-Z_@]/g, ''));
+        }
+    }
+}
+
+/**
+ * Esta funcion permite restringir los valores ingresados en un elemento (Texto). Su utilizacion debe ser activada mediante un evento HTML.
+ * Ej.: $('#mi_campo').bind('keyup blur', function () {
+ * keyEmail(this, true);
+ * });
+ *
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ * @param Boolean with_spanhol Denota si debe o no tener SÃ­mbolos o Letras del EspaÃ±ol lo que se ingrese mediante teclado en el campo.
+ */
+function keyEmail(element, with_spanhol) {
+    if (with_spanhol) {
+        if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-._@]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-._@]/g, ''));
+        }
+    } else {
+        if (element.value.match(/[^0-9a-zA-Z\-._@]/g)) {
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-Z\-._@]/g, ''));
+        }
+    }
+}
+
+/**
+ * Esta función permite limpiar de espacios al inicio o final de los valores ingresados en un campo.
+ * Ej.: $('#mi_campo').bind('blur', function () {
+ * clearField(this);
+ * });
+ *
+ * @param JavascriptElement element Puede Ser un Campo de Texto. Ej.: this
+ */
+function clearField(element) {
+    element.value = $.trim(element.value);
+}
+
+function makeUpper(f) {
+    $(f).val($(f).val().toUpperCase());
+}
+
+function makeLower(f) {
+    $(f).val($(f).val().toLowerCase());
+}
+
+function isValidEmail(email) {
+
+    var emailReg = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+    var valid = emailReg.test(email);
+
+    if (!valid) {
+        return false;
+    } else {
+        return true;
+    }
+
+}

@@ -27,6 +27,19 @@ class Comentario
     {
         $comentarioModelo = new ComentarioModelo($app['db']);
         $comentarios = $comentarioModelo->getComentariosArticulo($idArticulo);
+
+        $mesesIngles  = cal_info(0);
+        $mesesEspanol = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+
+        foreach ($comentarios as $index => $comentario) {
+
+            $fecha = date('d-F-Y | h:m:s A', strtotime($comentario['fecha']));
+            $fecha = str_replace('-', ' de ', $fecha);
+            $fecha = str_replace($mesesIngles['months'], $mesesEspanol, $fecha);
+            
+            $comentarios[$index]['fecha'] = $fecha;
+        }
+
         return new JsonResponse($comentarios);
     }
 

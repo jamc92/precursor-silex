@@ -121,13 +121,14 @@
                 },
                 // Called before each upload is started
                 beforeEach: function(file){
-                    if(!file.type.match(/^image\//)){
+                    if (!file.type.match(/^image\//)) {
                         alert('¡Sólo imágenes permitidas!');
 
                         // Returning false will cause the
                         // file to be rejected
                         return false;
                     }
+                    var autor = prompt('Introduzca el autor o fuente de la imagen.');
                 },
                 uploadStarted:function(i, file, len){
                     createImage(file);
@@ -180,12 +181,14 @@
             }
 
             function showMessage(msg){
-                message.html(msg);
+                messagTe.html(msg);
             }
             /** Fin Funciones Drop Box **/
             
             $('form#form_image').submit(function(evt) {
                 evt.preventDefault();
+
+                var fuente_autor = prompt('Introduzca el autor o fuente de la imagen.');
 
                 var file = evt.target[0].files[0];
                 
@@ -193,7 +196,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ path("imagen_create") }}',
+                    url: '{{ path("imagen_create") }}?fuente_autor=' + fuente_autor,
                     data: new FormData(this),
                     processData: false,
                     contentType: false,
