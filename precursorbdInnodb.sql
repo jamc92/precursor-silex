@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS `articulos_etiquetas` (
   `id_etiqueta` int(11) NOT NULL COMMENT 'Índice que hace relación a la tabla etiquetas',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_articulo` (`id_articulo`,`id_etiqueta`),
-  UNIQUE KEY `id_articulo_2` (`id_articulo`,`id_etiqueta`),
   KEY `id_etiqueta` (`id_etiqueta`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=5 ;
 
