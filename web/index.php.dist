@@ -107,6 +107,7 @@ if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
 $app['upload_dir'] = __DIR__ . "/resources/uploads/";
 $app['debug'] = false;
 
+require_once __DIR__ . '/routes/api/base.php';
 require_once __DIR__ . '/routes/backend/base.php';
 require_once __DIR__ . '/routes/errors.php';
 require_once __DIR__ . '/routes/frontend/base.php';
