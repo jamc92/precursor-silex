@@ -66,8 +66,14 @@ class Imagen
                 
                 $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => false));
 
-                if ($_FILES['image'] > 2097152) {
+                if ($_FILES['image']['size'] > 2097152) {
                     die(json_encode(array('result' => 'Tamaño máximo de la imagen 2MB.')));
+                }
+
+                $fuente_autor = $request->get('fuente_autor');
+
+                if (is_null($fuente_autor) || $fuente_autor == "") {
+                    die(json_encode(array('result' => 'La imagen debe poseer un autor o fuente.')));
                 }
                 
                 $result = $upload->file()->upload($_FILES['image']);
@@ -79,7 +85,7 @@ class Imagen
                     $link = "$app[upload_path]/$vars[folder]/$vars[imagen]";
 
                     $imagenModelo = new ImagenModelo($app['db']);
-                    $filasAfectadas = $imagenModelo->guardar($nombre, $link);
+                    $filasAfectadas = $imagenModelo->guardar($nombre, $link, $fuente_autor);
                 }
                 die(json_encode(array('result' => $result['result'])));
                 
@@ -107,6 +113,7 @@ class Imagen
             $initial_data = array(
                 'nombre' => $imagen['nombre'],
                 'link' => $imagen['link'],
+                'fuente_autor' => $imagen['fuente_autor'],
             );
 
             $form = $app['form.factory']->createBuilder('form', $initial_data);
@@ -123,7 +130,7 @@ class Imagen
                 if ($form->isValid()) {
                     $data = $form->getData();
 
-                    $filasAfectadas = $imagenModelo->modificar($id, $data['nombre'], $data['link']);
+                    $filasAfectadas = $imagenModelo->modificar($id, $data['nombre'], $data['link'], $data['fuente_autor']);
                     
                     if ($filasAfectadas == 1) {
                         $app['session']->getFlashBag()->add(
