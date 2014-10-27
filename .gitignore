@@ -5,3 +5,6 @@
 /web/index.php
 /web/resources/uploads
 /src/Precursor/Options/Doctrine.php
+src/Precursor/Provider/PrecursorLog.php
+web/elprecursor.log
+web/image-log.txt
