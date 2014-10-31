@@ -6,6 +6,11 @@
     {{ parent() }}
     <link href="{{ app.asset_path }}/rs-plugin/css/extralayers.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="{{ app.asset_path }}/rs-plugin/css/settings.css" rel="stylesheet" type="text/css" media="screen" />
+    <style>
+        form {
+            display: table-row;
+        }
+    </style>
 {% endblock %}
 
 {% block menu %}
