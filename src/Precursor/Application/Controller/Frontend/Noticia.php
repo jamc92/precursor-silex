@@ -64,4 +64,23 @@ class Noticia
         ));
     }
 
+    /**
+     * @param Request $request
+     * @param Application $app
+     * 
+     * @return RedirectResponse
+     */
+    public function busqueda(Request $request, Application $app)
+    {
+        $busqueda = $request->get('busqueda');
+
+        $articuloModel = new Articulo($app['db']);
+
+        $result = $articuloModel->getArticuloBy($busqueda);
+
+        var_dump($result);
+
+        return "";
+    }
+
 } 
