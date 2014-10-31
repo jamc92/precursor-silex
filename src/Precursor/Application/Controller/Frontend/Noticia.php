@@ -76,11 +76,11 @@ class Noticia
 
         $articuloModel = new Articulo($app['db']);
 
-        $result = $articuloModel->getArticuloBy($busqueda);
+        $articulos = $articuloModel->getArticuloBy($busqueda);
 
-        var_dump($result);
-
-        return "";
+        return $app['twig']->render('frontend/busqueda.html.twig', array(
+            'articulos' => $articulos
+        ));
     }
 
 } 

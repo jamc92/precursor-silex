@@ -97,8 +97,11 @@ class Articulo extends Model
         return $articulos;
     }
 
+    /**
+     * @param string $titulo
+     * @return array
+     */
     public function getArticuloBy($titulo) {
-         
         $sql = $this->queryBuilder()->select(array('*'))
             ->from('articulo', 'a')
             ->where($this->queryBuilder()->expr()->orX(
