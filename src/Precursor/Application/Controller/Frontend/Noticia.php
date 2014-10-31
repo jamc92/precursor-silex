@@ -77,9 +77,14 @@ class Noticia
         $articuloModel = new Articulo($app['db']);
 
         $articulos = $articuloModel->getArticuloBy($busqueda);
+        
+        $menuModelo = new Menu($app['db']);
+        
+        $menuItems = $menuModelo->getItems();
 
         return $app['twig']->render('frontend/busqueda.html.twig', array(
-            'articulos' => $articulos
+            'articulos' => $articulos,
+            'menu_items' => $menuItems
         ));
     }
 
