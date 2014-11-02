@@ -64,4 +64,28 @@ class Noticia
         ));
     }
 
+    /**
+     * @param Request $request
+     * @param Application $app
+     * 
+     * @return RedirectResponse
+     */
+    public function busqueda(Request $request, Application $app)
+    {
+        $busqueda = $request->get('busqueda');
+
+        $articuloModel = new Articulo($app['db']);
+
+        $articulos = $articuloModel->getArticuloBy($busqueda);
+        
+        $menuModelo = new Menu($app['db']);
+        
+        $menuItems = $menuModelo->getItems();
+
+        return $app['twig']->render('frontend/busqueda.html.twig', array(
+            'articulos' => $articulos,
+            'menu_items' => $menuItems
+        ));
+    }
+
 } 

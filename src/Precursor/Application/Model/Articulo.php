@@ -98,6 +98,22 @@ class Articulo extends Model
     }
 
     /**
+     * @param string $titulo
+     * @return array
+     */
+    public function getArticuloBy($titulo) {
+        $sql = $this->queryBuilder()->select(array('*'))
+            ->from('articulo', 'a')
+            ->where($this->queryBuilder()->expr()->orX(
+                $this->queryBuilder()->expr()->like('titulo', '?'),
+                $this->queryBuilder()->expr()->like('descripcion', '?'),
+                $this->queryBuilder()->expr()->like('contenido', '?')
+                ))
+            ->getSQL();
+        return $this->_select($sql, $join = array(), '', array("%$titulo%","%$titulo% ", $titulo));
+    }
+
+    /**
      * @param int $idAutor        Id del usuario actual logueado
      * @param int $idCategoria    Id de la categoría del artículo
      * @param string $imagen      Url de la imagen del artículo

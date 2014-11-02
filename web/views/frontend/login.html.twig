@@ -136,6 +136,13 @@
     {{ parent() }}
     <script src="{{ app.asset_path }}/js/Precursor/funciones.js"></script>
     <script>
+    $('#_username, #Usuario_correo, #Usuario_alias').bind('keyup blur', function() {
+        keyEmail(this, true);// Acepta solo letras y espacios
+    });
+    $('#Usuario_nombre, #Usuario_apellido').bind('keyup blur', function() {
+        keyLettersAndSpaces(this, true);// Acepta solo letras y espacios
+    });
+
         $(function() {
             $('.form-signup').submit(function(evt) {
                 evt.preventDefault();

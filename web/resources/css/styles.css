@@ -119,6 +119,10 @@ div.container .row-fluid .sidebar .etiquetas {
     min-width: 120px;
     text-align: left;
 }
+/* Form Busqueda */
+.form-busqueda {
+    display: table-row;
+}
 /* Slides */
 .tp-banner-container{
     width:100%;

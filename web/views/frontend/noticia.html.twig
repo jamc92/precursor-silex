@@ -66,7 +66,7 @@
             <form id="comentario_form">
                 <div class="form-group">
                     <input type="hidden" name="comentario[idArticulo]" value="{{ articulo.id }}">
-                    <textarea class="form-control" name="comentario[contenido]" rows="3" required></textarea>
+                    <textarea id="Comentario_contenido" class="form-control" name="comentario[contenido]" rows="3" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar comentario</button>
             </form>
@@ -82,12 +82,14 @@
         <div class="well">
             <h4>Búsqueda</h4>
             <div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
+                <form class="form-busqueda" method="GET" action="{{ path("busqueda") }}">
+                     <input id="Articulo_busqueda" type="text" name="busqueda" class="form-control">
+                     <span class="input-group-btn">
+                         <button class="btn btn-default" type="submit">
+                             <span class="glyphicon glyphicon-search"></span>
+                         </button>
+                     </span>
+                </form>
             </div>
             <!-- /input-group -->
         </div>
@@ -147,6 +149,7 @@
             };
             ajaxRequest('#comentarios', url, null, false, false, null, null, null, success);
         });
+
         $('#comentario_form').submit(function(event) {
             event.preventDefault();
             

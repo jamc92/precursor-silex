@@ -24,3 +24,7 @@ $app->match('/comentarios_articulo/{idArticulo}', 'Precursor\\Application\\Contr
 $app->match('/comentar', 'Precursor\\Application\\Controller\\Frontend\\Comentario::guardarComentario')
     ->bind('guardar_comentario')
     ->method('POST');
+
+$app->match('/busqueda', 'Precursor\\Application\\Controller\\Frontend\\Noticia::busqueda')
+    ->bind('busqueda')
+    ->method('GET');

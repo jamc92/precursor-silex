@@ -3,6 +3,7 @@
  * Modelo de Usuarios
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
  * @subpackage Model
  */
 
@@ -55,7 +56,7 @@ class Usuario extends Model
             'perfil.nombre as perfil'
         );
         $join = array('perfil', 'id_perfil', 'perfil.id', '=');
-        $usuario = $this->getTodo($fields, $join, 'WHERE alias = ?', array($alias));
+        $usuario = $this->getTodo($fields, $join, 'WHERE alias = ? OR correo = ?', array($alias,$alias));
         
         if (isset($usuario[0]) && !empty($usuario[0])) {
             return $usuario[0];
