@@ -1127,12 +1127,14 @@ data-endspeed="1000"
         <div class="well">
             <h4>Búsqueda</h4>
             <div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
+                <form id="form-busqueda" method="GET" action="">
+                    <input id="Articulo_busqueda" name="s" type="text" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </form>
             </div>
             <!-- /input-group -->
         </div>
@@ -1224,7 +1226,7 @@ data-endspeed="1000"
                 keyboardNavigation:"off",
 
                 navigationHAlign:"center",
-                navigationVAlign:"bottom",
+                navigationVAlign:"bottom",form
                 navigationHOffset:0,
                 navigationVOffset:20,
 
