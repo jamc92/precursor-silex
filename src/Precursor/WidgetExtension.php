@@ -7,6 +7,8 @@
 
 namespace Precursor;
 
+use Precursor\Extension\Paginador;
+
 class WidgetExtension extends \Twig_Extension
 {
 
@@ -23,8 +25,10 @@ class WidgetExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
+        $paginador = new Paginador();
         return array(
-            new \Twig_SimpleFunction('precursor_widget', array($this, 'getWidget'))
+            new \Twig_SimpleFunction('precursor_widget', array($this, 'getWidget')),
+            new \Twig_SimpleFunction('paginador_noticias', array($paginador, 'getPaginador'))
         );
     }
 
