@@ -3,6 +3,7 @@
  * Controlador de Imágenes
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
  * 
  * @subpackage Backend
  */
@@ -66,16 +67,17 @@ class Imagen
                 
                 $upload = new Upload('\\Precursor\\File\\Upload\\Image', array('upload_dir' => $app['upload_dir'], 'ignore_uploads' => false));
 
-                if ($_FILES['image']['size'] > 2097152) {
-                    die(json_encode(array('result' => 'Tamaño máximo de la imagen 2MB.')));
-                }
-
                 $fuente_autor = $request->get('fuente_autor');
-
-                if (is_null($fuente_autor) || $fuente_autor == "") {
+                
+                if ($fuente_autor === "null" || $fuente_autor === "") {
                     die(json_encode(array('result' => 'La imagen debe poseer un autor o fuente.')));
                 }
                 
+                if ($_FILES['image']['size'] > 2097152) {
+                    die(json_encode(array('result' => 'Tamaño máximo de la imagen 2MB.')));
+                    
+                }
+                                
                 $result = $upload->file()->upload($_FILES['image']);
 
                 if (isset($result['vars']['imagen'])) {

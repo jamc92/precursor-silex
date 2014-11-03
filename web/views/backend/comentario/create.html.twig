@@ -62,3 +62,12 @@
     </div><!-- ./wrapper -->
 
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#form_contenido').bind('keyup blur', function() {
+            keyText(this);// Acepta solo letras y espacios
+        });
+    </script>
+{% endblock %}

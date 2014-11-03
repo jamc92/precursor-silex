@@ -78,7 +78,7 @@
                                 <div class="response"></div>
                             </div>
                         </div><!-- /.box -->
-                </div>
+                    </div>
             </section>
         </aside>
     </div>
@@ -91,18 +91,23 @@
     {{ parent() }}
     <script src="{{ app.asset_path }}/js/plugins/nestable/jquery.nestable.js" type="text/javascript" ></script>
     <script>
+
+        $('#texto').bind('keyup blur', function() {
+            keyLettersAndSpaces(this);// Acepta solo letras y espacios
+        });
+
         $(function() {
             var updateOutput = function(e)
             {
-                var list   = e.length ? e : $(e.target),
-                    output = list.data('output');
+                var list = e.length ? e : $(e.target),
+                        output = list.data('output');
                 if (window.JSON) {
                     output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
                 } else {
                     output.val('JSON browser support required for this demo.');
                 }
             };
-   
+
             $('#menu').nestable().on('change', updateOutput);
 
             // output initial serialised data
@@ -113,31 +118,31 @@
                 var success = function(response) {
                     $('.response').html(response).fadeOut(10000);
                 };
-                ajaxRequest('.response', '{{ path("menu_guardar") }}', { 'items': items }, true, true, false, false, false, success);
+                ajaxRequest('.response', '{{ path("menu_guardar") }}', {'items': items}, true, true, false, false, false, success);
             });
-            
+
             $('form#agregar-item').submit(function(evt) {
                 evt.preventDefault();
-                
-                var lista  = $('<li class="dd-item dd3-item"><div class="dd-handle dd3-handle">Arrastra</div><div class="dd3-content"></div></li>');
+
+                var lista = $('<li class="dd-item dd3-item"><div class="dd-handle dd3-handle">Arrastra</div><div class="dd3-content"></div></li>');
                 var lastId = $('#menu ol:first li:last').attr('data-id');
-                
+
                 lista.attr('data-id', lastId++);
                 lista.attr('data-texto', $('#texto').val());
                 lista.attr('data-link', $('#link').val());
-                
+
                 $('.dd3-content', lista).text($('#texto').val());
-                
+
                 $('#texto').val('');
                 $('#link').val('');
-                
+
                 $('#menu ol:first').append(lista)
             });
-            
+
             $('.dd3-remove').click(function() {
                 $(this).parent().remove();
             });
-            
+
         });
-</script>
+    </script>
 {% endblock %}

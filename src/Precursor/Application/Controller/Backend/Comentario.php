@@ -3,6 +3,8 @@
  * Controlador de Comentarios de Artículos
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
+ * 
  * 
  * @package Backend
  */
@@ -70,7 +72,6 @@ class Comentario
             'choices' => $articulosOpcion,
             'required' => true
         ));
-        $form = $form->add('asunto', 'text', array('required' => true));
         $form = $form->add('contenido', 'textarea', array('required' => true));
 
         $form = $form->getForm();

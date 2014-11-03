@@ -1,4 +1,6 @@
 /**
+ * @author Javier Madrid <javiermadrid19@gmail.com>
+ * 
  * Esta funcion efectúa una petición ajax mediante la funcion $.ajax de jquery con manejo de errores.
  * 
  * @param {string} selectorJQuery       Indica el string selector jquery, ya sea por clases o por id, donde se mostrará el resultado.
@@ -202,7 +204,7 @@ function keyAlphaNum(element, with_space, with_spanhol) {
 function keyText(element, with_spanhol) {
     if (with_spanhol) {
         if (element.value.match(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;:_/º ]/g)) {
-            element.value = $.trim(element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;:_/º ]/g, ''));
+            element.value = $.trim(element.value.replace(/[^0-9a-zA-ZáÁéÉíÍóÓúÚñÑäÄëËïÏöÖüÜ\-.(),;:!¡¿?"_/º ]/g, ''));
         }
     } else {
         if (element.value.match(/[^0-9a-zA-Z\-.(),;:_ ]/g)) {

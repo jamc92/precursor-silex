@@ -114,7 +114,6 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
   `id_articulo` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de artículos',
   `id_autor` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de usuarios',
-  `asunto` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Asunto del comentario',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido del comentario. Puede ser HTML',
   `fecha` datetime NOT NULL COMMENT 'Fecha del comentario',
   PRIMARY KEY (`id`),
@@ -126,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `comentario` (
 -- Dumping data for table `comentario`
 --
 
-INSERT INTO `comentario` (`id`, `id_articulo`, `id_autor`, `asunto`, `contenido`, `fecha`) VALUES
-(1, 1, 3, '', 'Oflxlx', '2014-10-08 14:10:30');
+INSERT INTO `comentario` (`id`, `id_articulo`, `id_autor`, `contenido`, `fecha`) VALUES
+(1, 1, 3, 'Oflxlx', '2014-10-08 14:10:30');
 
 -- --------------------------------------------------------
 

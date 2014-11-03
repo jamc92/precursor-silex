@@ -58,3 +58,12 @@
     </div><!-- ./wrapper -->
 
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#form_nombre, #form_correo, #form_alias').bind('keyup blur', function() {
+        keyEmail(this, true);// Acepta solo letras y espacios
+    });
+    </script>
+{% endblock %}

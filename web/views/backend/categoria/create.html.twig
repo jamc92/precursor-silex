@@ -24,35 +24,35 @@
                     <div class="col-md-6">
 
                         {{ form_start(form, {'method': 'POST'}) }}
-                            {{ form_errors(form) }}
+                        {{ form_errors(form) }}
 
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title"></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
+                        <div class="box box-info">
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
 
-									<div class='form-group'>
-									    {{ form_label(form.categoria_superior) }}
-									    {{ form_widget(form.categoria_superior, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.nombre) }}
-									    {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									
-                                </div><!-- /.box-body -->
-
-                                {{ form_rest(form) }}
-
-                                <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Crear</button>
-                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('categoria_list') }}'">Volver</button>
+                                <div class='form-group'>
+                                    {{ form_label(form.categoria_superior) }}
+                                    {{ form_widget(form.categoria_superior, { attr: { 'class': 'form-control' }}) }}
                                 </div>
 
-                            </div><!-- /.box -->
+                                <div class='form-group'>
+                                    {{ form_label(form.nombre) }}
+                                    {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
+                                </div>
+
+
+                            </div><!-- /.box-body -->
+
+                            {{ form_rest(form) }}
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Crear</button>
+                                <button type="button" class="btn btn-default" onclick="location.href = '{{ path('categoria_list') }}'">Volver</button>
+                            </div>
+
+                        </div><!-- /.box -->
                         {{ form_end(form) }}
 
 
@@ -63,4 +63,13 @@
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#form_nombre').bind('keyup blur', function() {
+            keyLettersAndSpaces(this);// Acepta solo letras y espacios
+        });
+    </script>
 {% endblock %}

@@ -118,7 +118,6 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
   `id_articulo` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de artículos',
   `id_autor` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de usuarios',
-  `asunto` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Asunto del comentario',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido del comentario. Puede ser HTML',
   `estatus` varchar(1) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'A = Activo, I = Inactivo.',
   `fecha` datetime NOT NULL COMMENT 'Fecha del comentario',

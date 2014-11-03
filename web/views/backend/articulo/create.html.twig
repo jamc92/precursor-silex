@@ -24,63 +24,63 @@
                     <div class="col-12 col-md-10 col-lg-6">
 
                         {{ form_start(form, {'method': 'POST'}) }}
-                            {{ form_errors(form) }}
+                        {{ form_errors(form) }}
 
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title"></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
+                        <div class="box box-info">
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
 
-                                    <div class='form-group' id="articulo_imagen">
-                                        <button class="btn btn-default"
-                                                id="imageListButton"
-                                                type="button"
-                                                data-toggle="modal"
-                                                data-target="#imagenListModal">
-                                            <i class="fa fa-picture-o"></i>
-                                            Asignar imagen destacada
-                                        </button>
-                                    </div>
-
-									<div class='form-group'>
-									    {{ form_label(form.titulo, 'Título') }}
-									    {{ form_widget(form.titulo, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-                                    <div class='form-group'>
-                                        {{ form_label(form.imagen, 'Imagen destacada') }}
-                                        {{ form_widget(form.imagen, { attr: { 'class': 'form-control' }}) }}
-                                    </div>
-
-                                    <div class='form-group'>
-                                        {{ form_label(form.descripcion, 'Descripción') }}
-                                        {{ form_widget(form.descripcion, { attr: { 'class': 'form-control' }}) }}
-                                    </div>
-
-									<div class='form-group'>
-									    {{ form_label(form.contenido) }}
-									    {{ form_widget(form.contenido, { attr: { 'class': 'form-control ckeditor', 'id': 'insert', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
-									</div>
-
-                                    <div class='form-group'>
-                                        {{ form_label(form.categoria, 'Categoría') }}
-                                        {{ form_widget(form.categoria, { attr: { 'class': 'form-control' }}) }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        {{ form_label(form.etiquetas, 'Etiquetas') }}
-                                        {{ form_widget(form.etiquetas, { attr: { 'class': 'form-control' } }) }}
-                                    </div>
-                                </div><!-- /.box-body -->
-                                {{ form_rest(form) }}
-
-                                <div class="box-footer">
-                                    <button type="button" class="btn btn-info">Borrador</button>
-                                    <button type="submit" class="btn btn-primary">Publicar</button>
-                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('articulo_list') }}'">Volver</button>
+                                <div class='form-group' id="articulo_imagen">
+                                    <button class="btn btn-default"
+                                            id="imageListButton"
+                                            type="button"
+                                            data-toggle="modal"
+                                            data-target="#imagenListModal">
+                                        <i class="fa fa-picture-o"></i>
+                                        Asignar imagen destacada
+                                    </button>
                                 </div>
-                            </div><!-- /.box -->
+
+                                <div class='form-group'>
+                                    {{ form_label(form.titulo, 'Título') }}
+                                    {{ form_widget(form.titulo, { attr: { 'class': 'form-control', 'placeholder' : 'Titular de la noticia'}}) }}
+                                </div>
+
+                                <div class='form-group'>
+                                    {{ form_label(form.imagen, 'Imagen destacada') }}
+                                    {{ form_widget(form.imagen, { attr: { 'class': 'form-control', 'placeholder' : 'Introduzca la URL de la imagen'}}) }}
+                                </div>
+
+                                <div class='form-group'>
+                                    {{ form_label(form.descripcion, 'Descripción') }}
+                                    {{ form_widget(form.descripcion, { attr: { 'class': 'form-control', 'placeholder' : 'Breve descripción de la noticia'}}) }}
+                                </div>
+
+                                <div class='form-group'>
+                                    {{ form_label(form.contenido) }}
+                                    {{ form_widget(form.contenido, { attr: { 'class': 'form-control ckeditor', 'id': 'insert', 'style': 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;' }}) }}
+                                </div>
+
+                                <div class='form-group'>
+                                    {{ form_label(form.categoria, 'Categoría') }}
+                                    {{ form_widget(form.categoria, { attr: { 'class': 'form-control' }}) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.etiquetas, 'Etiquetas') }}
+                                    {{ form_widget(form.etiquetas, { attr: { 'class': 'form-control'} }) }}
+                                </div>
+                            </div><!-- /.box-body -->
+                            {{ form_rest(form) }}
+
+                            <div class="box-footer">
+                                <button type="button" class="btn btn-info">Borrador</button>
+                                <button type="submit" class="btn btn-primary">Publicar</button>
+                                <button type="button" class="btn btn-default" onclick="location.href = '{{ path('articulo_list') }}'">Volver</button>
+                            </div>
+                        </div><!-- /.box -->
                         {{ form_end(form) }}
                     </div>
                     <!-- Modal -->
@@ -119,6 +119,10 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        $('#form_titulo, #form_imagen, #form_descripcion').bind('keyup blur', function() {
+            keyText(this, true);// Acepta solo letras y espacios
+        });
+
         $(function() {
             $("#imageListButton").click(function() {
                 $.ajax({
@@ -133,30 +137,30 @@
                         }
                     }
                 })
-                .done(function(data) {
-                    $(".modal-body").html(data);
-                    $("select.image-picker").imagepicker({
-                        hide_select : true,
-                        show_label : false
-                    });
-                    $("#accept_image").click(function() {
-                        $("#form_imagen").val($(".selected img").attr("src"));
-                        if ($("#form_imagen").val() != "") {
-                            $("#articulo_imagen").html('<img src=" ' + $(".selected img").attr("src") + ' " style="width:200px">' +
-                                    '<button class="btn btn-default" '+
-                                    'id="imageListButton" '+
-                                    'type="button" '+
-                                    'data-toggle="modal" '+
-                                    'data-target="#imagenListModal"> '+
-                                    '<i class="fa fa-picture-o"></i> '+
-                                    'Modificar imagen de artículo '+
-                                    '</button>');
-                            $("#articulo_imagen").fadeIn();
-                        }
-                    });
-                });
+                        .done(function(data) {
+                            $(".modal-body").html(data);
+                            $("select.image-picker").imagepicker({
+                                hide_select: true,
+                                show_label: false
+                            });
+                            $("#accept_image").click(function() {
+                                $("#form_imagen").val($(".selected img").attr("src"));
+                                if ($("#form_imagen").val() != "") {
+                                    $("#articulo_imagen").html('<img src=" ' + $(".selected img").attr("src") + ' " style="width:200px">' +
+                                            '<button class="btn btn-default" ' +
+                                            'id="imageListButton" ' +
+                                            'type="button" ' +
+                                            'data-toggle="modal" ' +
+                                            'data-target="#imagenListModal"> ' +
+                                            '<i class="fa fa-picture-o"></i> ' +
+                                            'Modificar imagen de artículo ' +
+                                            '</button>');
+                                    $("#articulo_imagen").fadeIn();
+                                }
+                            });
+                        });
             });
-            $('form').submit( function(event) {
+            $('form').submit(function(event) {
                 if (!$('#form_imagen').val()) {
                     alert('Debe elegir una imagen para el producto.');
                     $("#imageListButton").focus();
