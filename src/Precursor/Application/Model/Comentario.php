@@ -24,11 +24,12 @@ class Comentario extends Model
     
     /**
      * @param array $fields   Campos a obtener de la tabla
+     * @param string $where   Condiciones where
      * @param array $criteria Arreglo para criterios de condición
      * 
      * @return array Arreglo de comentarios
      */
-    public function getComentarios(array $fields = array(), array $criteria = array())
+    public function getComentarios(array $fields = array(), $where = "", array $criteria = array())
     {
         if (empty($fields)) {
             $fields = array(
@@ -43,7 +44,7 @@ class Comentario extends Model
             array('articulo.id', 'usuario.id'),
             array('=', '=')
         );
-        return $this->getTodo($fields, $join, 'WHERE id_articulo = ?', $criteria);
+        return $this->getTodo($fields, $join, $where, $criteria);
     }
     
     /**
@@ -53,7 +54,7 @@ class Comentario extends Model
      */
     public function getComentariosArticulo($idArticulo)
     {
-        return $this->getComentarios(array(), array($idArticulo));
+        return $this->getComentarios(array(), 'WHERE id_articulo = ?', array($idArticulo));
     }
     
     /**

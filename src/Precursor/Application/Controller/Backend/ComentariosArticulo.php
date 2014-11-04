@@ -27,7 +27,7 @@ class ComentariosArticulo
     public function ver(Request $request, Application $app, $idArticulo)
     {
         $comentarioModelo = new Comentario($app['db']);
-        $comentarios = $comentarioModelo->getComentarios(array(), array($idArticulo));
+        $comentarios = $comentarioModelo->getComentariosArticulo($idArticulo);
 
         return $app['twig']->render('backend/comentarios_articulo/list.html.twig', array(
             'comentarios' => $comentarios,
