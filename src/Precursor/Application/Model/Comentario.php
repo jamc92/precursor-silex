@@ -43,7 +43,7 @@ class Comentario extends Model
             array('articulo.id', 'usuario.id'),
             array('=', '=')
         );
-        return $this->getTodo($fields, $join, '', $criteria);
+        return $this->getTodo($fields, $join, 'WHERE id_articulo = ?', $criteria);
     }
     
     /**
@@ -53,7 +53,7 @@ class Comentario extends Model
      */
     public function getComentariosArticulo($idArticulo)
     {
-        return $this->getComentarios(array(), array('id_articulo' => $idArticulo));
+        return $this->getComentarios(array(), array($idArticulo));
     }
     
     /**
