@@ -28,3 +28,13 @@ $app->match('/comentar', 'Precursor\\Application\\Controller\\Frontend\\Comentar
 $app->match('/busqueda', 'Precursor\\Application\\Controller\\Frontend\\Noticia::busqueda')
     ->bind('busqueda')
     ->method('GET');
+
+$app->match('/categoria/{idCategoria}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::categoria')
+    ->assert('idCateoria', '\d+')
+    ->bind('articulos_categoria')
+    ->method('GET');
+
+$app->match('/etiqueta/{idEtiqueta}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::etiqueta')
+    ->assert('idEtiqueta', '\d+')
+    ->bind('articulos_etiqueta')
+    ->method('GET');

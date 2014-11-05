@@ -3,6 +3,7 @@
  * Controlador de Artículos o Noticias
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
  *
  * @subpackage Frontend
  */
@@ -15,6 +16,7 @@ use Precursor\Application\Model\Articulo,
     Symfony\Component\HttpFoundation\Request,
     Silex\Application,
     Symfony\Component\HttpFoundation\RedirectResponse;
+use Precursor\Application\Model\Etiqueta;
 
 class Noticia
 {
@@ -88,4 +90,59 @@ class Noticia
         ));
     }
 
+    /**
+     * @param Request $request
+     * @param Application $app
+     * @param int $idCategoria
+     *
+     * @return mixed
+     */
+    public function categoria(Request $request, Application $app, $idCategoria)
+    {
+        $articuloModel = new Articulo($app['db']);
+
+        $articulosCategoria = $articuloModel->getArticulosByCategoria($idCategoria);
+
+        $categoriaModel = new Categoria($app['db']);
+
+        $categoria = $categoriaModel->getPorId($idCategoria);
+
+        $menuModelo = new Menu($app['db']);
+
+        $menuItems = $menuModelo->getItems();
+
+        return $app['twig']->render('frontend/articulos_categoria.html.twig', array(
+            'articulosCategoria' => $articulosCategoria,
+            'categoria' => $categoria,
+            'menu_items' => $menuItems
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @param Application $app
+     * @param int $idEtiqueta  ID de la etiqueta del articulo
+     *
+     * @return mixed
+     */
+    public function etiqueta(Request $request, Application $app, $idEtiqueta)
+    {
+        $articuloModel = new Articulo($app['db']);
+
+        $articulosEtiqueta = $articuloModel->getArticulosByEtiqueta($idEtiqueta);
+
+        $etiquetaModel = new Etiqueta($app['db']);
+
+        $etiqueta = $etiquetaModel->getPorId($idEtiqueta);
+
+        $menuModelo = new Menu($app['db']);
+
+        $menuItems = $menuModelo->getItems();
+
+        return $app['twig']->render('frontend/articulos_categoria.html.twig', array(
+            'articulosEtiqueta' => $articulosEtiqueta,
+            'eetiqueta' => $etiqueta,
+            'menu_items' => $menuItems
+        ));
+    }
 } 

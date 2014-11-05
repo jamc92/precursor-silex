@@ -1166,7 +1166,7 @@ data-endspeed="1000"
                     <ul class="list-unstyled">
                         {% for categoria in categorias %}
                             <li>
-                                <a href="#{{ categoria.nombre }}">{{ categoria.nombre }}</a>
+                                <a href="{{ path('articulos_categoria',{ idCategoria: categoria.id }) }}">{{ categoria.nombre }}</a>
                             </li>
                         {% endfor %}
                     </ul>
