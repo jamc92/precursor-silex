@@ -25,5 +25,13 @@
                 <p>No hay noticias relacionadas a esta categoría</p>
             {% endif %}
         </div>
+
+        <hr>
+
+        <!-- pager -->
+        <ul class="pager">
+            {{ paginador_noticias(articulos, 6, app.request) }}
+        </ul>
+
     </div>
 {% endblock %}

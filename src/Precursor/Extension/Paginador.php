@@ -4,6 +4,7 @@
  * Paginador de los artículos o de las noticias
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ *
  * 
  * @subpackage Extension
  */
@@ -22,10 +23,9 @@ class Paginador
      * 
      * @return int Número de páginas
      */
-    protected function getNumeroPaginas($porPagina = 12, $numArticulos)
+    protected function getNumeroPaginas($numArticulos, $porPagina = 12)
     {
-        $esPar = $numArticulos % $porPagina;
-        if ($numArticulos > 0 && ($numArticulos > $porPagina && $esPar == 0)) {
+        if ($numArticulos > 0 && $porPagina > 0) {
             return $numArticulos/$porPagina;
         } else {
             return 0;
@@ -40,9 +40,33 @@ class Paginador
      * 
      * @return string Html del paginador
      */
-    public function getPaginador($porPagina = 12, array $articulos = array(), Request $request) {
-        $numeroPaginas = $this->getNumeroPaginas($porPagina, count($noticias));
-        
+    public function getPaginador(array $articulos = array(), $porPagina = 9, Request $request)
+    {
+        $html = '';
+        $numeroPaginas = $this->getNumeroPaginas(count($articulos), $porPagina);
+
+        //Se obtiene el numero de pagina
+        $numPage = $request->get('page');
+
+        if ( is_null($numPage)) {
+            $numPage = 1;
+        }
+
+        if ( $numeroPaginas != 1 ) {
+            $html .= '<li class="previous"> <a href="#">&laquo;</a></li>';
+        }
+
+        if ($numPage > 1) {
+            for ($i = 1; $i <= $numeroPaginas; $i++ ) {
+                $html .= '<li> <a href="#">' . $i . '</a> </li>';
+            }
+        }
+
+        if ($numPage != $numeroPaginas && $numPage < $numeroPaginas) {
+            $html .= '<li class="next"> <a href="#">&raquo;</a></li>';
+        }
+
+        echo $html;
     }
 
 }
