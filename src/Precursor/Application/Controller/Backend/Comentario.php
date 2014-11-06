@@ -16,7 +16,8 @@ use Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Usuario,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse;
+    Symfony\Component\HttpFoundation\RedirectResponse,
+    Symfony\Component\HttpFoundation\JsonResponse;
     
 class Comentario
 {
@@ -85,6 +86,7 @@ class Comentario
 
                 $comentarioModelo = new ComentarioModelo($app['db']);
                 $filasAfectadas = $comentarioModelo->guardar($data['id_articulo'], $idAutor, $data['contenido']);
+                $filasAfectadas = $comentarioModelo->guardar($data['id_articulo'], $idAutor, $data['contenido']);
 
                 if ($filasAfectadas == 1) {
                     $app['session']->getFlashBag()->add(
@@ -107,32 +109,54 @@ class Comentario
      * @param Application $app
      * @param $id
      * 
-     * @return RedirectResponse
+     * @return JsonResponse|RedirectResponse
      */
     public function eliminar(Request $request, Application $app, $id)
     {
         $comentarioModelo = new ComentarioModelo($app['db']);
         $comentario = $comentarioModelo->getPorId($id);
 
-        if (!empty($comentario)) {
-            $filasAfectadas = $comentarioModelo->eliminar($id);
+        if ('GET' == $request->getMethod()) {
+            if (!empty($comentario)) {
+                $filasAfectadas = $comentarioModelo->eliminar($id);
 
-            if ($filasAfectadas == 1) {
+                if ($filasAfectadas == 1) {
+                    $app['session']->getFlashBag()->add(
+                        'info', array(
+                            'message' => '¡Comentario eliminado!',
+                        )
+                    );
+                }
+            } else {
                 $app['session']->getFlashBag()->add(
-                    'info', array(
-                        'message' => '¡Comentario eliminado!',
+                    'warning', array(
+                        'message' => '¡Comentario no encontrado!',
                     )
                 );
             }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'warning', array(
-                    'message' => '¡Comentario no encontrado!',
-                )
-            );
-        }
 
-        return $app->redirect($app['url_generator']->generate('comentario_list'));
+            return $app->redirect($app['url_generator']->generate('comentario_list'));
+        } elseif ('POST' == $request->getMethod()) {
+            if (!empty($comentario)) {
+                $filasAfectadas = $comentarioModelo->eliminar($id);
+
+                if ($filasAfectadas == 1) {
+                    $response = array(
+                        'mensaje' => 'Comentario eliminado.'
+                    );
+                    $app['session']->getFlashBag()->add(
+                        'warning', array(
+                            'message' => '¡Comentario no encontrado!',
+                        )
+                    );
+                }
+            } else {
+                $response = array(
+                    'mensaje' => 'Comentario no encontrado.'
+                );
+            }
+            return new JsonResponse($response);
+        }
     }
 
 } 

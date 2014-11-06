@@ -285,7 +285,7 @@ class Model
         if (!is_null($this->_table) && !is_null($id)) {
             $this->_sql = "SELECT * FROM $this->_table WHERE id = $id";
             $row = $this->_select($this->_sql);
-            return $row[0];
+            return (isset($row[0])) ? $row[0] : null;
         }
     }
 

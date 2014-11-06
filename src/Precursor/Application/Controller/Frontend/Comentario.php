@@ -65,7 +65,7 @@ class Comentario
 
             if (isset($comentario['idArticulo']) && isset($comentario['contenido'])) {
 
-                $filasAfectadas = $comentarioModelo->guardar($comentario['idArticulo'], $usuario['id'], $comentario['contenido']);
+                $filasAfectadas = $comentarioModelo->guardar($comentario['idArticulo'], $usuario['id'], $comentario['contenido'], 'I');
 
                 if ($filasAfectadas == 1) {
                     $response = array('mensaje' => 'Comentario guardado.');

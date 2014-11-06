@@ -20,18 +20,80 @@
 
                 <div class="row">
                     <div class="col-xs-12">
+
+                        {% include 'ag_alerts.html.twig' %}
+
                         <div class="box">
                             <div class="box-body">
 
                                 <h4>Panel de Administración de El Precursor</h4>
 
                             </div>
+
+                            <table id="comentario_list" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th>Usuario</th>
+                                    <th>Comentario</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {% for comentario in comentarios %}
+                                     <tr>
+                                         <td>{{ comentario.articulo }}</td>
+                                         <td>{{ comentario.usuario }}</td>
+                                         <td>{{ comentario.contenido }}</td>
+                                         <td>{{ comentario.fecha }}</td>
+                                         <td>
+                                             <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button></td>
+                                         </td>
+                                     </tr>
+                                 {% endfor %}
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th>Usuario</th>
+                                    <th>Comentario</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+
                         </div>
                     </div>
                 </div>
 
             </section><!-- /.content -->
         </aside><!-- /.right-side -->
-    </div><!-- ./wrapper -->
+    </div><!-- ./wrapper -->mostrar
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('#comentario_list').dataTable();
+        });
+        $('.eliminarComentario').click(function() {
+            var idComentario = $(this).attr('data-comentario-id');
+            if (confirm('Desea eliminar')) {
+                var success = function(response) {
+                    var response = JSON.parse(response);
+                    if (response.mensaje == 'Comentario eliminado.') {
+                        console.log(response);
+                        window.location.reload();
+                    } else {
+                        console.log(response);
+                    }
+                };
+                ajaxRequest('.response', '{{ path('comentario_list') }}/delete/' + idComentario, false, true, true, 'POST', false, false, success);
+            }
+        });
+    </script>
 {% endblock %}

@@ -60,6 +60,14 @@
 
         <hr class="row-fluid">
 
+        <div class="row-fluid" id="mensaje_warning">
+
+        </div>
+
+        <div class="row-fluid" id="mensaje_info">
+
+        </div>
+
         <!-- the comment box -->
         <div class="row-fluid well">
             <h4>Comentar</h4>
@@ -165,11 +173,13 @@
                 }
 
                 if (response.estatus == 200 && response.mensaje == 'Comentario guardado.') {
-                    $('#comentarios').append('<div class="comentario"><h3>' + usuario.nombre + ' <small>' + fecha_texto + '</small></h3><p>' + $('#comentario_form textarea').val() + '</p></div>');
+                    $('#mensaje_info').html('<div class="alert alert-info"><i class="fa ion-close"></i><b>Su comentario ha sido enviado y esta en espera de aprobaci&oacute;n</b></div>');
+                    $('#mensaje_info').fadeOut(5000);
+                    $('#Comentario_contenido').val('');
                 } else if (response.estatus == 200 && response.mensaje == 'Comentario no guardado.') {
 
                 } else if (response.estatus == 403) {
-                    $('#comentarios').append('Debe iniciar sesión para comentar.');
+                    $('#mensaje_warning').html('<div class="alert alert-warning"><i class="fa ion-close"></i><b>Debe iniciar sesión para poder comentar. <a href="{{ path('login') }}">Iniciar Sesi&oacute;n</b></div>');
                 }
             };
 

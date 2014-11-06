@@ -3,6 +3,8 @@
  * Modelo de Comentarios
  * 
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
+ *
  * @subpackage Model
  */
 
@@ -49,30 +51,38 @@ class Comentario extends Model
     
     /**
      * @param int $idArticulo Id del artículo
+     * @param string $estatus Estatus del comentario
      * 
      * @return array Comentarios del artículo
      */
-    public function getComentariosArticulo($idArticulo)
+    public function getComentariosArticulo($idArticulo, $estatus = 'A')
     {
-        return $this->getComentarios(array(), 'WHERE id_articulo = ?', array($idArticulo));
+        return $this->getComentarios(array(), 'WHERE id_articulo = ? AND comentario.estatus = ?', array($idArticulo, $estatus));
     }
-    
+
     /**
      * @param int $idArticulo   Id del articulo
      * @param int $idAutor      Id del usuario actual logueado
      * @param string $contenido Contenido del comentario
+     * @param string $estatus Estatus del comentario
      * 
      * @return int Filas afectadas
      */
-    public function guardar($idArticulo, $idAutor, $contenido)
+    public function guardar($idArticulo, $idAutor, $contenido, $estatus = 'I')
     {
         $data = array(
             'id_articulo' => $idArticulo,
             'id_autor'    => $idAutor,
             'contenido'   => $contenido,
-            'fecha'       => date('Y-m-d H:m:s')
+            'fecha'       => date('Y-m-d H:m:s'),
+            'estatus'     => $estatus
         );
         return $this->_insert($data);
+    }
+
+    public function aprobar($id)
+    {
+        return $this->_update(array('id' => $id, 'estatus' => 'A'));
     }
 
     /**
