@@ -4,6 +4,7 @@
  * Controlador de acciones de usuarios
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
  * @subpackage Frontend
  */
 
@@ -196,8 +197,8 @@ class Usuario
                     try {
                         # Transporte SMTP/Gmail con ssl
                         $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
-                                ->setUsername("ramon.calle.88@gmail.com")
-                                ->setPassword("ramoncito.1");
+                                ->setUsername("cufmelprecursor@gmail.com")
+                                ->setPassword("elprecursor");
 
                         # Instancia de Swift_Mailer
                         $mailer = \Swift_Mailer::newInstance($transport);
@@ -206,7 +207,7 @@ class Usuario
                         # Mensaje al correo de la pagina
                         $mailMessage = \Swift_Message::newInstance($asunto)
                                 ->setFrom(array($data['correo'] => $data['nombre']))
-                                ->setTo('ramon.calle.88@gmail.com')
+                                ->setTo('cufmelprecursor@gmail.com')
                                 ->setBody($mensajeAdmin, 'text/html');
 
                         # Enviar el mensaje de la pagina
@@ -214,7 +215,7 @@ class Usuario
 
                         # Mensaje al correo del usuario
                         $mailMessage = \Swift_Message::newInstance($asunto)
-                                ->setFrom('ramon.calle.88@gmail.com')
+                                ->setFrom('cufmelprecursor@gmail.com')
                                 ->setTo(array($data['correo'] => $data['nombre']))
                                 ->setBody($mensajeUsuario, 'text/html');
 
@@ -227,11 +228,11 @@ class Usuario
                     }
                     
                     if ($resultAdmin && $resultUsuario) {
-                        return new JsonResponse('El registro fue exitoso. Se ha enviado un correo electrónico para confirmar la cuenta.');
+                        return new JsonResponse('El registro fue exitoso. Se ha enviado un mensaje nuevo a su cuenta de correo para confirmar la cuenta.');
                     } else {
                         $usuarioModelo->eliminar($usuarioModelo->id);
                         
-                        return new JsonResponse('Ocurrió un error al tratar de enviar el correo electrónico para confirmar la cuenta. <button type="button" class="btn btn-primary" onclick="$(\'form.form-signup\').submit();">Enviar datos nuevamente</button>');
+                        return new JsonResponse('Ocurrió un error al tratar de enviar el mensaje a su cuenta de correo para confirmar la cuenta. <button type="button" class="btn btn-primary" onclick="$(\'form.form-signup\').submit();">Enviar datos nuevamente</button>');
                     }
                 } else {
                     return new JsonResponse('Ocurrió un problema en el servidor y no se pudo registrar el usuario. Intente más tarde.', 500);

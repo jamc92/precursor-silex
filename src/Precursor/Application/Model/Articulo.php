@@ -3,6 +3,7 @@
  * Modelo de Artículos o Noticias
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
+ * @author     Javier Madrid <javiermadrid19@gmail.com>
  * @subpackage Model
  */
 
@@ -98,19 +99,42 @@ class Articulo extends Model
     }
 
     /**
-     * @param string $titulo
+     * @param string $titulo Titulo de la noticia
+     *
      * @return array
+     *
+     * @throws \Exception
      */
-    public function getArticuloBy($titulo) {
+    public function getArticuloBy($titulo)
+    {
         $sql = $this->queryBuilder()->select(array('*'))
             ->from('articulo', 'a')
             ->where($this->queryBuilder()->expr()->orX(
-                $this->queryBuilder()->expr()->like('titulo', '?'),
-                $this->queryBuilder()->expr()->like('descripcion', '?'),
-                $this->queryBuilder()->expr()->like('contenido', '?')
+                $this->queryBuilder()->expr()->like('titulo', '?')
                 ))
             ->getSQL();
-        return $this->_select($sql, $join = array(), '', array("%$titulo%","%$titulo% ", $titulo));
+        return $this->_select($sql, $join = array(), '', array("%$titulo%"));
+    }
+
+    /**
+     * @param int $idCategoria Id de la categoria del articulo
+     *
+     * @return array
+     */
+    public function getArticulosByCategoria($idCategoria)
+    {
+        return parent::getTodo(array('*'), array(), "WHERE id_categoria = $idCategoria");
+    }
+
+    /**
+     * @param int $idEtiqueta  Id de la etiqueta del articulo
+     *
+     * @return array
+     */
+    public function getArticulosByEtiqueta($idEtiqueta)
+    {
+        $join = array('articulo', 'id_articulo', 'articulo.id', '=');
+        return parent::getTodo(array('*'), $join, "WHERE id_etiqueta = $idEtiqueta");
     }
 
     /**

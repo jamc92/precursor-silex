@@ -121,7 +121,7 @@ class Usuario extends Model
             'correo'    => $correo,
             'alias'     => $alias,
             'clave'     => $clave,
-            'creado'    => new \DateTime('Y-m-d H:m:s')
+            'creado'    => date('Y-m-d H:m:s')
         );
         return $this->_insert($data);
     }

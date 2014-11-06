@@ -1,0 +1,37 @@
+{% extends 'layouts/frontend.html.twig' %}
+
+{% block title %}Articulos por Categoría - El Precursor{% endblock %}
+
+{% block menu %}
+    {% include 'frontend/menu.html.twig' with {'option': 'home'} %}
+{% endblock %}
+
+{% block content %}
+    <div class="col-12 col-sm-8 col-lg-8">
+        <div class="row-fluid">
+            <h1 class="page-header">{{ categoria.nombre }}</h1>
+            {% if articulosEtiqueta|length > 0 %}
+                {% for articulo in articulosEtiqueta%}
+                    <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 no-padding thumb">
+                        <a class="thumbnail" href="{{ path('noticia', { id: articulo.id }) }}">
+                            <img class="img-responsive" {% if articulo.imagen != null %} src="{{ articulo.imagen }}" {% else %} src="holder.js/300x200/auto/text:Imagen" {% endif %} alt="Sin imagen">
+                            <h4 class="text-primary">{{ articulo.titulo }}</h4>
+                            <p>{{ articulo.fecha_pub }}</p>
+                            <p>{{ articulo.descripcion }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay noticias relacionadas a esta a esta etiqueta</p>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        {#<!-- pager -->
+        <ul class="pager">
+            {{ paginador_noticias(articulos, 6, app.request) }}
+        </ul>#}
+
+    </div>
+{% endblock %}

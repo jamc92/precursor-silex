@@ -153,13 +153,13 @@
                     $('.response').html('<div class="alert alert-danger"><i class="fa ion-close"></i><b>Claves no coinciden.</b></div>');
                     return;
                 }
-                
+
                 $.ajax({
                     type: 'POST',
                     url: '{{ path("signup") }}',
                     data: $(this).serialize(),
                     beforeSend: function() {
-                        $('.response').html("<div class='padding-5 center'><span class='ion-looping'></span></div>");
+                        $('.response').html("").html("<div class='padding-5 center'><span class='ion-looping'></span></div>");
                     },
                     success: function(response) {
                         $('.response').html('<div class="alert alert-success"><i class="fa fa-check"></i><b>' + response + '</b></div>');
