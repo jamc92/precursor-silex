@@ -4,6 +4,7 @@
  * Paginador de los artículos o de las noticias
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
  *
  * 
  * @subpackage Extension
