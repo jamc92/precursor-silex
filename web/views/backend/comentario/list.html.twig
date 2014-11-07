@@ -67,7 +67,6 @@
                                                 <td>{{ comentario.contenido }}</td>
                                                 <td>{{ comentario.fecha }}</td>
                                                 <td>
-                                                    <a href="{{ path('comentario_delete', { id: comentario.id }) }}" onclick='return confirm_delete();' class="btn btn-success btn-xs">Aprobar</a>
                                                     <a href="{{ path('comentario_delete', { id: comentario.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
                                                 </td>
                                             </tr>

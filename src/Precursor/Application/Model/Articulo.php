@@ -110,10 +110,12 @@ class Articulo extends Model
         $sql = $this->queryBuilder()->select(array('*'))
             ->from('articulo', 'a')
             ->where($this->queryBuilder()->expr()->orX(
-                $this->queryBuilder()->expr()->like('titulo', '?')
+                $this->queryBuilder()->expr()->like('titulo', '?'),
+                $this->queryBuilder()->expr()->like('descripcion', '?'),
+                $this->queryBuilder()->expr()->like('contenido', '?')
                 ))
             ->getSQL();
-        return $this->_select($sql, $join = array(), '', array("%$titulo%"));
+        return $this->_select($sql, $join = array(), '', array("%$titulo%", "%$titulo%", "%$titulo%"));
     }
 
     /**
@@ -188,7 +190,7 @@ class Articulo extends Model
         }
     }
 
-    /**
+    /**'estatus' => 'A',
      * @param int $id             Id del artículo
      * @param int $idAutor        Id del usuario actual logueado
      * @param int $idCategoria    Id de la categoría del artículo

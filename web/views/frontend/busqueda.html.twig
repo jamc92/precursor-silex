@@ -10,16 +10,20 @@
     <div class="col-12 col-sm-8 col-lg-8">
         <div class="row-fluid">
             <h1 class="page-header">Noticias</h1>
-            {% for articulo in articulos %}
-                <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 no-padding thumb">
-                    <a class="thumbnail" href="{{ path('noticia', { id: articulo.id }) }}">
-                        <img class="img-responsive" {% if articulo.imagen != null %} src="{{ articulo.imagen }}" {% else %} src="holder.js/300x200/auto/text:Imagen" {% endif %} alt="Sin imagen">
-                        <h4 class="text-primary">{{ articulo.titulo }}</h4>
-                        <p>{{ articulo.fecha_pub }}</p>
-                        <p>{{ articulo.descripcion }}</p>
-                    </a>
-                </div>
-            {% endfor %}
+            {% if articulos|length > 0 %}
+                {% for articulo in articulos %}
+                    <div class="col-12 col-md-4 col-xs-6 col-sm-6 col-lg-4 no-padding thumb">
+                        <a class="thumbnail" href="{{ path('noticia', { id: articulo.id }) }}">
+                            <img class="img-responsive" {% if articulo.imagen != null %} src="{{ articulo.imagen }}" {% else %} src="holder.js/300x200/auto/text:Imagen" {% endif %} alt="Sin imagen">
+                            <h4 class="text-primary">{{ articulo.titulo }}</h4>
+                            <p>{{ articulo.fecha_pub }}</p>
+                            <p>{{ articulo.descripcion }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay noticias relacionadas a esta búsqueda</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -48,7 +48,8 @@
                                          <td>{{ comentario.contenido }}</td>
                                          <td>{{ comentario.fecha }}</td>
                                          <td>
-                                             <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button></td>
+                                             <a href="{{ path('aprobar_comentario', { id: comentario.id }) }}" onclick='return confirm_aprobar();' class="btn btn-success btn-xs">Aprobar</a>
+                                             <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button>
                                          </td>
                                      </tr>
                                  {% endfor %}
@@ -82,7 +83,7 @@
         });
         $('.eliminarComentario').click(function() {
             var idComentario = $(this).attr('data-comentario-id');
-            if (confirm('Desea eliminar')) {
+            if (confirm('¿Desea eliminar este comentario? \n Esta acción no se podrá deshacer')) {
                 var success = function(response) {
                     var response = JSON.parse(response);
                     if (response.mensaje == 'Comentario eliminado.') {
@@ -95,5 +96,11 @@
                 ajaxRequest('.response', '{{ path('comentario_list') }}/delete/' + idComentario, false, true, true, 'POST', false, false, success);
             }
         });
+
+        function confirm_aprobar(){
+            if(!confirm("Esta seguro que desea aprobar el comentario?")) {
+                return false;
+            }
+        }
     </script>
 {% endblock %}

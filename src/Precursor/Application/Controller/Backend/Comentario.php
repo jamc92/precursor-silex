@@ -104,6 +104,33 @@ class Comentario
         ));
     }
 
+    public function aprobar(Request $request, Application $app, $id)
+    {
+        $comentarioModelo = new ComentarioModelo($app['db']);
+        $comentario = $comentarioModelo->getPorId($id);
+
+        $response = array();
+
+        if (!empty($comentario)) {
+            $filasAfectadas = $comentarioModelo->aprobar($id);
+
+            if ($filasAfectadas == 1) {
+                $app['session']->getFlashBag()->add(
+                    'success', array(
+                        'message' => '¡Comentario aprobado!',
+                    )
+                );
+            }
+        } else {
+            $app['session']->getFlashBag()->add(
+                'warning', array(
+                    'message' => '¡Comentario no encontrado!',
+                )
+            );
+        }
+        return $app->redirect($app['url_generator']->generate('admin'));
+    }
+
     /**
      * @param Request $request
      * @param Application $app
@@ -145,8 +172,8 @@ class Comentario
                         'mensaje' => 'Comentario eliminado.'
                     );
                     $app['session']->getFlashBag()->add(
-                        'warning', array(
-                            'message' => '¡Comentario no encontrado!',
+                        'info', array(
+                            'message' => '¡Comentario eliminado!',
                         )
                     );
                 }

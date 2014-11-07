@@ -74,7 +74,7 @@
             <form id="comentario_form">
                 <div class="form-group">
                     <input type="hidden" name="comentario[idArticulo]" value="{{ articulo.id }}">
-                    <textarea id="Comentario_contenido" class="form-control" name="comentario[contenido]" rows="3" required></textarea>
+                    <textarea id="Comentario_contenido" class="form-control" name="comentario[contenido]" rows="3" placeholder="Una vez enviado el comentario no podrá editarlo ni eliminarlo." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar comentario</button>
             </form>

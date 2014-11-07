@@ -19,6 +19,6 @@ $app->match('/admin', 'Precursor\\Application\\Controller\\Backend\\Base::index'
 $app->match('/admin/pruebas', 'Precursor\\Application\\Controller\\Backend\\Base::pruebas')
     ->bind('pruebas');
 
-$app->match('/admin/delete/{id}', 'Precursor\\Application\\Controller\\Backend\\Comentario::aprobar')
+$app->match('/admin/update/{id}', 'Precursor\\Application\\Controller\\Backend\\Comentario::aprobar')
     ->assert('id', '\d+')
-    ->bind('comentario_aprobado');
+    ->bind('aprobar_comentario');

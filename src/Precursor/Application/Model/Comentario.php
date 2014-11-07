@@ -82,7 +82,7 @@ class Comentario extends Model
 
     public function aprobar($id)
     {
-        return $this->_update(array('id' => $id, 'estatus' => 'A'));
+        return $this->_update(array('estatus' => 'A'), array('id' => $id));
     }
 
     /**
