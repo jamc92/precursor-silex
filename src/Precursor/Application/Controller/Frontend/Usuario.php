@@ -115,8 +115,8 @@ class Usuario
     }
 
     /**
-     * @param Request $request
      * @param Application $app
+     * @param Request $request
      * 
      * @return mixed
      */
@@ -137,6 +137,27 @@ class Usuario
             'last_username' => $app['session']->get('_security.last_username'),
             'menu_items'    => $menuItems
         ));
+    }
+    
+    /**
+     * @param Application $app
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function checkUser(Application $app, Request $request) {
+        if ("POST" == $request->getMethod() || "GET" == $request->getMethod()) {
+            if (is_object($app['user'])) {
+                return new JsonResponse(array(
+                    'mensaje' => 'Usuario logueado.',
+                    'alias'   => $app['user']
+                ));
+            } else {
+                return new JsonResponse(array(
+                    'mensaje' => 'Usuario no logueado.',
+                ));
+            }
+        }
     }
     
     /**
