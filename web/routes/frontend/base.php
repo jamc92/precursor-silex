@@ -38,3 +38,7 @@ $app->match('/etiqueta/{idEtiqueta}', 'Precursor\\Application\\Controller\\Front
     ->assert('idEtiqueta', '\d+')
     ->bind('articulos_etiqueta')
     ->method('GET');
+
+$app->match('/suscriptor', 'Precursor\\Application\\Controller\\Frontend\\Suscriptor::registrar')
+    ->bind('registrar_suscriptor')
+    ->method('POST');
