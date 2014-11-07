@@ -120,7 +120,7 @@ div.container .row-fluid .sidebar .etiquetas {
     text-align: left;
 }
 /* Form Busqueda */
-.form-busqueda {
+.form-busqueda, .form-suscriptor {
     display: table-row;
 }
 /* Slides */
