@@ -1137,36 +1137,23 @@ data-endspeed="1000"
             </div>
         </div>
         <!-- /well -->
-        <!-- /well -->
+
         <div class="well">
-            <h4>Categorías</h4>
-            <div class="row">
-                <div class="col-lg-6">
-                    <ul class="list-unstyled">
-                        {% for categoria in categorias %}
-                            <li>
-                                <a href="{{ path('articulos_categoria',{ idCategoria: categoria.id }) }}">{{ categoria.nombre }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {#<div class="col-lg-6">#}
-                    {#<ul class="list-unstyled">#}
-                        {#{% for categoria in categorias %}#}
-                            {#<li>#}
-                                {#<a href="#{{ categoria.nombre }}">{{ categoria.nombre }}</a>#}
-                            {#</li>#}
-                        {#{% endfor %}#}
-                    {#</ul>#}
-                {#</div>#}
+            <h4>Suscríbete a El Precursor</h4>
+            <div class="input-group">
+                <form class="form-suscriptor">
+                    <input type="text" name="correo" class="form-control">
+                     <span class="input-group-btn">
+                         <button class="btn btn-default" type="submit">
+                             <span class="glyphicon glyphicon-envelope"></span>
+                         </button>
+                     </span>
+                </form>
             </div>
+            <!-- /input-group -->
         </div>
         <!-- /well -->
-        <!-- <div class="well">
-            <h4>Side Widget Well</h4>
-            <p>Bootstrap's default wells work great for side widgets! What is a widget anyways...?</p>
-        </div> -->
-        <!-- /well -->
+
     </div>
 {% endblock %}
 {% block javascripts %}
@@ -1175,6 +1162,29 @@ data-endspeed="1000"
     <script src="{{ app.asset_path }}/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
     <script src="{{ app.asset_path }}/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
     <script>
+
+        $('.form-suscriptor').submit(function(ev) {
+           ev.preventDefault();
+
+            var uri  = '{{ path('registrar_suscriptor') }}';
+            var data = $(this).serialize();
+            var success = function(response){
+                response = JSON.parse(response);
+
+                if (response.mensaje == "Correo existe") {
+                    alert("¡Este correo ya esta registrado!");
+                }
+                if (response.mensaje == "Usuario suscrito") {
+                    alert("¡Suscripción exitosa!");
+                }
+                if (response.mensaje == "Usuario no suscrito") {
+                    alert("Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.");
+                }
+            };
+
+            ajaxRequest('',uri, data, false, false, 'POST', false, false, success);
+        });
+
         $(document).ready(function() {
             $('.tp-banner').show().revolution({
                 dottedOverlay:"none",
