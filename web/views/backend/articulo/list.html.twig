@@ -71,9 +71,10 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs">Etiquetas</a>
-                                                    <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs">Editar</a>
-                                                    <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                    <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
+                                                    <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Editar</a>
+                                                    <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
+                                                    <a href="{{ path('noticia', { id: articulo.id }) }}" class="btn btn-info btn-xs col-md-6">Ver</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}                                        
