@@ -15,7 +15,7 @@
         <hr>
         <p class="lead">{{ articulo.descripcion }}</p>
 
-        <div class="row-fluid" style="overflow: hidden">
+        <div id="contenido" class="row-fluid">
             {{ articulo.contenido|raw }}
         </div>
         
@@ -142,6 +142,17 @@
         </div> -->
         <!-- /well -->
     </div>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #contenido{
+            overflow: hidden;
+        }
+        #contenido p{
+            text-align: justify !important;
+        }
+    </style>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
