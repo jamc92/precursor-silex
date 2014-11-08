@@ -11,7 +11,12 @@
             Por <a href="index.php">{{ articulo.autor }}</a> <span class="glyphicon glyphicon-time"></span> {{ articulo.fecha_pub }}
         </p>
         <hr>
-        <img {% if articulo.imagen != null %} src="{{ articulo.imagen }}" {% else %} src="holder.js/600x400/auto/text:Imagen" {% endif %} class="img-responsive">
+        <div>
+            <img {% if articulo.imagen != null %} src="{{ articulo.imagen.link }}" {% else %} src="holder.js/600x400/auto/text:Imagen" {% endif %} class="img-responsive">
+            <p>
+              Autor:  {{ articulo.imagen.fuente_autor }}
+            </p>
+        </div>
         <hr>
         <p class="lead">{{ articulo.descripcion }}</p>
 
@@ -44,6 +49,11 @@
                    class="btn btn-success correo"
                    title="Enviar por correo electrónico">
                     <i class="fa fa-envelope"></i>
+                </a>
+                <a href="{{ url('imprimir_noticia',{idArticulo: articulo.id}) }}" onclick="window.open(this.href, 'mywin','left=20,top=20,width=500,height=500,toolbar=1,resizable=0,scrollbars=yes'); return false;"
+                   class="btn btn-default imprimir"
+                   title="Imprimir Noticia">
+                    <i class="glyphicon glyphicon-print"></i>
                 </a>
             </div>
         </div>

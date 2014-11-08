@@ -17,6 +17,7 @@ use Precursor\Application\Model\Articulo,
     Silex\Application,
     Symfony\Component\HttpFoundation\RedirectResponse;
 use Precursor\Application\Model\Etiqueta;
+use Precursor\Application\Model\Imagen;
 
 class Noticia
 {
@@ -51,6 +52,10 @@ class Noticia
             $fechaPublicacion = date('d-F-Y | h:m A', strtotime($articulo['fecha_pub']));
             $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
             $fechaPublicacion = str_replace($mesesIngles['months'], $mesesEspanol, $fechaPublicacion);
+
+            $imagenModel = new Imagen($app['db']);
+
+            $articulo['imagen'] = $imagenModel->getImagenByUrl($articulo['imagen']);
             
             $articulo['fecha_pub'] = $fechaPublicacion;
         }
@@ -63,6 +68,39 @@ class Noticia
             "articulo"   => $articulo,
             'categorias' => $categorias,
             'menu_items' => $menuItems
+        ));
+    }
+
+    public function imprimir(Request $request, Application $app, $idArticulo)
+    {
+        $articuloModel = new Articulo($app['db']);
+        $articulo = $articuloModel->getArticuloYEtiquetas($idArticulo);
+
+        $mesesIngles  = cal_info(0);
+        $mesesEspanol = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+
+        if (empty($articulo)) {
+            $app['session']->getFlashBag()->add(
+                'warning',
+                array(
+                    'message' => '¡Artículo no encontrado!',
+                )
+            );
+            return $app->redirect($app['url_generator']->generate('home'));
+        } else {
+            $fechaPublicacion = date('d-F-Y | h:m A', strtotime($articulo['fecha_pub']));
+            $fechaPublicacion = str_replace('-', ' de ', $fechaPublicacion);
+            $fechaPublicacion = str_replace($mesesIngles['months'], $mesesEspanol, $fechaPublicacion);
+
+            $imagenModel = new Imagen($app['db']);
+
+            $articulo['imagen'] = $imagenModel->getImagenByUrl($articulo['imagen']);
+
+            $articulo['fecha_pub'] = $fechaPublicacion;
+        }
+
+        return $app['twig']->render('frontend/imprimir.html.twig', array(
+            "articulo"   => $articulo
         ));
     }
 

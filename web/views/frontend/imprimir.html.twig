@@ -1,0 +1,49 @@
+{% extends 'layouts/frontend.html.twig' %}
+
+{% block title %}{{ articulo.titulo }} - El Precursor{% endblock %}
+{% block menu %}{% endblock %}
+{% block content %}
+    <div class="col-12 col-sm-12 col-lg-12">
+
+        <!-- the actual blog post: title/author/date/content -->
+        <h1 class="blog-title">{{ articulo.titulo|capitalize }}</h1>
+        <p>
+            Por <a href="index.php">{{ articulo.autor }}</a> <span class="glyphicon glyphicon-time"></span> {{ articulo.fecha_pub }}
+        </p>
+        <hr>
+        <div>
+            <img {% if articulo.imagen != null %} src="{{ articulo.imagen.link }}" {% else %} src="holder.js/600x400/auto/text:Imagen" {% endif %} class="img-responsive">
+            <p>
+                Autor:  {{ articulo.imagen.fuente_autor }}
+            </p>
+        </div>
+        <hr>
+        <p class="lead">{{ articulo.descripcion }}</p>
+
+        <div id="contenido" class="row-fluid">
+            {{ articulo.contenido|raw }}
+        </div>
+
+        <hr class="row-fluid">
+
+        <hr class="row-fluid">
+
+        <!-- Los comentarios -->
+        <div class="row-fluid" id="comentarios"></div>
+
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+       #contenido p{
+            text-align: justify !important;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+       window.print();
+    </script>
+{% endblock %}

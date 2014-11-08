@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 23-10-2014 a las 12:14:19
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.11
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 08-11-2014 a las 19:41:02
+-- Versión del servidor: 5.5.39
+-- Versión de PHP: 5.4.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `articulo` (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+`id` int(255) NOT NULL COMMENT 'Identificador único de cada registro',
   `id_autor` int(255) NOT NULL COMMENT 'Referencia al autor del artículo',
   `id_categoria` int(11) NOT NULL COMMENT 'Referencia a la categoría del artículo',
   `imagen` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Link de la imagen destacada del articulo',
@@ -37,11 +37,7 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   `fecha_pub` datetime NOT NULL COMMENT 'Fecha de publicación del artículo',
   `estatus` varchar(1) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'A = Activo, I = Inactivo, P = Publicado, B = Borrador.',
   `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_autor_2` (`id_autor`,`id_categoria`,`titulo`),
-  KEY `id_autor` (`id_autor`),
-  KEY `id_categoria` (`id_categoria`)
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Datos de los artículos del periódico' AUTO_INCREMENT=7 ;
 
 --
@@ -63,13 +59,10 @@ INSERT INTO `articulo` (`id`, `id_autor`, `id_categoria`, `imagen`, `titulo`, `d
 --
 
 CREATE TABLE IF NOT EXISTS `articulos_etiquetas` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+`id` int(255) NOT NULL,
   `id_articulo` int(255) NOT NULL COMMENT 'Índice que hace relación a la tabla artículos',
-  `id_etiqueta` int(11) NOT NULL COMMENT 'Índice que hace relación a la tabla etiquetas',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_articulo` (`id_articulo`,`id_etiqueta`),
-  KEY `id_etiqueta` (`id_etiqueta`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=5 ;
+  `id_etiqueta` int(11) NOT NULL COMMENT 'Índice que hace relación a la tabla etiquetas'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
 -- Volcado de datos para la tabla `articulos_etiquetas`
@@ -85,15 +78,12 @@ INSERT INTO `articulos_etiquetas` (`id`, `id_articulo`, `id_etiqueta`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `categoria` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+`id` int(11) NOT NULL COMMENT 'Identificador único de cada registro',
   `id_categoria` int(255) DEFAULT NULL COMMENT 'Referencia a la categoría perteneciente',
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre que describe la categoría',
   `estatus` varchar(1) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'A = Activo, I = Inactivo.',
   `creado` datetime NOT NULL COMMENT 'Fecha de creación del registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_categoria_2` (`id_categoria`,`nombre`),
-  KEY `id_categoria` (`id_categoria`)
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=8 ;
 
 --
@@ -115,16 +105,12 @@ INSERT INTO `categoria` (`id`, `id_categoria`, `nombre`, `estatus`, `creado`, `m
 --
 
 CREATE TABLE IF NOT EXISTS `comentario` (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+`id` int(255) NOT NULL COMMENT 'Identificador único de cada registro',
   `id_articulo` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de artículos',
   `id_autor` int(255) NOT NULL COMMENT 'Índice que hace relación con la tabla de usuarios',
   `contenido` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Contenido del comentario. Puede ser HTML',
   `estatus` varchar(1) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'A = Activo, I = Inactivo.',
-  `fecha` datetime NOT NULL COMMENT 'Fecha del comentario',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_articulo_2` (`id_articulo`,`id_autor`,`fecha`),
-  KEY `id_autor` (`id_autor`),
-  KEY `id_articulo` (`id_articulo`)
+  `fecha` datetime NOT NULL COMMENT 'Fecha del comentario'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -134,13 +120,11 @@ CREATE TABLE IF NOT EXISTS `comentario` (
 --
 
 CREATE TABLE IF NOT EXISTS `etiqueta` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único para cada registro',
+`id` int(11) NOT NULL COMMENT 'Identificador único para cada registro',
   `nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre que describe la etiqueta',
   `estatus` varchar(1) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'A = Activo, I = Inactivo.',
   `creado` datetime NOT NULL COMMENT 'Fecha de creación del registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=10 ;
 
 --
@@ -164,13 +148,12 @@ INSERT INTO `etiqueta` (`id`, `nombre`, `estatus`, `creado`, `modificado`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `imagen` (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+`id` int(255) NOT NULL COMMENT 'Identificador único de cada registro',
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre de la imagen',
   `link` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Dirección URL de la imagen',
   `fuente_autor` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Autor o fuente de la Imagen',
   `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
-  PRIMARY KEY (`id`)
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Imágenes del periódico' AUTO_INCREMENT=9 ;
 
 --
@@ -179,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `imagen` (
 
 INSERT INTO `imagen` (`id`, `nombre`, `link`, `fuente_autor`, `creado`, `modificado`) VALUES
 (3, 'universidad en transformacion.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/universidad en transformacion.png', '', '2014-10-05 18:10:57', '2014-10-05 18:58:55'),
-(4, 'plan rector garantiza la formacion humanistica integral del hombre nuevo.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/plan rector garantiza la formacion humanistica integral del hombre nuevo.png', '', '2014-10-05 23:10:41', '2014-10-05 23:31:39'),
+(4, 'plan rector garantiza la formacion humanistica integral del hombre nuevo.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/plan rector garantiza la formacion humanistica integral del hombre nuevo.png', '', '2014-10-05 23:10:41', '2014-11-08 00:41:08'),
 (5, 'estudiantes del cufm presentaron proyectos en beneficio de las comunidades 1.png', 'http://precursor.esy.es/web/resources/uploads/05-10-2014/estudiantes del cufm presentaron proyectos en beneficio de las comunidades 1.png', '', '2014-10-05 23:10:13', '2014-10-05 23:50:11'),
 (6, 'EL CUFM AL CUMPLIR 37 AÑOS FORTALECE LA TRANSFORMACION UNIVERSITARIA PARA EL SOCIALISMO.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/EL CUFM AL CUMPLIR 37 AÑOS FORTALECE LA TRANSFORMACION UNIVERSITARIA PARA EL SOCIALISMO 6.png', '', '2014-10-07 01:10:25', '2014-10-19 23:40:52'),
 (7, 'EL DEPARTAMENTO DE SERVICIO COMUNITARIO CUMPLIO 4 AÑOS VINCULANDO A LOS ESTUDIANTES CON LAS COMUNIDADES DE CARACAS.png', 'http://precursor.esy.es/web/resources/uploads/07-10-2014/EL DEPARTAMENTO DE SERVICIO COMUNITARIO CUMPLIO 4 AÑOS VINCULANDO A LOS ESTUDIANTES CON LAS COMUNIDADES DE CARACAS.png', '', '2014-10-07 02:10:47', '2014-10-07 02:08:46'),
@@ -192,14 +175,12 @@ INSERT INTO `imagen` (`id`, `nombre`, `link`, `fuente_autor`, `creado`, `modific
 --
 
 CREATE TABLE IF NOT EXISTS `opcion` (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',
+`id` int(255) NOT NULL COMMENT 'Identificador único de cada registro',
   `tipo` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Identificador para el tipo de opción',
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre único para el valor de la opción',
   `valor` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Valor de cualquier tipo para la opción',
   `creado` datetime NOT NULL COMMENT 'Fecha cuando se crea el registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha cuando se modifica el registro'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
 
 --
@@ -216,12 +197,10 @@ INSERT INTO `opcion` (`id`, `tipo`, `nombre`, `valor`, `creado`, `modificado`) V
 --
 
 CREATE TABLE IF NOT EXISTS `perfil` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único para cada registro',
+`id` int(11) NOT NULL COMMENT 'Identificador único para cada registro',
   `nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre que describe el perfil',
   `creado` datetime NOT NULL COMMENT 'Fecha de creación del registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de modificación del registro'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
@@ -240,12 +219,19 @@ INSERT INTO `perfil` (`id`, `nombre`, `creado`, `modificado`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `suscriptor` (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único del suscriptor',
+`id` int(255) NOT NULL COMMENT 'Identificador único del suscriptor',
   `correo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Correo de suscripción',
   `categorias` text COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Valor en JSON para las categorias seleccionadas',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `correo_unique` (`correo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Tabla que almacena a los suscriptores para el envio de noticias publicadas' AUTO_INCREMENT=1 ;
+  `creado` date NOT NULL,
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='Tabla que almacena a los suscriptores para el envio de noticias publicadas' AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `suscriptor`
+--
+
+INSERT INTO `suscriptor` (`id`, `correo`, `categorias`, `creado`, `modificado`) VALUES
+(1, 'usuario@precursor.com', '[]', '2014-11-07', '2014-11-07 22:26:17');
 
 -- --------------------------------------------------------
 
@@ -254,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `suscriptor` (
 --
 
 CREATE TABLE IF NOT EXISTS `usuario` (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único para cada registro',
+`id` int(255) NOT NULL COMMENT 'Identificador único para cada registro',
   `id_perfil` int(11) NOT NULL COMMENT 'Índice para relación con tabla perfiles',
   `nombre` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Nombre y apellido',
   `correo` varchar(255) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Correo electrónico',
@@ -262,12 +248,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `clave` varchar(88) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'Clave para inicio de sesión',
   `estatus` varchar(1) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'A = Activo, I = Inactivo.',
   `creado` datetime NOT NULL COMMENT 'Fecha de la creación del registro',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la modificación del registro',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `correo` (`correo`),
-  UNIQUE KEY `alias` (`alias`),
-  KEY `id_perfil` (`id_perfil`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=6 ;
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la modificación del registro'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=11 ;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -281,6 +263,124 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 (5, 3, 'Usuario', 'usuario@precursor', 'usuario', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', NULL, '2014-07-03 13:16:05', '2014-10-23 16:06:16');
 
 --
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `articulo`
+--
+ALTER TABLE `articulo`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id_autor_2` (`id_autor`,`id_categoria`,`titulo`), ADD KEY `id_autor` (`id_autor`), ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indices de la tabla `articulos_etiquetas`
+--
+ALTER TABLE `articulos_etiquetas`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id_articulo` (`id_articulo`,`id_etiqueta`), ADD KEY `id_etiqueta` (`id_etiqueta`);
+
+--
+-- Indices de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id_categoria_2` (`id_categoria`,`nombre`), ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indices de la tabla `comentario`
+--
+ALTER TABLE `comentario`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id_articulo_2` (`id_articulo`,`id_autor`,`fecha`), ADD KEY `id_autor` (`id_autor`), ADD KEY `id_articulo` (`id_articulo`);
+
+--
+-- Indices de la tabla `etiqueta`
+--
+ALTER TABLE `etiqueta`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `nombre` (`nombre`);
+
+--
+-- Indices de la tabla `imagen`
+--
+ALTER TABLE `imagen`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `opcion`
+--
+ALTER TABLE `opcion`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `nombre` (`nombre`);
+
+--
+-- Indices de la tabla `perfil`
+--
+ALTER TABLE `perfil`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `nombre` (`nombre`);
+
+--
+-- Indices de la tabla `suscriptor`
+--
+ALTER TABLE `suscriptor`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `correo_unique` (`correo`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `correo` (`correo`), ADD UNIQUE KEY `alias` (`alias`), ADD KEY `id_perfil` (`id_perfil`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `articulo`
+--
+ALTER TABLE `articulo`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `articulos_etiquetas`
+--
+ALTER TABLE `articulos_etiquetas`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT de la tabla `comentario`
+--
+ALTER TABLE `comentario`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro';
+--
+-- AUTO_INCREMENT de la tabla `etiqueta`
+--
+ALTER TABLE `etiqueta`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único para cada registro',AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT de la tabla `imagen`
+--
+ALTER TABLE `imagen`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `opcion`
+--
+ALTER TABLE `opcion`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de cada registro',AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `perfil`
+--
+ALTER TABLE `perfil`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único para cada registro',AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `suscriptor`
+--
+ALTER TABLE `suscriptor`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único del suscriptor',AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único para cada registro',AUTO_INCREMENT=11;
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -288,34 +388,34 @@ INSERT INTO `usuario` (`id`, `id_perfil`, `nombre`, `correo`, `alias`, `clave`, 
 -- Filtros para la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `articulo_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION;
+ADD CONSTRAINT `articulo_ibfk_1` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION,
+ADD CONSTRAINT `articulo_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `articulos_etiquetas`
 --
 ALTER TABLE `articulos_etiquetas`
-  ADD CONSTRAINT `articulos_etiquetas_ibfk_2` FOREIGN KEY (`id_etiqueta`) REFERENCES `etiqueta` (`id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `articulos_etiquetas_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id`) ON UPDATE NO ACTION;
+ADD CONSTRAINT `articulos_etiquetas_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id`) ON UPDATE NO ACTION,
+ADD CONSTRAINT `articulos_etiquetas_ibfk_2` FOREIGN KEY (`id_etiqueta`) REFERENCES `etiqueta` (`id`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  ADD CONSTRAINT `categoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION;
+ADD CONSTRAINT `categoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `comentario`
 --
 ALTER TABLE `comentario`
-  ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `comentario_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION;
+ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id`) ON UPDATE NO ACTION,
+ADD CONSTRAINT `comentario_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuario` (`id`) ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id`) ON UPDATE NO ACTION;
+ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id`) ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

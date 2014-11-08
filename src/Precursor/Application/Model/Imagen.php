@@ -38,6 +38,22 @@ class Imagen extends Model
     }
 
     /**
+     * @param string $url
+     *
+     * @return array
+     */
+    public function getImagenByUrl($url)
+    {
+        if (!is_null($url)){
+            $imagen = $this->getTodo(array(), array(), 'WHERE link = ?', array($url));
+
+            if (isset($imagen[0]) && !empty($imagen[0])){
+                return $imagen[0];
+            }
+        }
+    }
+
+    /**
      * @param string $nombre Nombre de la imagen
      * @param string $link   URL de la imagen
      * @param string $imagen Puede ser la imagen misma en tipo MIME

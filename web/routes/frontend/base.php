@@ -51,3 +51,6 @@ $app->match('/pruebas/{id}', function($id) use($app) {
     var_dump($var);
     return '';
 });
+
+$app->match('/imprimir/{idArticulo}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::imprimir')
+    ->bind('imprimir_noticia');
