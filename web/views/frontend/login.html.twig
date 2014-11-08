@@ -161,18 +161,22 @@
                     beforeSend: function() {
                         $('.response').html("").html("<div class='padding-5 center'><span class='ion-looping'></span></div>");
                     },
-                    success: function(response) {
-                        $('.response').html('<div class="alert alert-success"><i class="fa fa-check"></i><b>' + response + '</b></div>');
-                        $('form.form-signup .input-group, form.form-signup h2.page-header, form.form-signup hr').hide();
+                    success: function(response, textStatus, xhr) {
+                        if (xhr.status == 202) {
+                            $('.response').html('<div class="alert alert-danger"><i class="fa ion-close"></i><b>' + response + '</b></div>');
+                        } else {
+                            $('.response').html('<div class="alert alert-success"><i class="fa fa-check"></i><b>' + response + '</b></div>');
+                            $('form.form-signup .input-group, form.form-signup h2.page-header, form.form-signup hr').hide();
+                        }
                     },
                     error: function(xhr) {
                         if (xhr.status == 400) {
                             var response = JSON.parse(xhr.responseText);
                             $('.response').html('<div class="alert alert-danger"><i class="fa ion-close"></i><b>' + response.mensaje + '</b></div>');
                         } else if (xhr.status == 500) {
-                            $('.response').html(xhr.response);
+                            $('.response').html(xhr.responseText);
                         } else {
-                            $('.response').html(xhr.response);
+                            $('.response').html(xhr.responseText);
                         }
                     }
                 });

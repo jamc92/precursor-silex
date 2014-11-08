@@ -42,3 +42,12 @@ $app->match('/etiqueta/{idEtiqueta}', 'Precursor\\Application\\Controller\\Front
 $app->match('/suscriptor', 'Precursor\\Application\\Controller\\Frontend\\Suscriptor::registrar')
     ->bind('registrar_suscriptor')
     ->method('POST');
+
+$app->match('/pruebas/{id}', function($id) use($app) {
+    $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
+
+    $var = $usuarioModelo->eliminar($id, true);
+
+    var_dump($var);
+    return '';
+});

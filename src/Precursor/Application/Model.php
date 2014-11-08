@@ -41,11 +41,6 @@ class Model
         '42000' => 'Error de sintaxis.',
         '23000' => 'Ambigüedad.'
     );
-
-    /**
-     * @var int $_lastId Último id que fue insertado en la tabla
-     */
-    protected $_lastId = 0;
     
     /**
      * @var QueryBuilder $_queryBuilder
@@ -66,6 +61,11 @@ class Model
      * @var string $_table Nombre de la tabla en la base de datos
      */
     protected $_table;
+
+    /**
+     * @var int $id Last insert id de la tabla o id del registro
+     */
+    public $id;
 
     /**
      * @param Connection $db Objeto de la conección de doctrine con la base de datos
@@ -121,7 +121,7 @@ class Model
         if (!is_null($this->_table)) {
             $this->_affectedRows = $this->_db->insert($this->_table, $data);
             if ($this->_affectedRows > 0) {
-                $this->_lastId && $this->id = $this->_db->lastInsertId();
+                $this->id = $this->_db->lastInsertId();
             }
             return $this->_affectedRows;
         }

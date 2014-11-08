@@ -22,7 +22,7 @@ $app->error(function (LogicException $logicException, $code) {
 });
 
 $app->error(function (NotFoundHttpException $notFoundHttpException) use($app) {
-    if (!$app['debug']) {
+    if ($app['debug']) {
         return;
     } else {
         $menuModelo = new Menu($app['db']);
@@ -44,4 +44,12 @@ $app->error(function (MethodNotAllowedHttpException $methodNotAllowedHttpExcepti
 
 $app->error(function (Twig_Error_Loader $twigError) {
     return new Response($twigError->getMessage());
+});
+
+$app->error(function(\Swift_TransportException $swift_TransportException) use($app) {
+    if ($app['debug']) {
+        return;
+    } else {
+        return new Response('Ocurrió un error: '. $swift_TransportException->getMessage());
+    }
 });

@@ -110,10 +110,11 @@ class Usuario extends Model
      * @param string $correo Correo electrónico del usuario
      * @param string $alias  Alias del usuario
      * @param string $clave  Clave encriptada del usuario
+     * @param string $estatus Estatus del usuario
      * 
      * @return int Filas afectadas
      */
-    public function guardarUsuario($nombre, $correo, $alias, $clave)
+    public function guardarUsuario($nombre, $correo, $alias, $clave, $estatus = 'A')
     {   
         $data = array(
             'id_perfil' => 3,
@@ -121,6 +122,7 @@ class Usuario extends Model
             'correo'    => $correo,
             'alias'     => $alias,
             'clave'     => $clave,
+            'estatus'   => $estatus,
             'creado'    => date('Y-m-d H:m:s')
         );
         return $this->_insert($data);
@@ -154,24 +156,15 @@ class Usuario extends Model
 
     /**
      * @param int $id Id del usuario
+     * @param boolean $eliminar Determina si se elimina el usuario si es true. Si es false sólo cambia el estatus
      * 
      * @return int Filas afectadas
+     *
+     * @throws \Exception $ex
      */
-    public function eliminar($id)
+    public function eliminar($id, $eliminar = false)
     {
-        $filasAfectadas = 0;
-        
-        $comentarioModelo = new Comentario($this->_db);
-        
-        $filasAfectadas += $comentarioModelo->_delete(array('id_autor' => $id));
-        
-        $articuloModelo = new Articulo($this->_db);
-        
-        $filasAfectadas += $articuloModelo->_update(array('id_autor' => ''), array('id_autor' => $id));
-        
-        $filasAfectadas += $this->_delete(array('id' => $id));
-        
-        return $filasAfectadas;
+        return ($eliminar === true) ? $this->_delete(array('id' => $id)) : $this->_update(array('estatus' => 'I'), array('id' => $id));
     }
     
 }

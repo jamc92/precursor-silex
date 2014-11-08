@@ -214,6 +214,10 @@ class Usuario
                     $mensajeUsuario .= "<p>Confirme su registro haciendo click en el siguiente link <a href=\"#\">Link</a>.</p>";
                     $mensajeUsuario .= "</div>";
                     $mensajeUsuario .= '</div>';
+
+                    # Validar
+                    $resultAdmin = false;
+                    $resultUsuario = false;
                     
                     try {
                         # Transporte SMTP/Gmail con ssl
@@ -243,17 +247,17 @@ class Usuario
                         # Enviar el mensaje del usuario
                         $resultUsuario = $mailer->send($mailMessage);
                     } catch (\Swift_TransportException $ste) {
-
+                        #return new JsonResponse('Ocurrió un error en el servidor al intentar enviar el correo.', 400);
                     } catch (\Swift_SwiftException $sse) {
-                        
+                        #return new JsonResponse('Ocurrió un error en el servidor al intentar enviar el correo.', 400);
                     }
                     
                     if ($resultAdmin && $resultUsuario) {
                         return new JsonResponse('El registro fue exitoso. Se ha enviado un mensaje nuevo a su cuenta de correo para confirmar la cuenta.');
                     } else {
-                        $usuarioModelo->eliminar($usuarioModelo->id);
+                        $usuarioModelo->eliminar($usuarioModelo->id, true);
                         
-                        return new JsonResponse('Ocurrió un error al tratar de enviar el mensaje a su cuenta de correo para confirmar la cuenta. <button type="button" class="btn btn-primary" onclick="$(\'form.form-signup\').submit();">Enviar datos nuevamente</button>');
+                        return new JsonResponse('Ocurrió un error al tratar de enviar el mensaje a su cuenta de correo para confirmar la cuenta. <button type="button" class="btn btn-primary" onclick="$(\'form.form-signup\').submit();">Enviar datos nuevamente</button>', 202);
                     }
                 } else {
                     return new JsonResponse('Ocurrió un problema en el servidor y no se pudo registrar el usuario. Intente más tarde.', 500);
