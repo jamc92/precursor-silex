@@ -114,7 +114,7 @@
                     url: '{{ path("signup") }}',
                     data: $(this).serialize(),
                     beforeSend: function() {
-                        $('.response').html('').("<div class='padding-5 center'><span class='ion-looping'></span></div>");
+                        $('.response').html("").html("<div class='padding-5 center'><span class='ion-looping'></span></div>");
                     },
                     success: function(response, textStatus, xhr) {
                         if (xhr.status == 202) {

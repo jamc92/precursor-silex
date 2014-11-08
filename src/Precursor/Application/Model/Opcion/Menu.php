@@ -4,6 +4,7 @@
  * Description of Menu
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ *
  * @subpackage Opcion
  */
 
@@ -13,7 +14,8 @@ use Doctrine\DBAL\Connection,
     Precursor\Application\Model\Opcion,
     \stdClass;
 
-class Menu extends Opcion {
+class Menu extends Opcion
+{
 
     /**
      * @var int $_id

@@ -1,213 +1,113 @@
 <?php
+
 /**
- * Controlador de Opciones
- * 
+ * Controlador del módulo de menú
+ *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * 
  * @subpackage Backend
  */
 
 namespace Precursor\Application\Controller\Backend;
 
-use Precursor\Application\Model\Opcion as OpcionModelo,
+use Precursor\Application\Model\Opcion\Menu,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\RedirectResponse;
+    Symfony\Component\HttpFoundation\Response;
 
 class Opcion
 {
 
     /**
-     * @param Request $request
      * @param Application $app
+     * @param Request $request
+     * 
+     * @return mixed
+     */
+    public function verMenu(Application $app, Request $request)
+    {
+        $menuModelo = new Menu($app['db']);
+
+        $menuItems = $menuModelo->getItems();
+
+        if (!empty($menuItems)) {
+            return $app['twig']->render('backend/menu/index.html.twig', array(
+                'menu_items' => $menuItems,
+                'esEjemplo'  => false
+            ));
+        } else {
+            // Mostrar ejemplo de menú
+
+            $menu = '[{"id":1,"link":"' . $app['url_generator']->generate('home') . '","texto":"Inicio","sad":[{"id":2,"link":"http://asasdas","texto":"Item 1"}]},{"id":3,"link":"http://asasdas","texto":"Item 2","children":[{"id":4,"link":"http://asasdas","texto":"Item 3"},{"id":5,"link":"http://asasdas","texto":"Item 4"}]}]';
+
+            $menuItems = json_decode($menu);
+
+            return $app['twig']->render('backend/menu/index.html.twig', array(
+                'menu_items' => $menuItems,
+                'esEjemplo'  => true
+            ));
+        }
+    }
+
+    /**
+     * @param Application $app
+     * @param Request $request
+     * 
+     * @return Response
+     */
+    public function guardarMenu(Application $app, Request $request)
+    {
+        $menuModelo = new Menu($app['db']);
+
+        $itemsActual = $menuModelo->getItems();
+
+        $items = $request->get('items');
+
+        if (!empty($itemsActual) && !empty($items)) {
+            $menu = $menuModelo->getOpcion(null, 'menu');
+
+            $menuModelo->setId($menu['id']);
+
+            $filasAfectadas = $menuModelo->modificar($items);
+        } else if (!empty($items)) {
+            $filasAfectadas = $menuModelo->guardar($items);
+        }
+
+        if ($filasAfectadas) {
+            return new Response('Guardado exitosamente.');
+        } else {
+            return new Response('No se actualizó el menú.');
+        }
+    }
+
+    /**
+     * @param Application $app
+     * @param Request $request
      *
      * @return mixed
      */
-    public function ver(Request $request, Application $app)
+    public function verCorreos(Application $app, Request $request)
     {
-        $opcionModelo = new OpcionModelo($app['db']);
-        $opciones = $opcionModelo->getTodo();
-        
-        return $app['twig']->render('backend/opcion/list.html.twig', array(
-            "opciones" => $opciones
-        ));
-    }
+        $menuModelo = new Menu($app['db']);
 
-    /**
-     * @param Request $request
-     * @param Application $app
-     *
-     * @return mixed|RedirectResponse
-     */
-    public function agregar(Request $request, Application $app)
-    {
-        $initial_data = array(
-            'tipo' => '',
-            'nombre' => '',
-            'valor' => '',
-        );
+        $menuItems = $menuModelo->getItems();
 
-        $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-        $form = $form->add('tipo', 'choice', array(
-            'choices' => array(
-                'text'      => 'String',
-                'number'    => 'Int|Float',
-                'color'     => 'Color',
-                'email'     => 'Email',
-                'date'      => 'Date',
-                'datetime'  => 'Datetime',
-                'html'      => 'HTML',
-                //'php'       => 'PHP',
-                'js'      => 'JS|JSON',
-                //'array-php' => 'Array'
-            ),
-            'required' => true
-        ));
-        $form = $form->add('nombre', 'text', array('required' => true));
-        $form = $form->add('valor', 'hidden', array('required' => true));
-
-        $form = $form->getForm();
-
-        if("POST" == $request->getMethod()){
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $opcionModelo = new OpcionModelo($app['db']);
-                $filasAfectadas = $opcionModelo->guardar($data['tipo'], $data['nombre'], $data['valor']);
-                
-                if ($filasAfectadas == 1) {
-                    $app['session']->getFlashBag()->add(
-                        'success',
-                        array(
-                            'message' => '¡Opción creada con éxito!',
-                        )
-                    );
-                }
-                return $app->redirect($app['url_generator']->generate('opcion_list'));
-            }
-        }
-
-        return $app['twig']->render('backend/opcion/create.html.twig', array(
-            "form" => $form->createView()
-        ));
-    }
-
-    /**
-     * @param Request $request
-     * @param Application $app
-     * @param int $id
-     * 
-     * @return mixed|RedirectResponse
-     */
-    public function editar(Request $request, Application $app, $id)
-    {
-        $opcionModelo = new OpcionModelo($app['db']);
-        $opcion = $opcionModelo->getPorId($id);
-
-        if (!empty($opcion)) {
-            $initial_data = array(
-                'nombre' => $opcion['nombre'],
-                'valor'  => $opcion['valor']
-            );
-
-            $form = $app['form.factory']->createBuilder('form', $initial_data);
-
-            $form = $form->add('tipo', 'choice', array(
-                'choices' => array(
-                    'text'      => 'String',
-                    'number'    => 'Int|Float',
-                    'color'     => 'Color',
-                    'email'     => 'Email',
-                    'date'      => 'Date',
-                    'datetime'  => 'Datetime',
-                    'html'      => 'HTML',
-                    //'php'       => 'PHP',
-                    'js'      => 'JSON',
-                    //'array-php' => 'Array'
-                ),
-                'data'     => $opcion['tipo'],
-                'required' => true
+        if (!empty($menuItems)) {
+            return $app['twig']->render('backend/menu/index.html.twig', array(
+                'menu_items' => $menuItems,
+                'esEjemplo'  => false
             ));
-            $form = $form->add('nombre', 'text', array('required' => true));
-            $form = $form->add('valor', 'hidden', array('required' => true));
-
-            $form = $form->getForm();
-
-            if("POST" == $request->getMethod()){
-
-                $form->handleRequest($request);
-
-                if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    $filasAfectadas = $opcionModelo->modificar($id, $data['tipo'], $data['nombre'], $data['valor']);
-
-                    if ($filasAfectadas == 1) {
-                        $app['session']->getFlashBag()->add(
-                            'success',
-                            array(
-                                'message' => '¡Opción modificada con éxito!',
-                            )
-                        );
-                    }
-                    return $app->redirect($app['url_generator']->generate('opcion_edit', array("id" => $id)));
-                }
-            }
         } else {
-            $app['session']->getFlashBag()->add(
-                'danger',
-                array(
-                    'message' => '¡Opción no encontrada!',
-                )
-            );
-            return $app->redirect($app['url_generator']->generate('opcion_list'));
-        }
+            // Mostrar ejemplo de menú
 
-        return $app['twig']->render('backend/opcion/edit.html.twig', array(
-            "form"  => $form->createView(),
-            "tipo"  => $opcion['tipo'],
-            "valor" => json_encode($opcion['valor'])
-        ));
+            $menu = '[{"id":1,"link":"' . $app['url_generator']->generate('home') . '","texto":"Inicio","sad":[{"id":2,"link":"http://asasdas","texto":"Item 1"}]},{"id":3,"link":"http://asasdas","texto":"Item 2","children":[{"id":4,"link":"http://asasdas","texto":"Item 3"},{"id":5,"link":"http://asasdas","texto":"Item 4"}]}]';
+
+            $menuItems = json_decode($menu);
+
+            return $app['twig']->render('backend/menu/index.html.twig', array(
+                'menu_items' => $menuItems,
+                'esEjemplo'  => true
+            ));
+        }
     }
 
-    /**
-     * @param Request $request
-     * @param Application $app
-     * @param int $id
-     * 
-     * @return RedirectResponse
-     */
-    public function eliminar(Request $request, Application $app, $id)
-    {
-        $opcionModelo = new OpcionModelo($app['db']);
-        $opcion = $opcionModelo->getPorId($id);
-
-        if(!empty($opcion)) {
-            $filasAfectadas = $opcionModelo->eliminar($id);
-            
-            if ($filasAfectadas == 1) {
-                $app['session']->getFlashBag()->add(
-                    'success',
-                    array(
-                        'message' => '¡Opción eliminada con éxito!',
-                    )
-                );
-            }
-        }
-        else{
-            $app['session']->getFlashBag()->add(
-                'danger',
-                array(
-                    'message' => '¡Opción no encontrada!',
-                )
-            );
-        }
-
-        return $app->redirect($app['url_generator']->generate('opcion_list'));
-    }
-
-} 
+}

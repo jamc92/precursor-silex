@@ -83,11 +83,12 @@
                     <li {% if option is defined and option == 'archivo_create' %}class="active"{% endif %}><a href="{{ path('archivo_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
                 </ul>
             </li>
+            <li {% if option is defined and option == 'correos' %}class="active"{% endif %}>
+                <a href="{{ path('correos_ver') }}" style="margin-left: 10px;"><i class="fa fa-bars"></i> Envío de correos</a>
+            </li>
             <li {% if option is defined and option == 'menu' %}class="active"{% endif %}>
                 <a href="{{ path('menu_index') }}" style="margin-left: 10px;"><i class="fa fa-bars"></i> Menú</a>
             </li>
-            <li {% if option is defined and option == 'opcion_list' %}class="active"{% endif %}><a href="{{ path('opcion_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Ver opciones</a></li>
-            <li {% if option is defined and option == 'opcion_create' %}class="active"{% endif %}><a href="{{ path('opcion_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
         </ul>
     </li>
     <li class="treeview {% if option is defined and (option == 'perfil_list' or option == 'perfil_create' or option == 'perfil_edit') %}active{% endif %}">
