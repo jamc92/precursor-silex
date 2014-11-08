@@ -221,8 +221,12 @@ class Usuario
                     
                     try {
                         # Transporte SMTP/Gmail con ssl
-                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+                        /*$transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
                                 ->setUsername("cufmelprecursor@gmail.com")
+                                ->setPassword("elprecursor");*/
+                        
+                        $transport = \Swift_SmtpTransport::newInstance('mx1.hostinger.es', 2525)
+                                ->setUsername("info@precursor.esy.es")
                                 ->setPassword("elprecursor");
 
                         # Instancia de Swift_Mailer
