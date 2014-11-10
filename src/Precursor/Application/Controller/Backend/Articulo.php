@@ -106,7 +106,7 @@ class Articulo
 
                 $articuloModelo = new ArticuloModelo($app['db']);
                 $filasAfectadas = $articuloModelo->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
-
+                
                 if (is_array($filasAfectadas)) {
 
                     if (!empty($filasAfectadas['etiquetas'])) {
@@ -131,13 +131,6 @@ class Articulo
                         )
                     );
 
-                } elseif (is_int($filasAfectadas) && $filasAfectadas == 1) {
-                    $app['session']->getFlashBag()->add(
-                        'success',
-                        array(
-                            'message' => "¡Artículo creado!",
-                        )
-                    );
                 } else {
                     $app['session']->getFlashBag()->add(
                         'danger',
@@ -146,7 +139,8 @@ class Articulo
                         )
                     );
                 }
-                return $app->redirect($app['url_generator']->generate('articulo_list'));
+                #return $app->redirect($app['url_generator']->generate('articulo_list'));
+                die;
             }
         }
 
