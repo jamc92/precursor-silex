@@ -148,7 +148,7 @@
 
                 maxfiles: 1,
                 maxfilesize: 2,
-                url: 'create',
+                url: '{{ path("archivo_create") }}',
 
                 uploadFinished:function(i,file,response){
                     if (response.status == 'File was uploaded successfuly!') {
