@@ -3,7 +3,8 @@
  * Modelo de Artículos o Noticias
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
- * @author     Javier Madrid <javiermadrid19@gmail.com>
+ * @author     Javier Madrid <javiermadrid19@gmail.com>  
+ * 
  * @subpackage Model
  */
 
@@ -138,6 +139,8 @@ class Articulo extends Model
      */
     public function getArticulosByEtiqueta($idEtiqueta)
     {
+        # Set table 
+        $this->setTable('articulos_etiquetas');
         $join = array('articulo', 'id_articulo', 'articulo.id', '=');
         return parent::getTodo(array('*'), $join, "WHERE id_etiqueta = $idEtiqueta");
     }

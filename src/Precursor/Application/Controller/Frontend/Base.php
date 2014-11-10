@@ -3,6 +3,7 @@
  * Controlador por Defecto
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
  *
  * @subpackage Frontend
  */

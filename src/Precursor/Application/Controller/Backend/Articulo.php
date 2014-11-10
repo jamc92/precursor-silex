@@ -3,6 +3,7 @@
  * Controlador de Articulos
  *
  * @author     Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author     Javier Madrid <javiermadrid19@gmail.com>
  *
  * @subpackage Backend
  */
@@ -139,7 +140,7 @@ class Articulo
                         )
                     );
                 }
-                #return $app->redirect($app['url_generator']->generate('articulo_list'));
+                return $app->redirect($app['url_generator']->generate('articulo_list'));
                 die;
             }
         }
