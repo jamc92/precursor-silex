@@ -1,0 +1,248 @@
+{% extends 'layouts/backend.html.twig' %}
+
+{% block body_params %}class="skin-blue"{% endblock %}
+
+{% block container %}
+
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+
+        {% include 'menu.html.twig' with {'option': 'archivo_edit'} %}
+
+        <!-- Right side column. Contains the navbar and content of the page -->
+        <aside class="right-side">                
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Editar archivo
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                {% include 'ag_alerts.html.twig' %}
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="box box-info">
+
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
+
+                            <div class="box-body">
+
+                                <div class="row-fluid">
+                                    {{ form_start(form, {'method': 'PUT'}) }}
+                                        {{ form_errors(form) }}
+
+                                        <div class='form-group'>
+                                            {{ form_label(form.nombre, 'Nombre del archivo') }}
+                                            {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
+                                        </div>
+                                        
+                                        <div class='form-group row-fluid editorContent'>
+                                            <label for="editor">Contenido del archivo</label>
+                                            <div id="editor"></div>
+                                        </div>
+
+                                        {{ form_rest(form) }}
+                                    {{ form_end(form) }}
+                                </div>
+
+                            </div><!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <button type="button" id="editar" class="btn btn-primary">Editar</button>
+                                <button type="button" class="btn btn-default" onclick="location.href='{{ path("archivo_list") }}'">Volver</button>
+                            </div>
+
+                        </div><!-- /.box -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-info">
+
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
+
+                            <div class="box-body">
+
+                                <div class="row" id="dropbox">
+                                    <span class="message">Arrastra los archivos para subir. <br /><i>Luego de arrastralos se subirán al servidor automáticamente.</i></span>
+                                </div>
+
+                            </div><!-- /.box-body -->
+
+                            <div class="box-footer"></div>
+
+                        </div><!-- /.box -->
+                    </div>
+                </div>
+
+            </section><!-- /.content -->
+        </aside><!-- /.right-side -->
+    </div><!-- ./wrapper -->
+
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ app.asset_path }}/css/filedrop/filedrop.css" rel="stylesheet" type="text/css">
+    <style>
+        .editorContent {
+            height: 200px;
+            position: relative;
+            margin-bottom: 50px;
+        }
+        #editor {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ app.asset_path }}/js/plugins/ace/ace.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/php");
+            ace.edit('editor').setValue($('#form_contenido').val());
+            
+            $('#form_contenido').parent().css('display', 'none');
+        });
+        
+        $('#editar').on('click', function() {
+            
+            var contenido = ace.edit('editor').getValue();
+            
+            if (contenido != "") {
+                $.ajax({
+                    url: '',
+                    data: {
+                        'form[nombre]': $("#form_nombre").val(),
+                        'form[contenido]': contenido,
+                        'form[_token]': $("#form__token").val()
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    type: 'POST'
+                });
+            }
+        });
+    </script>
+    <script src="{{ app.asset_path }}/js/plugins/filedrop/jquery.filedrop.js"></script>
+    <script>
+        $(function(){
+
+            var dropbox = $('#dropbox'),
+                    message = $('.message', dropbox);
+
+            dropbox.filedrop({
+                // The name of the $_FILES entry:
+                paramname:'php',
+
+                maxfiles: 1,
+                maxfilesize: 2,
+                url: '{{ path("archivo_create") }}',
+
+                uploadFinished:function(i,file,response){
+                    if (response.status == 'File was uploaded successfuly!') {
+                        $.data(file).addClass('done');
+                    } else {
+                        $.data(file).addClass('error');
+                    }
+                    // response is the JSON object that post_file.php returns
+                },
+
+                error: function(err, file) {
+                    switch(err) {
+                        case 'BrowserNotSupported':
+                            showMessage('Your browser does not support HTML5 file uploads!');
+                            break;
+                        case 'TooManyFiles':
+                            alert('Too many files! Please select 5 at most! (configurable)');
+                            break;
+                        case 'FileTooLarge':
+                            alert(file.name+' is too large! Please upload files up to 2mb (configurable).');
+                            break;
+                        default:
+                            break;
+                    }
+                },
+
+                // Called before each upload is started
+                beforeEach: function(file) {
+                    if(file.type != 'application/x-php'){
+                        alert('Only php files are allowed!');
+
+                        // Returning false will cause the
+                        // file to be rejected
+                        return false;
+                    }
+                },
+
+                uploadStarted:function(i, file, len){
+                    createImage(file);
+                },
+
+                progressUpdated: function(i, file, progress) {
+                    $.data(file).find('.progress').width(progress);
+                }
+
+            });
+
+            var template = '<div class="preview col-12 col-md-12 col-lg-12">'+
+                    '<span class="imageHolder">'+
+                    '<img />'+
+                    '<span class="uploaded"></span>'+
+                    '</span>'+
+                    '<div class="progressHolder">'+
+                    '<div class="progress"></div>'+
+                    '</div>'+
+                    '</div><br>';
+
+
+            function createImage(file){
+
+                var preview = $(template),
+                        image = $('img', preview);
+
+                var reader = new FileReader();
+
+                image.width = 100;
+                image.height = 100;
+
+                reader.onload = function(e){
+
+                    // e.target.result holds the DataURL which
+                    // can be used as a source of the image:
+
+                    image.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3ggLAhQ24QGNnQAAADt0RVh0Q29tbWVudABDcmVhdGVkIGJ5IFJhbW9uIFNlcnJhbm8KPHJhbW9uLmNhbGxlLjg4QGdtYWlsLmNvbT7cgiqkAAABvElEQVRYw+2XPUvDUBRAT2z6aYQ2aAfRSvGDlk4q6Kgojg4uQiEoOPoXBDfRf9BNVDp076xDt1rUTUsrFoUqtKKiUESsddGgeQ0qEYqSO70bXg4n3HtfEqnRaDRoYbTR4rAFbIG/KaBpu2jarl2C/yEgf6wrwObmBMlkkWy2Sr3+QiymommDdHV5hZufnp7Z2iqwv1/F4ZCYmupmfr4fSZL4Llc2QhOJY3K5qp4fHFQ5O7tnfX0MRXEZ9p6Qy1X0PJ0+R1XdzMz08l2uIFAqPbCyMkI43EGpdE8iccLNzSPp9AXx+MCnvZVKjY2NcVTVTSp1yt7eJZnMVVMBM67QAwsLQ0SjATwemWhUZXFxEICjo2sBurQUoadHwedzMjcXBqBcrjWttRlXEIhE/IY8oD+tMUIhRV/7/e63vqg3FTDjWpoCp9Ohrz82nqUxzOfvDPktAMGgz9K4mXGFJtzZKeD1ynqzbG8XARge7rQkYMYVBPr6FNbWDj9dCwTczM6GLAmYcYUSLC/HmJzspr1dxuVyMDrayerqiHAG/DTMuNL7R+n7iZVMTv/qUfsV134ZtVxAsn9MbAFboNUCr7JBsxtkosHuAAAAAElFTkSuQmCC');
+                };
+
+                // Reading the file as a DataURL. When finished,
+                // this will trigger the onload function above:
+                reader.readAsDataURL(file);
+
+                message.hide();
+                preview.appendTo(dropbox);
+
+                // Associating a preview container
+                // with the file, using jQuery's $.data():
+
+                $.data(file,preview);
+            }
+
+            function showMessage(msg){
+                message.html(msg);
+            }
+
+        });
+    </script>
+{% endblock %}
