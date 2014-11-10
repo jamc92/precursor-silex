@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     $vendorDir . '/symfony/intl/Symfony/Component/Intl/Resources/stubs/functions.php',
     $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
+    $vendorDir . '/MPDF52/mpdf.php'
 );

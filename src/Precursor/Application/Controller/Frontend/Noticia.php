@@ -71,6 +71,14 @@ class Noticia
         ));
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @param Application $app
+     * @param int $idArticulo
+     * 
+     * @return mixed
+     */
     public function imprimir(Request $request, Application $app, $idArticulo)
     {
         $articuloModel = new Articulo($app['db']);
@@ -102,6 +110,26 @@ class Noticia
         return $app['twig']->render('frontend/imprimir.html.twig', array(
             "articulo"   => $articulo
         ));
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param Application $app
+     * @param int $idArticulo
+     * 
+     * @return mixed
+     */
+    public function pdf(Request $request, Application $app, $idArticulo)
+    {
+        $url_imprimir = $app['url_generator']->generate('imprimir_noticia', array('idArticulo' => $idArticulo));
+        $html = file_get_contents('http://localhost' . $url_imprimir);
+        
+        $mpdf = new \mPDF(); 
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+        exit;
     }
 
     /**

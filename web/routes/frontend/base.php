@@ -52,5 +52,8 @@ $app->match('/pruebas/{id}', function($id) use($app) {
     return '';
 });
 
-$app->match('/imprimir/{idArticulo}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::imprimir')
+$app->match('/noticia/{idArticulo}/imprimir', 'Precursor\\Application\\Controller\\Frontend\\Noticia::imprimir')
     ->bind('imprimir_noticia');
+
+$app->match('/noticia/{idArticulo}/pdf', 'Precursor\\Application\\Controller\\Frontend\\Noticia::pdf')
+    ->bind('noticia_pdf');
