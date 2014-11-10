@@ -147,7 +147,7 @@ class Archivo
 
             }
 
-            return $app['twig']->render('backend/archivo/create.html.twig', array(
+            return $app['twig']->render('backend/archivo/edit.html.twig', array(
                 'form' => $form->createView()
             ));
         } else {

@@ -38,7 +38,7 @@ class EtiquetasArticulo extends Model
             );
         }
         $join = array('etiqueta', 'id_etiqueta', 'etiqueta.id', '=');
-        return $this->_selectFields($fields, $join, '', array('id_articulo' => $idArticulo));
+        return $this->_selectFields($fields, $join, 'WHERE id_articulo = ?', array($idArticulo));
     }
 
     /**
@@ -55,8 +55,8 @@ class EtiquetasArticulo extends Model
         );
         
         // Consultar si existe
-        $etiqueta = $this->_selectFields(array('id'), array(), '', array('id_articulo' => $idArticulo, 'id_etiqueta' => $idEtiqueta));
-        
+        $etiqueta = $this->_selectFields(array('id'), array(), 'WHERE id_articulo = ? AND id_etiqueta = ?', array($idArticulo, $idEtiqueta));
+                
         if (isset($etiqueta[0]) && !empty($etiqueta)) {
             return 0;
         } else {

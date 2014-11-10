@@ -74,7 +74,7 @@
                             <li class="divider"></li>
                             <li class="dropdown-header">Cuenta</li>
                             <li>
-                                <a href="#">Editar mis datos</a>
+                                <a href="{{ path('editar_datos', {id: app.user.id}) }}">Editar mis datos</a>
                             </li>
                             <li>
                                 <a href="{{ path('logout') }}">Cerrar sesión</a>

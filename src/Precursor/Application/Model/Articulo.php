@@ -3,7 +3,8 @@
  * Modelo de Artículos o Noticias
  *
  * @author     Ramon Serrano <ramon.calle.88@gmail.com>
- * @author     Javier Madrid <javiermadrid19@gmail.com>
+ * @author     Javier Madrid <javiermadrid19@gmail.com>  
+ * 
  * @subpackage Model
  */
 
@@ -47,8 +48,11 @@ class Articulo extends Model
      */
     public function getArticuloYEtiquetas($id)
     {
-        $fields = array('articulo.*', 'usuario.nombre as autor');
-        $join   = array('usuario', 'id_autor', 'usuario.id', '=');
+        $fields = array('articulo.*', 'usuario.nombre as autor', 'categoria.nombre as categoria');
+        $join   = array(
+            array('usuario', 'id_autor', 'usuario.id', '='),
+            array('categoria', 'articulo.id_categoria', 'categoria.id', '=')
+            );
         $where  = "WHERE articulo.id = $id";
         $articulo = parent::getTodo($fields, $join, $where);
 
@@ -135,6 +139,8 @@ class Articulo extends Model
      */
     public function getArticulosByEtiqueta($idEtiqueta)
     {
+        # Set table 
+        $this->setTable('articulos_etiquetas');
         $join = array('articulo', 'id_articulo', 'articulo.id', '=');
         return parent::getTodo(array('*'), $join, "WHERE id_etiqueta = $idEtiqueta");
     }
@@ -148,7 +154,7 @@ class Articulo extends Model
      * @param string $contenido   Contenido HTML del artículo
      * @param array $etiquetas    Arreglo de las estiquetas seleccionadas
      *
-     * @return array|int Filas afectadas
+     * @return array Filas afectadas de artículo y etiquetas
      */
     public function guardar($idAutor, $idCategoria, $imagen, $titulo, $descripcion, $contenido, array $etiquetas = array())
     {
@@ -163,31 +169,36 @@ class Articulo extends Model
             'creado'       => date('Y-m-d H:m:s')
         );
 
-        $filasAfectadas = $this->_insert($data);
+        $this->_db->beginTransaction();
+        
+        $filasAfectadas = 0;
+        $etiquetaAgregadas = array();
 
-        if ($filasAfectadas == 1 && !empty($etiquetas)) {
-            $articulo = parent::getTodo(array('MAX(id) as id'));
+        try {
+            $filasAfectadas = $this->_insert($data);
 
-            $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
+            if ($filasAfectadas == 1 && !empty($etiquetas)) {
 
-            $etiquetaAgregadas = array();
+                $etiquetasArticuloModelo = new EtiquetasArticulo($this->_db);
+                
+                foreach ($etiquetas as $etiqueta) {
+                    $filasAfectadasEtiqueta = $etiquetasArticuloModelo->guardar($this->id, $etiqueta);
 
-            foreach ($etiquetas as $etiqueta) {
-                $filasAfectadasEtiqueta = $etiquetasArticuloModelo->guardar($articulo[0]['id'], $etiqueta);
-
-                // Agregar la etiqueta si se inserto en la tabla, para el mensaje del usuario
-                if ($filasAfectadasEtiqueta == 1) {
-                    $etiquetaAgregadas[] = $etiqueta;
+                    // Agregar la etiqueta si se inserto en la tabla, para el mensaje del usuario
+                    if ($filasAfectadasEtiqueta == 1) {
+                        $etiquetaAgregadas[] = $etiqueta;
+                    }
                 }
             }
-
-            return array(
-                'articulo'  => $filasAfectadas,
-                'etiquetas' => $etiquetaAgregadas
-            );
-        } else {
-            return $filasAfectadas;
+            $this->_db->commit();
+        } catch(\Exception $e) {
+            $this->_db->rollBack();
+            throw $e;
         }
+        return array(
+            'articulo'  => $filasAfectadas,
+            'etiquetas' => $etiquetaAgregadas
+        );
     }
 
     /**'estatus' => 'A',

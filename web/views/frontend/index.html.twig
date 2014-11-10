@@ -1153,6 +1153,18 @@ data-endspeed="1000"
             <!-- /input-group -->
         </div>
         <!-- /well -->
+        
+        <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-unstyled">
+                        {% for categoria in categorias %}
+                            <li>
+                                <a href="{{ path('articulos_categoria', {idCategoria: categoria.id} ) }}">{{ categoria.nombre }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
 
     </div>
 {% endblock %}

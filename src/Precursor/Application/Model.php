@@ -208,10 +208,18 @@ class Model
         if ($this->_sql != $sql)
             $this->_sql = $sql;
 
-        if (count($join) == 4) {
-            $keys = array_keys($join);
-            $this->_sql .= $this->_join($join[$keys[0]], $join[$keys[1]], $join[$keys[2]], $join[$keys[3]]);
-        } elseif (!empty($join)) {
+        if (is_array($join)) {
+            foreach ($join as $currentJoin) {
+                if (is_array($currentJoin) && count($currentJoin) == 4) {
+                    $keys = array_keys($currentJoin);
+                    $this->_sql .= $this->_join($currentJoin[$keys[0]], $currentJoin[$keys[1]], $currentJoin[$keys[2]], $currentJoin[$keys[3]]);
+                } elseif (is_string($currentJoin) && count($join) == 4) {
+                    $keys = array_keys($join);
+                    $this->_sql .= $this->_join($join[$keys[0]], $join[$keys[1]], $join[$keys[2]], $join[$keys[3]]);
+                    break;
+                }
+            }
+        } elseif (empty($join)) {
             throw new Exception("Valores incorrectos del join. Array['table'], Array['field_first'], Array['field_second'], Array['operator']. Array[0], Array[1], Array[2], Array[3].");
         }
 
@@ -250,7 +258,7 @@ class Model
     {
         if (!is_null($this->_table)) {
             $this->_affectedRows = $this->_db->update($this->_table, $data, $criteria);
-            return $this->_affectedRows;
+            return $this->_afieldffectedRows;
         }
     }
 

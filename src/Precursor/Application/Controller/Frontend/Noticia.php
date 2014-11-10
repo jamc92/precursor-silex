@@ -30,7 +30,7 @@ class Noticia
      * @return RedirectResponse
      */
     public function ver(Request $request, Application $app, $id)
-    {
+    {   
         $categoriaModelo = new Categoria($app['db']);
         $categorias = $categoriaModelo->getTodo(array(), array(), "WHERE id > 1");
 
@@ -65,7 +65,7 @@ class Noticia
         $menuItems = $menuModelo->getItems();
         
         return $app['twig']->render('frontend/noticia.html.twig', array(
-            "articulo"   => $articulo,
+            'articulo'   => $articulo,
             'categorias' => $categorias,
             'menu_items' => $menuItems
         ));
@@ -205,9 +205,9 @@ class Noticia
 
         $menuItems = $menuModelo->getItems();
 
-        return $app['twig']->render('frontend/articulos_categoria.html.twig', array(
+        return $app['twig']->render('frontend/articulos_etiqueta.html.twig', array(
             'articulosEtiqueta' => $articulosEtiqueta,
-            'eetiqueta' => $etiqueta,
+            'etiqueta' => $etiqueta,
             'menu_items' => $menuItems
         ));
     }

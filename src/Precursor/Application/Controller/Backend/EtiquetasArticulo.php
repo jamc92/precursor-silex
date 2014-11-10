@@ -3,6 +3,7 @@
  * Controlador de Etiquetas de Artículos
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>  
  * 
  * @subpackage Backend
  */
@@ -32,7 +33,7 @@ class EtiquetasArticulo
 
         return $app['twig']->render('backend/etiquetas_articulo/list.html.twig', array(
             "idArticulo" => $idArticulo,
-            "etiquetas"   => $etiquetas
+            "etiquetas"  => $etiquetas
         ));
     }
 
