@@ -1,5 +1,6 @@
 <?php
 
+// Ruta de la pagina de inicio de El Precursor
 $app->match('/', 'Precursor\\Application\\Controller\\Frontend\\Base::index')
     ->bind('home');
 
@@ -43,14 +44,14 @@ $app->match('/suscriptor', 'Precursor\\Application\\Controller\\Frontend\\Suscri
     ->bind('registrar_suscriptor')
     ->method('POST');
 
-$app->match('/pruebas/{id}', function($id) use($app) {
-    $usuarioModelo = new \Precursor\Application\Model\Usuario($app['db']);
-
-    $var = $usuarioModelo->eliminar($id, true);
-
-    var_dump($var);
-    return '';
-});
-
 $app->match('/imprimir/{idArticulo}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::imprimir')
     ->bind('imprimir_noticia');
+
+$app->match('/editar_datos/{id}', 'Precursor\\Application\\Controller\\Backend\\Usuario::editar')
+    ->assert('id', '\d+')
+    ->bind('editar_datos')
+    ->method('GET|POST');
+
+$app->match('/editar_datos/{id}', 'Precursor\\Application\\Controller\\Backend\\Usuario::editar')
+    ->assert('id', '\d+')
+    ->bind('usuario_edit');
