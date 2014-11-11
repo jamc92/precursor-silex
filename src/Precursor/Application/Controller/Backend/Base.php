@@ -35,11 +35,15 @@ class Base
         ));
     }
     
-    public function pruebas(Request $request, Application $app)
+    /**
+     * @param Request $request
+     * @param Application $app
+     * 
+     * @return mixed
+     */
+    public function logs(Request $request, Application $app)
     {
-        $log = new \Precursor\Provider\PrecursorLog();
-        
-        var_dump($log);
+        return 'Logs';
     }
     
 }
