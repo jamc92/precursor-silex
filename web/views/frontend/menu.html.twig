@@ -57,7 +57,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.nombre }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') or is_granted('ROLE_WRITER') %}
                                 <li>
                                     <a href="{{ path('admin') }}">Panel de administración</a>
                                 </li>

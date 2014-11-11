@@ -27,7 +27,7 @@ class Perfil extends Model
      */
     public function getPerfilesImportantes()
     {
-        return array(1, 2, 3);
+        return array(1, 2, 3, 4);
     }
     
     /**

@@ -155,7 +155,7 @@ class Articulo extends Model
      *
      * @return array Filas afectadas de artículo y etiquetas
      */
-    public function guardar($idAutor, $idCategoria, $imagen, $titulo, $descripcion, $contenido, array $etiquetas = array())
+    public function guardar($idAutor, $idCategoria, $imagen, $titulo, $descripcion, $contenido, array $etiquetas = array(), $estatus = 'A')
     {
         $data = array(
             'id_autor'     => $idAutor,
@@ -165,7 +165,8 @@ class Articulo extends Model
             'descripcion'  => $descripcion,
             'contenido'    => $contenido,
             'fecha_pub'    => date('Y-m-d H:m:s'),
-            'creado'       => date('Y-m-d H:m:s')
+            'creado'       => date('Y-m-d H:m:s'),
+            'estatus'      => $estatus
         );
 
         $this->_db->beginTransaction();
@@ -248,6 +249,12 @@ class Articulo extends Model
      *
      * @return int Filas afectadas
      */
+    
+//    public function cambiarEstatus ($id, $estatus) 
+//    {
+//        
+//    }
+    
     public function eliminar($id)
     {
         $filasAfectadas = 0;

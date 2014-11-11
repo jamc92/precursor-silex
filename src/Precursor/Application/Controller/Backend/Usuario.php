@@ -53,9 +53,13 @@ class Usuario
 
         $perfilModelo = new Perfil($app['db']);
         $perfiles = $perfilModelo->getTodo();
-
+        
         foreach ($perfiles as $perfil) {
             $options[$perfil['id']] = $perfil['nombre'];
+        }
+        
+        if ($app['user']['perfil'] === 'ROLE_EDITOR') {
+            unset($options[1]);
         }
 
         $initial_data = array(

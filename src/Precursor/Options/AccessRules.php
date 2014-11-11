@@ -22,12 +22,13 @@ class AccessRules
     {
         return array(
             array('^/login$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/admin/categoria', array('ROLE_SUPER_ADMIN', 'ROLE_EDITOR')),
             array('^/admin/comentario$', 'ROLE_SUPER_ADMIN'),
-            array('^/admin/comentarios_articulo', array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')),
+            array('^/admin/comentarios_articulo', array('ROLE_SUPER_ADMIN', 'ROLE_EDITOR')),
             array('^/admin/perfil', 'ROLE_SUPER_ADMIN'),
-            array('^/admin/usuario', 'ROLE_SUPER_ADMIN'),
+            array('^/admin/usuario', array('ROLE_SUPER_ADMIN', 'ROLE_EDITOR')),
             array('^/admin/opcion', 'ROLE_SUPER_ADMIN'),
-            array('^/admin', array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')),
+            array('^/admin', array('ROLE_SUPER_ADMIN', 'ROLE_EDITOR', 'ROLE_WRITER')),
             array('^/admin', 'ROLE_USER')
         );
     }
