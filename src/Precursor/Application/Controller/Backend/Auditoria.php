@@ -21,6 +21,22 @@ use Doctrine\DBAL\Driver\Connection,
 
 class Auditoria
 {
+
+    /**
+     * @var Auditoria
+     */
+    protected $_instance;
+
+    /**
+     * @return Auditoria
+     */
+    public static function getInstance()
+    {
+        if (!isset(self::$_instance)) {
+            self::$instance = new self();
+        }
+        return self::$instancia;
+    }
     
     /**
      * 
@@ -53,7 +69,7 @@ class Auditoria
 
     /**
      * 
-     * @param Application $app
+     * @param Connection $db
      * @param string $tipoTransaccion
      * @param string $modelo
      * @param string $descripcion

@@ -62,6 +62,8 @@ class Opcion
 
         $items = $request->get('items');
 
+        $filasAfectadas = 0;
+
         if (!empty($itemsActual) && !empty($items)) {
             $menu = $menuModelo->getOpcion(null, 'menu');
 
