@@ -14,6 +14,7 @@
     </ul>
 </li>
 
+{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
 <li class="treeview {% if option is defined and (option == 'categoria_list' or option == 'categoria_create' or option == 'categoria_edit') %}active{% endif %}">
     <a href="#">
         <i class="fa fa-th-list"></i>
@@ -25,6 +26,7 @@
         <li {% if option is defined and option == 'categoria_create' %}class="active"{% endif %}><a href="{{ path('categoria_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nueva</a></li>
     </ul>
 </li>
+{% endif %}
 
 {% if is_granted('ROLE_SUPER_ADMIN') %}
     <li class="treeview {% if option is defined and (option == 'comentario_list' or option == 'comentario_create' or option == 'comentario_edit') %}active{% endif %}">
@@ -102,7 +104,8 @@
             <li {% if option is defined and option == 'perfil_create' %}class="active"{% endif %}><a href="{{ path('perfil_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
         </ul>
     </li>
-
+{% endif %}
+{% if is_granted('ROLE_EDITOR') or is_granted('ROLE_SUPER_ADMIN') %}
     <li class="treeview {% if option is defined and (option == 'usuario_list' or option == 'usuario_create' or option == 'usuario_edit') %}active{% endif %}">
         <a href="#">
             <i class="fa fa-user"></i>
@@ -114,7 +117,8 @@
             <li {% if option is defined and option == 'usuario_create' %}class="active"{% endif %}><a href="{{ path('usuario_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Nuevo</a></li>
         </ul>
     </li>
-{% elseif is_granted('ROLE_ADMIN') %}
+{% endif %}
+{% if is_granted('ROLE_EDITOR') %}
     <li class="treeview {% if option is defined and option == 'menu' %}active{% endif %}">
         <a href="#">
             <i class="fa fa-gears"></i>
