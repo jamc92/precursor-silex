@@ -54,3 +54,9 @@ $app->match('/noticia/{idArticulo}/imprimir', 'Precursor\\Application\\Controlle
 
 $app->match('/noticia/{idArticulo}/pdf', 'Precursor\\Application\\Controller\\Frontend\\Noticia::pdf')
     ->bind('noticia_pdf');
+
+# visor de logs
+$app->get('/elprecursor.log', function() {
+    $log = file_get_contents(__DIR__ . '/../../elprecursor.log');
+    return $log;
+});
