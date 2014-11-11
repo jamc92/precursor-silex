@@ -81,7 +81,13 @@ class Menu extends Opcion
      */
     public function guardar($items)
     {
-        return parent::guardar('js', $this->_nombre, json_encode($items));
+        $filasAfectadas = parent::guardar('js', $this->_nombre, json_encode($items));
+
+        if ($filasAfectadas == 1) {
+
+        }
+
+        return $filasAfectadas;
     }
     
     /**
