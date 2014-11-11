@@ -55,7 +55,7 @@ class Articulo extends Model
             );
         $where  = "WHERE articulo.id = $id";
         $articulo = parent::getTodo($fields, $join, $where);
-
+        
         if (isset($articulo[0]) && !empty($articulo[0])) {
 
             $articulo = $articulo[0];
@@ -72,7 +72,6 @@ class Articulo extends Model
             } else {
                 $articulo['etiquetas'] = array();
             }
-            
         }
 
         return $articulo;

@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/archivo.php';
 require_once __DIR__ . '/articulo.php';
+require_once __DIR__ . '/auditoria.php';
 require_once __DIR__ . '/categoria.php';
 require_once __DIR__ . '/comentario.php';
 require_once __DIR__ . '/comentarios_articulo.php';
