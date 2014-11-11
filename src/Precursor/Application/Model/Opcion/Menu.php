@@ -11,6 +11,7 @@
 namespace Precursor\Application\Model\Opcion;
 
 use Doctrine\DBAL\Connection,
+    Precursor\Application\Controller\Backend\Auditoria,
     Precursor\Application\Model\Opcion,
     \stdClass;
 
@@ -83,8 +84,14 @@ class Menu extends Opcion
     {
         $filasAfectadas = parent::guardar('js', $this->_nombre, json_encode($items));
 
-        if ($filasAfectadas == 1) {
+        $audioriaController = new Auditoria($this->_db);
 
+        if ($filasAfectadas == 1) {
+            $audioriaController->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú. Extra: ' . json_encode($items), 'EXITOSO');
+            #Auditoria::getInstance()->guardar();
+        } else {
+            $audioriaController->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú fallido. Extra: ' . json_encode($items), 'FALLIDO');
+            #Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú fallido. Extra: ' . json_encode($items), 'FALLIDO');
         }
 
         return $filasAfectadas;
