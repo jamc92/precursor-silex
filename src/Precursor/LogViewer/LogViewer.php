@@ -1,14 +1,18 @@
 <?php
-namespace SyonixLogViewer;
+namespace Precursor\LogViewer;
 
 class LogViewer
 {
     protected $logs;
     protected $clients;
 
-    public function __construct($configPath)
+    public function __construct($configPath = "")
     {
         setlocale(LC_ALL, 'en_US.UTF8');
+
+        if (empty($configPath) || $configPath == "") {
+            $configPath = __DIR__ . '/config.json';
+        }
 
         $logs = array();
         $this->logs = array();

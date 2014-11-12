@@ -9,6 +9,7 @@ require_once __DIR__ . '/comentarios_articulo.php';
 require_once __DIR__ . '/etiqueta.php';
 require_once __DIR__ . '/etiquetas_articulo.php';
 require_once __DIR__ . '/imagen.php';
+require_once __DIR__ . '/log.php';
 require_once __DIR__ . '/opciones.php';
 require_once __DIR__ . '/perfil.php';
 require_once __DIR__ . '/usuario.php';
@@ -22,6 +23,3 @@ $app->match('/admin/pruebas', 'Precursor\\Application\\Controller\\Backend\\Base
 $app->match('/admin/update/{id}', 'Precursor\\Application\\Controller\\Backend\\Comentario::aprobar')
     ->assert('id', '\d+')
     ->bind('aprobar_comentario');
-
-$app->match('/admin/logs', 'Precursor\\Application\\Controller\\Backend\\Base::logs')
-    ->bind('logs');

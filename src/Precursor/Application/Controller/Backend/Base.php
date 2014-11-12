@@ -10,7 +10,8 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Precursor\Application\Model\Comentario,
+use Precursor\LogViewer\LogViewer,
+    Precursor\Application\Model\Comentario,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
@@ -33,17 +34,6 @@ class Base
         return $app['twig']->render('ag_dashboard.html.twig', array(
             'comentarios' => $comentarios
         ));
-    }
-    
-    /**
-     * @param Request $request
-     * @param Application $app
-     * 
-     * @return mixed
-     */
-    public function logs(Request $request, Application $app)
-    {
-        return 'Logs';
     }
     
 }
