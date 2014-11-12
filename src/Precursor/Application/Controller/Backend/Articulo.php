@@ -15,6 +15,7 @@ use Precursor\Application\Model\Articulo as ArticuloModelo,
     Precursor\Application\Model\Etiqueta,
     Precursor\Application\Model\Usuario,
     Silex\Application,
+    Symfony\Component\HttpFoundation\JsonResponse,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -108,22 +109,11 @@ class Articulo
 
                 $accion = $request->get('accion');
 
-                return 'Excelente';
-                
-            } else {
-                return 'Falta algo en el formulario';
-            }
-        }
-
-        else {
-
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $articuloModelo = new ArticuloModelo($app['db']);
-                $filasAfectadas = $articuloModelo->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas']);
+                if ($accion == 'borrador'){
+                    $filasAfectadas = $articuloModelo->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas'], 'B');
+                } elseif ($accion == 'publicado') {
+                    $filasAfectadas = $articuloModelo->guardar($idAutor, $data['categoria'], $data['imagen'], $data['titulo'], $data['descripcion'], $data['contenido'], $data['etiquetas'], 'A');
+                }
                 
                 if (is_array($filasAfectadas)) {
 
@@ -150,15 +140,11 @@ class Articulo
                     );
 
                 } else {
-                    $app['session']->getFlashBag()->add(
-                        'danger',
-                        array(
-                            'message' => "¡Artículo no creado!",
-                        )
-                    );
+                    return new JsonResponse('Articulo no guardado', 202);
                 }
-                return $app->redirect($app['url_generator']->generate('articulo_list'));
-                die;
+                
+            } else {
+                return new JsonResponse('No todos los campos fueron completados', 202);
             }
         }
 
