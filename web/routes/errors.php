@@ -73,6 +73,15 @@ $app->error(function (Twig_Error_Loader $twigError) {
     }
 });
 
+$app->error(function (Twig_Error_Runtime $twigErrorRuntime) {
+    if ($app['debug']) {
+        return;
+    } else {
+        // Ocurrio un error en el servido 500.html.twig
+        return new Response($twigErrorRuntime->getMessage());
+    }
+});
+
 $app->error(function(\Swift_TransportException $swift_TransportException) use($app) {
     if ($app['debug']) {
         return;
