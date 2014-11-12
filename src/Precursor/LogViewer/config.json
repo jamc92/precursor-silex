@@ -1,0 +1,12 @@
+{
+    "debug": false,
+    "timezone": "America/Caracas",
+    "dateFormat": "Y-m-d, H:i:s",
+    "clients": [{
+            "name": "elprecursor",
+            "logs": {
+                "log": "http://localhost/precursor-silex/web/elprecursor.log"
+            }
+        }
+    }]
+}
