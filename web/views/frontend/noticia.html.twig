@@ -6,16 +6,17 @@
     <div class="col-12 col-sm-8 col-lg-8">
 
         <!-- the actual blog post: title/author/date/content -->
-        <h1 class="blog-title">{{ articulo.titulo|capitalize }}</h1>
+        <h1 class="blog-title">{{ articulo.titulo }}</h1>
         <p>
             Por <a href="index.php">{{ articulo.autor }}</a> <span class="glyphicon glyphicon-time"></span> {{ articulo.fecha_pub }}
         </p>
         <hr>
         
+        <!-- Mapa del sitio -->
         <ol class="breadcrumb">
             <li><a href="index.php">Inicio</a></li>
             <li><a href="{{ path('articulos_categoria', {idCategoria: articulo.id_categoria} ) }}">{{articulo.categoria}}</a></li>
-            <li><a href="{{ path('noticia', {id: articulo.id}) }}" class="active">{{ articulo.titulo }}</a></li>
+            <li><a href="{{ path('noticia', {id: articulo.id}) }}" class="active">{{ articulo.titulo}}</a></li>
         </ol>
         
         <div>
