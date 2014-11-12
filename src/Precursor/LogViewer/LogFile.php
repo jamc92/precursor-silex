@@ -1,5 +1,5 @@
 <?php
-namespace SyonixLogViewer;
+namespace Precursor\LogViewer;
 
 use Dubture\Monolog\Parser\LineLogParser;
 

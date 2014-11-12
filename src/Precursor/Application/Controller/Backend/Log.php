@@ -9,11 +9,10 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Precursor\LogViewer\LogViewer,
-    Precursor\Application\Model\Comentario,
+use Monolog\Logger,
+    Precursor\LogViewer\LogViewer,
     Silex\Application,
-    Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Request;
 
 class Log
 {
@@ -33,13 +32,13 @@ class Log
             return $app->redirect($app['url_generator']->generate('client', array('clientSlug' => $clientSlug)));
         }
 
-        return $app['twig']->render('log/list.html.twig', array(
+        return $app['twig']->render('backend/log/list.html.twig', array(
             'clients' => $viewer->getClients(),
-            'logs' => $viewer->getLogs($clientSlug),
+            'logs' => $viewer->getLogs('elprecursor'),
             'clientSlug' => $clientSlug,
-            'logSlug' => $logSlug,
+            'logSlug' => 'log',
             'log' => $log,
-            'logLevels' => Monolog\Logger::getLevels(),
+            'logLevels' => Logger::getLevels(),
             'minLogLevel' => 0
         ));
     }

@@ -1,31 +1,165 @@
-{% for id,line in log.lines if constant('Monolog\\Logger::' ~ line.level) >= minLogLevel %}
-{% set level = constant('Monolog\\Logger::' ~ line.level) %}
-<div class="logline clearfix level-{{ logLevelStyle[level].class }}">
-<div class="level level-{{ logLevelStyle[level].class }}">
-<i class="fa fa-{{ logLevelStyle[level].icon }}"></i>&nbsp;
-</div>
-<div class="message">{{ line.message }}</div>
-<div class="date">{{ line.date|date(app.mvconfig.dateFormat) }}</div>
-{% if line.context|length > 0 %}
-<div class="more" id="more-{{ id + 1 }}" onclick="toggleMore({{ id + 1 }});"><i class="fa fa-search-plus"></i> more...</div>
-<div class="context" id="context-{{ id + 1 }}"><table>
-{% for title, content in line.context %}
-<tr><td><strong>{{ title }}</strong></td><td>{{ content|nl2br }}</td></tr>
-{% endfor %}
-</table></div>
-{% endif %}
-</div>
-{% else %}
-<div class="logline clearfix level-info">
-<div class="level level-info">
-<i class="fa fa-info-circle"></i>&nbsp;
-</div>
-<div class="message">
-{% if minLogLevel > 0 %}
-No log entries match your selection. <a href="{{ path('log', {'clientSlug': clientSlug, 'logSlug': logSlug}) }}" class="reset-btn" ><i class="fa fa-times-circle-o"></i> Reset filter</a>
-{% else %}
-This log file is empty
-{% endif %}
-</div>
-</div>
-{% endfor %}
+{% extends 'layouts/backend.html.twig' %}
+
+{% block title %}Logs - El Precursor{% endblock %}
+
+{% set logLevelStyle = {
+    100: {
+    'icon': 'bug',
+    'class' : 'debug'
+    },
+    200: {
+    'icon': 'info-circle',
+    'class' : 'info'
+    },
+    250: {
+    'icon': 'file-text',
+    'class' : 'notice'
+    },
+    300: {
+    'icon': 'warning',
+    'class' : 'warning'
+    },
+    400: {
+    'icon': 'times-circle',
+    'class' : 'error'
+    },
+    500: {
+    'icon': 'fire',
+    'class' : 'critical'
+    },
+    550: {
+    'icon': 'bell',
+    'class' : 'alert'
+    },
+    600: {
+    'icon': 'flash',
+    'class' : 'emergency'
+    }
+} 
+%}
+{% block container %}
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        {% include 'menu.html.twig' with {'option': 'menu'} %}
+        <!-- Right side column. Contains the navbar and content of the page -->
+        <aside class="right-side">                
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Menú
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                {% include 'ag_alerts.html.twig' %}
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="box box-info">
+
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
+
+                            <div class="box-body">
+                                <div class="row-fluid">
+                                    {% for id,line in log.lines if constant('Monolog\\Logger::' ~ line.level) >= minLogLevel %}
+                                        {% set level = constant('Monolog\\Logger::' ~ line.level) %}
+                                        <div class="logline clearfix level-{{ logLevelStyle[level].class }}">
+                                            <div class="level level-{{ logLevelStyle[level].class }}" title="{{ logLevelStyle[level].class|capitalize }}">
+                                                <i class="fa fa-{{ logLevelStyle[level].icon }}"></i>&nbsp;
+                                            </div>
+                                            <div class="message">{{ line.message }}</div>
+                                            <div class="date">{{ line.date|date('Y-m-d H:m:s') }}</div>
+                                            {% if line.context|length > 0 %}
+                                                <div class="more" id="more-{{ id + 1 }}" onclick="toggleMore({{ id + 1 }});"><i class="fa fa-search-plus"></i> more...</div>
+                                                <div class="context" id="context-{{ id + 1 }}"><table>
+                                                        {% for title, content in line.context %}
+                                                            <tr><td><strong>{{ title }}</strong></td><td>{{ content|nl2br }}</td></tr>
+                                                        {% endfor %}
+                                                    </table></div>
+                                                {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <div class="logline clearfix level-info">
+                                            <div class="level level-info">
+                                                <i class="fa fa-info-circle"></i>&nbsp;
+                                            </div>
+                                            <div class="message">
+                                                {% if minLogLevel > 0 %}
+                                                    No hay entradas en la selección. <a href="{{ path('log', {'clientSlug': clientSlug, 'logSlug': logSlug}) }}" class="reset-btn" ><i class="fa fa-times-circle-o"></i> Reset filter</a>
+                                                {% else %}
+                                                    No hay entradas en el log.
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .logline {
+            display: block;
+        }
+        .logline .level {
+            width: 45px;
+            text-align: center;
+            border-right: 3px solid #aaa;
+        }
+        .level-info .level-info {
+            border-right-color: #5cb85c;
+            color: #5cb85c;
+        }
+        .level-debug .level-debug {
+            border-right-color: #00a4e5;
+            color: #00a4e5;
+        }
+        .level-critical .level-critical {
+            border-right-color: #ee0000;
+            color: #ee0000;
+        }
+        .level-error .level-error {
+            border-right-color: #ff9a00;
+            color: #ff9a00;
+        }
+        .level, .message, .date, .more {
+            border: 1px solid #aaa;
+            display: inline-block;
+            padding: 5px;
+            vertical-align: top;
+            margin-bottom: 1px;
+        }
+        .more {
+            cursor: pointer;
+        }
+        .message {
+            width: 70%;
+        }
+        .context {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function toggleMore(id) {
+            context = $('#context-'+id);
+            more = $('#more-'+id);
+            if(context.is(':visible')) {
+                context.slideUp(300);
+                more.html('<i class="fa fa-search-plus"></i> more...');
+            } else {
+                context.slideDown(300);
+                more.html('<i class="fa fa-search-minus"></i> less...');
+            }
+        }
+    </script>
+{% endblock %}
