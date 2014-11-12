@@ -4,7 +4,6 @@ use \PDOException,
     Doctrine\DBAL\DBALException,
     Precursor\Application\Model\Opcion\Menu,
     Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\Process\Exception\LogicException,
     Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException,
     Symfony\Component\HttpKernel\Exception\NotFoundHttpException,
     Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,7 @@ $app->error(function (PDOException $PDOException, $code) use($app) {
     }
 });
 
-$app->error(function (DBALException $DBALException, $code) {
+$app->error(function (DBALException $DBALException, $code) use($app) {
     // Guardar la traza en base de datos
     if ($app['debug']) {
         return;
@@ -29,7 +28,7 @@ $app->error(function (DBALException $DBALException, $code) {
     }
 });
 
-$app->error(function (LogicException $logicException, $code) {
+$app->error(function (\LogicException $logicException) use($app) {
     if ($app['debug']) {
         return;
     } else {
@@ -55,7 +54,7 @@ $app->error(function (NotFoundHttpException $notFoundHttpException) use($app) {
     }
 });
 
-$app->error(function (MethodNotAllowedHttpException $methodNotAllowedHttpException, $code) {
+$app->error(function (MethodNotAllowedHttpException $methodNotAllowedHttpException, $code) use($app) {
     if ($app['debug']) {
         return;
     } else {
@@ -64,7 +63,7 @@ $app->error(function (MethodNotAllowedHttpException $methodNotAllowedHttpExcepti
     }
 });
 
-$app->error(function (Twig_Error_Loader $twigError) {
+$app->error(function (Twig_Error_Loader $twigError) use($app) {
     if ($app['debug']) {
         return;
     } else {
@@ -73,7 +72,7 @@ $app->error(function (Twig_Error_Loader $twigError) {
     }
 });
 
-$app->error(function (Twig_Error_Runtime $twigErrorRuntime) {
+$app->error(function (Twig_Error_Runtime $twigErrorRuntime) use($app) {
     if ($app['debug']) {
         return;
     } else {
