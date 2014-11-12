@@ -98,7 +98,24 @@ class Articulo
 
         $form = $form->getForm();
 
-        if ("POST" == $request->getMethod()) {
+        if ($request->isXmlHttpRequest()){
+             $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $articuloModelo = new ArticuloModelo($app['db']);
+
+                $accion = $request->get('accion');
+
+                return 'Excelente';
+                
+            } else {
+                return 'Falta algo en el formulario';
+            }
+        }
+
+        else {
 
             $form->handleRequest($request);
 
@@ -269,6 +286,8 @@ class Articulo
      *
      * @return RedirectResponse
      */
+
+
     public function eliminar(Request $request, Application $app, $id)
     {
 

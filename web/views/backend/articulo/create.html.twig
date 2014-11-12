@@ -76,9 +76,25 @@
                             {{ form_rest(form) }}
 
                             <div class="box-footer">
-                                <button type="button" class="btn btn-info">Borrador</button>
-                                <button type="submit" class="btn btn-primary">Publicar</button>
-                                <button type="button" class="btn btn-default" onclick="location.href = '{{ path('articulo_list') }}'">Volver</button>
+
+                                {% if is_granted('ROLE_WRITER') %}
+                                    <button type="submit" 
+                                        id="borradorButton"
+                                        data-action="Borrador"
+                                        class="btn btn-primary">Guardar
+                                    </button>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
+                                    <button type="submit" 
+                                        id="borradorButton"
+                                        data-action="Borrador" 
+                                        class="btn btn-info">Borrador
+                                    </button>
+                                    <button type="submit" data-action="Publicado" class="btn btn-primary">Publicar</button>
+                                {% endif %}
+
+                                <button type="submit" class="btn btn-default" onclick="location.href = '{{ path('articulo_list') }}'">Volver</button>
                             </div>
                         </div><!-- /.box -->
                         {{ form_end(form) }}
@@ -168,6 +184,29 @@
                 }
             });
         });
+
+        $(function() {
+            $("form").submit(function(evt) {
+                evt.preventDefault();
+
+                {% if is_granted('ROLE_WRITER') %}
+                    var url = '{{ path("articulo_create") }}?accion=borrador';
+                {% else %}
+                    var url = '{{ path("articulo_create") }}?accion=publicar';
+                {% endif %}
+
+                var data = $(this).serialize();
+                
+                var success = function(response, textStatus, xhr) {
+                    //articulo = JSON.parse(response);
+                    console.log(response);
+                    alert('Estatus' + textStatus);
+                };
+                ajaxRequest('#borradorButton', url, data, false, false, null, null, null, success);
+
+            });            
+        });
+
     </script>
     <script src="{{ app.asset_path }}/js/plugins/image-picker/image-picker.js"></script>
 {% endblock %}
