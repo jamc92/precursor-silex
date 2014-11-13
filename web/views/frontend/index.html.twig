@@ -1145,7 +1145,7 @@ data-endspeed="1000"
             <h4>Suscríbete a El Precursor</h4>
             <div class="input-group">
                 <form class="form-suscriptor">
-                    <input type="text" name="correo" class="form-control">
+                    <input type="email" name="correo" class="form-control" autocomplete="off" required>
                      <span class="input-group-btn">
                          <button class="btn btn-default" type="submit">
                              <span class="glyphicon glyphicon-envelope"></span>
@@ -1213,6 +1213,10 @@ data-endspeed="1000"
                     verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning');
                 } else if (response.mensaje == "Usuario suscrito") {
                     verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'info', false, true, 2000);
+
+                    var buttonsFooter = '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
+                                        '<button type="button" class="btn btn-primary" onclick="enviarCategorias()">Enviar</button>';
+
                     verModalDialog('.modalSuscriptor', 'Elegir las secciones', 'Se ha registrado con exito el correo que ha enviado.', false,'info');
                     
                     var url = '{{ path("categoria_list_ajax") }}';
@@ -1229,6 +1233,11 @@ data-endspeed="1000"
 
             ajaxRequest('.responseSuscriptor',uri, data, false, false, 'POST', false, false, success);
         });
+
+        function enviarCategorias() {
+            var url = '';
+            var data = $('#form_categorias').serialize();
+        }
 
         $(document).ready(function() {
             $('.tp-banner').show().revolution({
