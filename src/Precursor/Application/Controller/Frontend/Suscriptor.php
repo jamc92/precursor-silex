@@ -10,7 +10,8 @@
 
 namespace Precursor\Application\Controller\Frontend;
 
-use Precursor\Application\Model\Suscriptor as SuscriptorModel,
+use Precursor\Application\Model\Categoria,
+    Precursor\Application\Model\Suscriptor as SuscriptorModel,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
@@ -58,6 +59,24 @@ class Suscriptor
                     ));
                 }
             }
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Application $app
+     *
+     * @return JsonResponse
+     */
+    public function categoriasAjax(Request $request, Application $app)
+    {
+        if ($request->isXmlHttpRequest() && 'POST' == $request->getMethod()) {
+            $categoriaModelo = new Categoria($app['db']);
+            $categorias = $categoriaModelo->getTodo();
+
+            return $app['twig']->render('frontend/categorias-ajax.html.twig', array(
+                'categorias' => $categorias
+            ));
         }
     }
 

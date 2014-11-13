@@ -1221,6 +1221,7 @@ data-endspeed="1000"
                     
                     var url = '{{ path("categoria_list_ajax") }}';
                     var success = function(responseCat, textStatus, xhr) {
+                        $('input[type="correo"]').val("");
                         $('.responseSuscriptor').html('').removeClass('alert-warning');
                         $('.modalSuscriptor .modal-body').append(responseCat);
                     };
