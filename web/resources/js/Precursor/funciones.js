@@ -157,11 +157,11 @@ function verModalDialog(selector, title, body, footer) {
  */
 function verAlert(selector, message, style, hideClose, autoHide, time) {
     var templateAlert = '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>'+
-                        '<p class="message">Mensaje</p>';
+                        '<div class="message">Mensaje</div>';
     
     var alert = $(templateAlert),
-        alertMessage = $('.message', alert),
-        alertClose = $('.close', alert);
+        alertMessage = $(alert[1]),
+        alertClose = $(alert[0]);
     
     if (!selector) {
         console.log('No hay selector');
@@ -170,12 +170,12 @@ function verAlert(selector, message, style, hideClose, autoHide, time) {
             alertMessage.html(message);
         }
         if (hideClose) {
-            alertClose.remove();
+            alertClose.hide();
         }
         if (autoHide && time) {
             $(selector).addClass('alert fade in alert-' + style).html(alert).fadeOut(time);
         } else {
-            $(selector).addClass('alert fade in alert-' + style).html(alert);
+            $(selector).addClass('alert fade in alert-' + style).html(alert).fadeIn();
         }
     }
 }
