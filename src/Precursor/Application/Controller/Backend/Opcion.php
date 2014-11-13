@@ -77,7 +77,7 @@ class Opcion
         if ($filasAfectadas) {
             return new Response('Guardado exitosamente.');
         } else {
-            return new Response('No se actualizó el menú.');
+            return new Response('Menú actualizado');
         }
     }
 

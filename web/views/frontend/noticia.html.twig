@@ -34,6 +34,7 @@
         
         <div class="row-fluid compartir">
             <div class="lead">Compartir: </div>
+            <br>
             <div class="redes-sociales">
                 <a href="http://www.facebook.com/sharer/sharer.php?url={{ app.request.uri }}" 
                    class="btn btn-primary facebook" 
@@ -47,7 +48,7 @@
                    title="Compartir en Google Plus">
                     <i class="fa fa-google-plus"></i>
                 </a>
-                <a href="https://twitter.com/share={{ app.request.uri }}" 
+                <a href="https://twitter.com/intent/tweet?url={{ app.request.uri }}" 
                    class="btn btn-info twitter" 
                    target="_blank"
                    title="Compartir en Twitter">
@@ -60,7 +61,7 @@
                 </a>
                 <a href="{{ url('imprimir_noticia',{idArticulo: articulo.id}) }}" onclick="window.open(this.href, 'mywin','left=20,top=20,width=500,height=500,toolbar=1,resizable=0,scrollbars=yes'); return false;"
                    class="btn btn-default imprimir"
-                   title="Imprimir Noticia">
+                   title="Imprimir noticia">
                     <i class="glyphicon glyphicon-print"></i>
                 </a>
             </div>
@@ -69,7 +70,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <p>
-                    <strong>Noticias Relacionadas</strong>
+                    <br><strong>Noticias Relacionadas</strong>
                 </p>
 
                 <ul class="list-unstyled">
@@ -128,21 +129,8 @@
         </div>
         <!-- /well -->
         <div class="well">
-            <h4>Noticias más vistas</h4>
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="col-lg-4" src="holder.js/120x100/auto/text:Imagen">
-                    <p class="col-lg-8">
-                        La colisión, entre la gabarra Doña Martha y una chalana, está siendo atendida por funcionarios del 171 y cuerpos de seguridad de la entidad.
-                    </p>
-                </div>
-                <div class="col-lg-12">
-                    <img class="col-lg-4" src="holder.js/120x100/auto/text:Imagen">
-                    <p class="col-lg-8">
-                        La colisión, entre la gabarra Doña Martha y una chalana, está siendo atendida por funcionarios del 171 y cuerpos de seguridad de la entidad.
-                    </p>
-                </div>
-            </div>
+            <h4>Síguenos en nuestras redes</h4>
+            
         </div>
         <!-- /well -->
         <!-- /well -->
