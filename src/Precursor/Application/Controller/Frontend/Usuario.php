@@ -148,16 +148,19 @@ class Usuario
     public function checkUser(Application $app, Request $request) {
         if ($request->isXmlHttpRequest() && $request->isMethod("POST")) {
             if (is_array($app['user']) && !empty($app['user'])) {
+
+                $user = $app['user'];
+                unset($user['clave']);
                 
-                $url = $app['url_generator']->generate('admin');
-                
-                if ($app['user']['perfil'] == 'ROLE_USER') {
+                if ($user['perfil'] == 'ROLE_USER') {
                     $url = $app['url_generator']->generate('home');
+                } else {
+                    $url = $app['url_generator']->generate('admin');
                 }
                 
                 return new JsonResponse(array(
                     'mensaje' => 'Usuario logueado',
-                    'alias'   => $app['user'],
+                    'alias'   => $user,
                     'url'     => $url
                 ), 200);
             } else {

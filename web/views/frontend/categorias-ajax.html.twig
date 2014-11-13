@@ -1,12 +1,13 @@
+<p>Ahora seleccione las categorías de su interés que desea que le lleguen a su correo electrónico.</p>
 <div style="padding: 0 20px">
     <form id="form_categorias">
-    {% for categoria in categorias %}
-        <div class="checkbox">
-            <label>
-              <input type="checkbox" name="{{ categoria.nombre }}" value="{{ categoria.id }}">
-              {{ categoria.nombre }}
-            </label>
-        </div>
-    {% endfor %}
+        {% for categoria in categorias %}
+            <div class="checkbox">
+                <label>
+                  <input class="categoria" type="checkbox" name="{{ categoria.nombre }}" value="{{ categoria.id }}">
+                  {{ categoria.nombre }}
+                </label>
+            </div>
+        {% endfor %}
     </form>
 </div>

@@ -59,22 +59,5 @@ class Base
             'menu_items' => $menuItems
         ));
     }
-    
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param Application $app
-     * 
-     * @return JsonResponse
-     */
-    public function categoriasAjax(Request $request, Application $app)
-    {
-        if ($request->isXmlHttpRequest() && 'POST' == $request->getMethod()) {
-            $categoriaModelo = new Categoria($app['db']);
-            $categorias = $categoriaModelo->getTodo();
-            
-            return $app['twig']->render('frontend/categorias-ajax.html.twig', array(
-                'categorias' => $categorias
-            ));
-        }
-    }
+
 } 

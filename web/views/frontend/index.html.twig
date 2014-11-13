@@ -1145,7 +1145,7 @@ data-endspeed="1000"
             <h4>Suscríbete a El Precursor</h4>
             <div class="input-group">
                 <form class="form-suscriptor">
-                    <input type="email" name="correo" class="form-control" autocomplete="off" required>
+                    <input type="email" name="correo" class="form-control" placeholder="Ingrese su correo electrónico..." autocomplete="off" required>
                      <span class="input-group-btn">
                          <button class="btn btn-default" type="submit">
                              <span class="glyphicon glyphicon-envelope"></span>
@@ -1200,45 +1200,61 @@ data-endspeed="1000"
     <script src="{{ app.asset_path }}/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
     <script src="{{ app.asset_path }}/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
     <script>
-
         $('.form-suscriptor').submit(function(ev) {
-           ev.preventDefault();
+            ev.preventDefault();
 
-            var uri  = '{{ path('registrar_suscriptor') }}';
+            var uri  = '{{ path('suscriptor_registrar') }}';
             var data = $(this).serialize();
             var success = function(response){
                 response = JSON.parse(response);
 
                 if (response.mensaje == "Correo existe") {
-                    verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning');
+                    verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning', true, true, 2500);
                 } else if (response.mensaje == "Usuario suscrito") {
-                    verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'info', false, true, 2000);
+                    //verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'info', false, true, 2000);
 
-                    var buttonsFooter = '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
-                                        '<button type="button" class="btn btn-primary" onclick="enviarCategorias()">Enviar</button>';
+                    var buttonsFooter = '<button type="button" class="btn btn-default" data-dismiss="modal" onclick="enviarCategorias(false)">Cerrar</button>'+
+                            '<button type="button" class="btn btn-primary" onclick="enviarCategorias(true)">Enviar</button>';
 
-                    verModalDialog('.modalSuscriptor', 'Elegir las secciones', 'Se ha registrado con exito el correo que ha enviado.', false,'info');
-                    
-                    var url = '{{ path("categoria_list_ajax") }}';
-                    var success = function(responseCat, textStatus, xhr) {
-                        $('.responseSuscriptor').html('').removeClass('alert-warning');
-                        $('.modalSuscriptor .modal-body').append(responseCat);
+                    verModalDialog('.modalSuscriptor', 'Elegir las secciones', '<p><b>Se ha registrado con éxito el correo que ha enviado.</b></p>', buttonsFooter,'info');
+
+                    var url = '{{ path("suscriptor_categorias_list_ajax") }}';
+                    var success = function(response, textStatus, xhr) {
+                        $('.responseSuscriptor').html('').removeClass('alert-warning').removeClass('alert-info');
+                        $('.modalSuscriptor .modal-body').append(response);
                     };
-                    
+
                     ajaxRequest('.responseSuscriptor', url, false, true, true, 'POST', false, false, success);
                 } else if (response.mensaje == "Usuario no suscrito") {
-                    verAlertBox('.responseSuscriptor', "Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.", 'error');
+                    verAlert('.responseSuscriptor', "Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.", 'error');
                 }
             };
 
             ajaxRequest('.responseSuscriptor',uri, data, false, false, 'POST', false, false, success);
         });
 
-        function enviarCategorias() {
-            var url = '';
-            var data = $('#form_categorias').serialize();
-        }
+        function enviarCategorias(showResponse) {
+            var url = '{{ path("suscriptor_guardar_categorias") }}';
+            var data = $('#form_categorias').serialize() + '&correo=' + $('input[name="correo"]').val();
 
+            var success = function(response, textStatus, xhr) {
+                response = JSON.parse(response);
+                if (xhr.status == 202) {
+                    if (showResponse) {
+                        verAlert('.modalSuscriptor .modalResponse', "<p>Ocurrió un error interno y no se pudo completar su petición. Intente de nuevo mas tarde.</p><p>Detalles del error: " + response + "</p>", 'error');
+                    }
+                }
+                if (xhr.status == 200) {
+                    $('input[name="correo"]').val('');
+                    $('.modalSuscriptor').modal('hide');
+                    verAlert('.responseSuscriptor', "<p>Recibirá pronto nuestras noticias en su correo.</p>", 'info', false, true, 2500);
+                }
+            };
+
+            ajaxRequest('.responseSuscriptor', url, data, showResponse, showResponse, 'POST', false, false, success);
+        }
+    </script>
+    <script>
         $(document).ready(function() {
             $('.tp-banner').show().revolution({
                 dottedOverlay:"none",
