@@ -55,6 +55,7 @@
                                             <th>Categoría</th>
                                             <th>Título</th>
                                             <th>Fecha Pub.</th>
+                                            <th>Estatus</th>
                                             <th>Comentarios</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -66,6 +67,15 @@
                                                 <td>{{ articulo.titulo }}</td>
                                                 <td>{{ articulo.fecha_pub }}</td>
                                                 <td>
+                                                    {% if articulo.estatus == 'B' %}
+                                                        <p class="btn btn-info btn-xs col-md-12">BOrrador</p>
+                                                    {% elseif articulo.estatus == 'A'%}
+                                                        <p class="btn btn-success btn-xs col-md-12">Publicado</p>
+                                                    {% elseif articulo.estatus == 'I'%}
+                                                        <p class="btn btn-warning btn-xs col-md-12">Inactivo</p>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
                                                     <a href="{{ path('comentarios_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-info btn-xs">
                                                         {{ articulo.comentarios|length }} Comentarios
                                                     </a>
@@ -76,10 +86,10 @@
                                                         <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
                                                     {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
                                                         <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
-                                                    {% endif %}    
-                                                    
-                                                    
-                                                    
+                                                    {% endif %}
+
+
+
                                                 </td>
                                             </tr>
                                         {% endfor %}                                        
@@ -90,6 +100,7 @@
                                             <th>Categoría</th>
                                             <th>Título</th>
                                             <th>Fecha Pub.</th>
+                                            <th>Estatus</th>
                                             <th>Comentarios</th>
                                             <th>Acciones</th>
                                         </tr>

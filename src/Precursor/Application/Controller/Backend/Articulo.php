@@ -144,9 +144,7 @@ class Articulo
                     return new JsonResponse('Articulo no guardado', 202);
                 }
             } else {
-                
-                print_r($form->getErrors());
-                
+                print_r($form->getData());
                 return new JsonResponse('No todos los campos fueron completados', 202);
             }
         }
@@ -279,7 +277,6 @@ class Articulo
 
     public function eliminar(Request $request, Application $app, $id)
     {
-
         $articuloModelo = new ArticuloModelo($app['db']);
         $articulo = $articuloModelo->getPorId($id);
 

@@ -80,10 +80,7 @@
                             <div class="box-footer">
 
                                 {% if is_granted('ROLE_WRITER') %}
-                                    <button type="submit" 
-                                        id="borradorButton"
-                                        class="btn btn-primary">Guardar
-                                    </button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 {% endif %}
 
                                 {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
@@ -91,7 +88,7 @@
                                         id="borradorButton"
                                         class="btn btn-info">Borrador
                                     </button>
-                                    <button type="submit" accion="publicado" class="btn btn-primary">Publicar</button>
+                                    <button type="submit" class="btn btn-primary">Publicar</button>
                                 {% endif %}
 
                                 <button type="submit" class="btn btn-default" onclick="location.href = '{{ path('articulo_list') }}'">Volver</button>
@@ -203,6 +200,8 @@
                 }
 
                 var data = $(this).serialize();
+
+                console.log(data);
                 
                 var success = function(response, textStatus, xhr) {
                     //articulo = JSON.parse(response);
@@ -229,7 +228,7 @@
                     $('.mensaje').html('Contenido vacío').addClass('alert-warning');
                 }
 
-                var data = $(this).serialize();
+                var data = $('form').serialize();
                 
                 var success = function(response, textStatus, xhr) {
                     //articulo = JSON.parse(response);
