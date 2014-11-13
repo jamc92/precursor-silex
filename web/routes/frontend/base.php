@@ -35,6 +35,10 @@ $app->match('/categoria/{idCategoria}', 'Precursor\\Application\\Controller\\Fro
     ->bind('articulos_categoria')
     ->method('GET');
 
+$app->match('/categorias.json', 'Precursor\\Application\\Controller\\Frontend\\Base::categoriasAjax')
+    ->bind('categoria_list_ajax')
+    ->method('POST');
+
 $app->match('/etiqueta/{idEtiqueta}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::etiqueta')
     ->assert('idEtiqueta', '\d+')
     ->bind('articulos_etiqueta')
