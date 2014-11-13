@@ -1186,6 +1186,10 @@ data-endspeed="1000"
         </div>
 
     </div>
+
+    {#{% block menu %}
+        {% include 'frontend/footer.html.twig' %}
+    {% endblock %}#}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
