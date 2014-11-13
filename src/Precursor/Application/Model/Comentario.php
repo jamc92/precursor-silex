@@ -41,10 +41,8 @@ class Comentario extends Model
             );
         }
         $join = array(
-            array('articulo', 'usuario'),
-            array('id_articulo', 'comentario.id_autor'),
-            array('articulo.id', 'usuario.id'),
-            array('=', '=')
+            array('articulo', 'comentario.id_articulo', 'articulo.id', '='),
+            array('usuario', 'comentario.id_autor', 'usuario.id', '='),
         );
         return $this->getTodo($fields, $join, $where, $criteria);
     }

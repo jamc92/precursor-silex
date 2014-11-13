@@ -54,6 +54,7 @@
                                         <tr>
                                             <th>Categoría</th>
                                             <th>Título</th>
+                                            <th>Autor</th>
                                             <th>Fecha Pub.</th>
                                             <th>Estatus</th>
                                             <th>Comentarios</th>
@@ -65,14 +66,15 @@
                                             <tr>
                                                 <td>{{ articulo.categoria }}</td>
                                                 <td>{{ articulo.titulo }}</td>
+                                                <td>{{ articulo.usuario }}</td>
                                                 <td>{{ articulo.fecha_pub }}</td>
                                                 <td>
                                                     {% if articulo.estatus == 'B' %}
-                                                        <p class="btn btn-info btn-xs col-md-12">BOrrador</p>
+                                                        <p class="text-info col-md-12">Borrador</p>
                                                     {% elseif articulo.estatus == 'A'%}
-                                                        <p class="btn btn-success btn-xs col-md-12">Publicado</p>
+                                                        <p class="text-success col-md-12">Publicado</p>
                                                     {% elseif articulo.estatus == 'I'%}
-                                                        <p class="btn btn-warning btn-xs col-md-12">Inactivo</p>
+                                                        <p class="text-warning col-md-12">Inactivo</p>
                                                     {% endif %}
                                                 </td>
                                                 <td>
@@ -99,6 +101,7 @@
                                         <tr>
                                             <th>Categoría</th>
                                             <th>Título</th>
+                                            <th>Autor</th>
                                             <th>Fecha Pub.</th>
                                             <th>Estatus</th>
                                             <th>Comentarios</th>

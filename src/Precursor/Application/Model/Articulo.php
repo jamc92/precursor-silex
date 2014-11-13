@@ -33,6 +33,7 @@ class Articulo extends Model
         $this->_queryBuilder
                 ->select(array('a.*', 'usuario.nombre as autor'))
                 ->from($this->_table, 'a')
+                ->where('a.estatus = "A"')
                 ->innerJoin('a', 'usuario', '', 'a.id_autor = usuario.id')
                 ->orderBy($orderBy, 'DESC');
         
@@ -88,13 +89,17 @@ class Articulo extends Model
         if (empty($fields)) {
             $fields = array(
                 'articulo.*',
-                'categoria.nombre as categoria'
+                'categoria.nombre as categoria',
+                'usuario.nombre as usuario'
             );
         }
-        $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
+        $join = array(
+            array('categoria', 'articulo.id_categoria', 'categoria.id', '='),
+            array('usuario', 'articulo.id_autor', 'usuario.id', '=')
+        );
 
         if ($idUsuario) {
-            $articulos = parent::getTodo($fields, $join, 'WHERE id_usuario = ?', array($idUsuario));
+            $articulos = parent::getTodo($fields, $join, 'WHERE id_autor = ?', array($idUsuario));
         } else {
             $articulos = parent::getTodo($fields, $join);
         }

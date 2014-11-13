@@ -34,13 +34,42 @@ class Articulo
 
         if ($app['user']['perfil'] == 'ROLE_WRITER') {
             $articulos = $articuloModelo->getArticulos(array(), $app['user']['id']);
-        } elseif ($app['user']['perfil'] == 'ROLE_EDITOR' || $app['user']['perfil'] == 'ROLE_SUPER_ADMIN' ) {
+        } elseif ($app['user']['perfil'] == 'ROLE_EDITOR' || $app['user']['perfil'] == 'ROLE_SUPER_ADMIN') {
             $articulos = $articuloModelo->getArticulos();
         }
         
         return $app['twig']->render('backend/articulo/list.html.twig', array(
             "articulos" => $articulos
         ));
+    }
+
+    public  function verArticuloInactivo(Request $request, Application $app, $id)
+    {
+        $articuloModelo = new ArticuloModelo($app['db']);
+
+        if ($app['user']['perfil'] == 'ROLE_SUPER_ADMIN' || $app['user']['perfil'] == 'ROLE_EDITOR') {
+            $articulo = $articuloModelo->getPorId($id);
+
+            $responses = array();
+
+            if (!empty($articulo)) {
+                $filasAfectadas = $articuloModelo->verArticuloInactivo($id);
+
+                if ($filasAfectadas == 1) {
+                    $app['session']->getFlashBag()->add(
+                        'success', array(
+                            'message' => '¡Articulo aprobado!',
+                        )
+                    );
+                } else {
+                    $app['session']->getFlashBag()->add(
+                        'warning', array(
+                            'message' => '¡Articulo no encontrado!',
+                        )
+                    );
+                }
+            }
+        }
     }
 
     /**

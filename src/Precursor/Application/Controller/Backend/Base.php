@@ -29,7 +29,7 @@ class Base
     {
         $comentarioModelo = new Comentario($app['db']);
 
-        $comentarios = $comentarioModelo->getComentarios(array(), "WHERE comentario.estatus = 'I'");
+        $comentarios = $comentarioModelo->getComentarios(array()/*, "WHERE comentario.estatus = 'I'"*/);
 
         return $app['twig']->render('ag_dashboard.html.twig', array(
             'comentarios' => $comentarios

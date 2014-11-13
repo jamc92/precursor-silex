@@ -223,7 +223,7 @@
 
                 var contenido = CKEDITOR.instances.form_contenido.getData();
                 if (contenido != "") {
-                    $(this).find('#form_contenido').val(contenido);
+                    $('form').find('#form_contenido').val(contenido);
                 } else {
                     $('.mensaje').html('Contenido vacío').addClass('alert-warning');
                 }
