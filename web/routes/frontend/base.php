@@ -1,22 +1,10 @@
 <?php
 
+require_once __DIR__ . '/usuario.php';
+
 // Ruta de la pagina de inicio de El Precursor
 $app->match('/', 'Precursor\\Application\\Controller\\Frontend\\Base::index')
     ->bind('home');
-
-$app->match('/check_user_login', 'Precursor\\Application\\Controller\\Frontend\\Usuario::checkUser')
-    ->bind('check_user_login')
-    ->method('POST');
-
-$app->match('/login', 'Precursor\\Application\\Controller\\Frontend\\Usuario::login')
-    ->bind('login');
-
-$app->match('/signup', 'Precursor\\Application\\Controller\\Frontend\\Usuario::signup')
-    ->bind('signup');
-
-$app->match('/auth/{service}', 'Precursor\\Application\\Controller\\Frontend\\Usuario::auth')
-    ->assert('service', '[a-z]+')
-    ->bind('auth_service');
 
 $app->match('/noticia/{id}', 'Precursor\\Application\\Controller\\Frontend\\Noticia::ver')
     ->assert('idArticulo', '\d+')
@@ -51,11 +39,6 @@ $app->match('/etiqueta/{idEtiqueta}', 'Precursor\\Application\\Controller\\Front
 $app->match('/suscriptor', 'Precursor\\Application\\Controller\\Frontend\\Suscriptor::registrar')
     ->bind('registrar_suscriptor')
     ->method('POST');
-
-$app->match('/editar_datos/{id}', 'Precursor\\Application\\Controller\\Backend\\Usuario::editar')
-    ->assert('id', '\d+')
-    ->bind('editar_datos')
-    ->method('GET|POST');
 
 $app->match('/noticia/{idArticulo}/imprimir', 'Precursor\\Application\\Controller\\Frontend\\Noticia::imprimir')
     ->bind('imprimir_noticia');

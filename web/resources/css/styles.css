@@ -186,6 +186,12 @@ div.container .row-fluid .sidebar .etiquetas {
 }
 
 /* Modals styles */
+.modal .close {
+    opacity: 0.6;
+}
+.modal .close:hover, .modal .close:focus, .modal .close:active {
+    opacity: 1;
+}
 .modal .modal-header.modal-info,
 .modal .modal-header.modal-success,
 .modal .modal-header.modal-danger,
@@ -194,6 +200,9 @@ div.container .row-fluid .sidebar .etiquetas {
 }
 .modal .modal-header.modal-info {
     background-color: #00c0ef;
+}
+.modal .modal-header.modal-info .close {
+    color:#fff;
 }
 .modal .modal-header.modal-success {
     background-color: #00a65a;

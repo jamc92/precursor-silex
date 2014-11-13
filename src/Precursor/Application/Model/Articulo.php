@@ -78,11 +78,12 @@ class Articulo extends Model
     }
     
     /**
-     * @param array $fields Campos que se desean del registro
-     * 
+     * @param array $fields  Campos que se desean del registro
+     * @param int $idUsuario Id del usuario asociado al artículo
+     *
      * @return array Arreglo de artículos
      */
-    public function getArticulos(array $fields = array())
+    public function getArticulos(array $fields = array(), $idUsuario = null)
     {
         if (empty($fields)) {
             $fields = array(
@@ -91,7 +92,12 @@ class Articulo extends Model
             );
         }
         $join = array('categoria', 'articulo.id_categoria', 'categoria.id', '=');
-        $articulos = parent::getTodo($fields, $join);
+
+        if ($idUsuario) {
+            $articulos = parent::getTodo($fields, $join, 'WHERE id_usuario = ?', array($idUsuario));
+        } else {
+            $articulos = parent::getTodo($fields, $join);
+        }
         
         $comentarioModelo = new Comentario($this->_db);
         foreach ($articulos as $i => $articulo) {
