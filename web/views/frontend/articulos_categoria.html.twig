@@ -8,9 +8,57 @@
 
 {% block slider %}
     {# Banner de Académicos #}
-    {% if categoria.nombre == 'Universidad' %}
+    {% if categoria.nombre == 'Académicos' %}
         <div class="row-fluid">
-            <img src="{{ app.asset_path }}/img/secciones/adacemicos.jpg">
+            <img class="img-responsive" src="{{ app.banner_path }}/academicos.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Culturales #}
+    {% if categoria.nombre == 'Comunidad' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/culturales.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Comunidad #}
+    {% if categoria.nombre == 'Culturales' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/comunidad.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Deportivos #}
+    {% if categoria.nombre == 'Deportes' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/deportivos.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Investigación #}
+    {% if categoria.nombre == 'Investigación' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/investigacion.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Opinión #}
+    {% if categoria.nombre == 'Opinión' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/opinion.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Tecnología #}
+    {% if categoria.nombre == 'Tecnología' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/tecnologia.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Variedades #}
+    {% if categoria.nombre == 'Variedades' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/variedades.jpg">
+        </div>
+    {% endif %}
+    {# Banner de Galería #}
+    {% if categoria.nombre == 'Galería' %}
+        <div class="row-fluid">
+            <img class="img-responsive" src="{{ app.banner_path }}/galeria.jpg">
         </div>
     {% endif %}
 {% endblock %}
