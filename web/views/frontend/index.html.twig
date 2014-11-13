@@ -1238,8 +1238,6 @@ data-endspeed="1000"
             var url = '{{ path("suscriptor_guardar_categorias") }}';
             var data = $('#form_categorias').serialize() + '&correo=' + $('input[name="correo"]').val();
 
-            console.log(data);
-
             var success = function(response, textStatus, xhr) {
                 response = JSON.parse(response);
                 if (xhr.status == 202) {
