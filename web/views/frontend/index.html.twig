@@ -1200,9 +1200,8 @@ data-endspeed="1000"
     <script src="{{ app.asset_path }}/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
     <script src="{{ app.asset_path }}/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
     <script>
-
         $('.form-suscriptor').submit(function(ev) {
-           ev.preventDefault();
+            ev.preventDefault();
 
             var uri  = '{{ path('suscriptor_registrar') }}';
             var data = $(this).serialize();
@@ -1210,21 +1209,21 @@ data-endspeed="1000"
                 response = JSON.parse(response);
 
                 if (response.mensaje == "Correo existe") {
-                    verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning');
+                    verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning', true, true, 2500);
                 } else if (response.mensaje == "Usuario suscrito") {
                     //verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'info', false, true, 2000);
 
                     var buttonsFooter = '<button type="button" class="btn btn-default" data-dismiss="modal" onclick="enviarCategorias(false)">Cerrar</button>'+
-                                        '<button type="button" class="btn btn-primary" onclick="enviarCategorias(true)">Enviar</button>';
+                            '<button type="button" class="btn btn-primary" onclick="enviarCategorias(true)">Enviar</button>';
 
                     verModalDialog('.modalSuscriptor', 'Elegir las secciones', '<p><b>Se ha registrado con éxito el correo que ha enviado.</b></p>', buttonsFooter,'info');
-                    
+
                     var url = '{{ path("suscriptor_categorias_list_ajax") }}';
                     var success = function(response, textStatus, xhr) {
                         $('.responseSuscriptor').html('').removeClass('alert-warning').removeClass('alert-info');
                         $('.modalSuscriptor .modal-body').append(response);
                     };
-                    
+
                     ajaxRequest('.responseSuscriptor', url, false, true, true, 'POST', false, false, success);
                 } else if (response.mensaje == "Usuario no suscrito") {
                     verAlert('.responseSuscriptor', "Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.", 'error');
@@ -1254,7 +1253,8 @@ data-endspeed="1000"
 
             ajaxRequest('.responseSuscriptor', url, data, showResponse, showResponse, 'POST', false, false, success);
         }
-
+    </script>
+    <script>
         $(document).ready(function() {
             $('.tp-banner').show().revolution({
                 dottedOverlay:"none",
