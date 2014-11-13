@@ -102,7 +102,7 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
  * @param {String} title    Indica el titulo del modal
  * @param {String} body     Indica el contenido del modal
  * @param {String} footer   Indica el footer donde normalmente estan los botones de accion
- * 
+ *
  * @returns {Object}
  */
 function verModalDialog(selector, title, body, footer, style) {

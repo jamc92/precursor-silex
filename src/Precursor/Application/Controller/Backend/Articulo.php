@@ -31,7 +31,12 @@ class Articulo
     public function ver(Request $request, Application $app)
     {
         $articuloModelo = new ArticuloModelo($app['db']);
-        $articulos = $articuloModelo->getArticulos();
+
+        if ($app['user']['perfil'] == 'ROLE_WRITER') {
+            $articulos = $articuloModelo->getArticulos(array(), $app['user']['id']);
+        } elseif ($app['user']['perfil'] == 'ROLE_EDITOR' || $app['user']['perfil'] == 'ROLE_SUPER_ADMIN' ) {
+            $articulos = $articuloModelo->getArticulos();
+        }
         
         return $app['twig']->render('backend/articulo/list.html.twig', array(
             "articulos" => $articulos
