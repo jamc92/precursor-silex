@@ -1159,6 +1159,8 @@ data-endspeed="1000"
                      </span>
                 </form>
             </div>
+            &nbsp;
+            <div class="responseSuscriptor"></div>
             <!-- /input-group -->
         </div>
         <!-- /well -->
@@ -1166,7 +1168,7 @@ data-endspeed="1000"
         <div class="well">
             <h4>Síguenos en twitter</h4>
             <a href="https://twitter.com/elprecursorcufm" class="twitter-follow-button" data-show-count="false" data-lang="es">Seguir a @elprecursorcufm</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
         <!-- /well -->
         
@@ -1207,13 +1209,19 @@ data-endspeed="1000"
                 response = JSON.parse(response);
 
                 if (response.mensaje == "Correo existe") {
-                    alert("¡Este correo ya esta registrado!");
-                }
-                if (response.mensaje == "Usuario suscrito") {
-                    alert("¡Suscripción exitosa!");
-                }
-                if (response.mensaje == "Usuario no suscrito") {
-                    alert("Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.");
+                    verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning');
+                } else if (response.mensaje == "Usuario suscrito") {
+                    verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'sucess', false, true, 2000);
+                    verModalDialog('.responseSuscriptor', 'Elegir las secciones', 'Se ha registrado con exito el correo que ha enviado.');
+                    
+                    var url = '{{ path("categoria_list_ajax") }}';
+                    var success = function(responseCat, textStatus, xhr) {
+                        $('.responseSuscriptor .modal-body').html(responseCat);
+                    };
+                    
+                    ajaxRequest('.responseSuscriptor', uri, false, true, true, 'POST', false, false, success);
+                } else if (response.mensaje == "Usuario no suscrito") {
+                    verAlertBox('.responseSuscriptor', "Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.", 'error');
                 }
             };
 

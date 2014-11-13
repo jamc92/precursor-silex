@@ -1,6 +1,11 @@
 /**
- * @author Javier Madrid <javiermadrid19@gmail.com>
+ * Funciones de javascript de la aplicacion
  * 
+ * @author Ram�n Serrano <ramon.calle.88@gmail.com>
+ * @author Javier Madrid <javiermadrid19@gmail.com>
+ */
+
+/**
  * Esta funcion efectúa una petición ajax mediante la funcion $.ajax de jquery con manejo de errores.
  * 
  * @param {string} selectorJQuery       Indica el string selector jquery, ya sea por clases o por id, donde se mostrará el resultado.
@@ -88,6 +93,91 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
             }
         }
     });
+}
+
+/**
+ * Crear
+ * 
+ * @param {String} selector Indica el string selector jquery, ya sea por clases o por id, donde se mostrará el modal
+ * @param {String} title    Indica el titulo del modal
+ * @param {String} body     Indica el contenido del modal
+ * @param {String} footer   Indica el footer donde normalmente estan los botones de accion
+ * 
+ * @returns {Object}
+ */
+function verModalDialog(selector, title, body, footer) {
+    var templateModal = '<div class="modal-dialog">'+
+                    '<div class="modal-content">'+
+                      '<div class="modal-header">'+
+                        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
+                        '<h4 class="modal-title">Titulo</h4>'+
+                      '</div>'+
+                      '<div class="modal-body">'+
+                        '<p>Contenido</p>'+
+                      '</div>'+
+                      '<div class="modal-footer">'+
+                        '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
+                        '<button type="submit" class="btn btn-primary">Enviar</button>'+
+                      '</div>'+
+                    '</div><!-- /.modal-content -->'+
+                  '</div><!-- /.modal-dialog -->';
+          
+    var modal = $(templateModal),
+        modalTitle = $('modal-title', modal),
+        modalBody = $('modal-body', modal),
+        modalFooter = $('modal-body', modal);
+
+    if (!selector) {
+        console.log('No hay selector');
+    } else {
+        if (title) {
+            modalTitle.html(title);
+        }
+        if (body) {
+            modalBody.html(body);
+        }
+        if (footer) {
+            modalFooter.html(footer);
+        }
+        return $(selector).addClass('modal fade').html(modal).modal('show');
+    }
+}
+
+/**
+ * Mostrar un alert
+ * 
+ * @param {String} selector   Indica el string selector jquery, ya sea por clases o por id, donde se mostrará el alert
+ * @param {String} message    Mensaje del alert
+ * @param {String} style      Estilo del alert (info, success, danger, warning)
+ * @param {Boolean} hideClose True para no ver close button
+ * @param {Boolean} autoHide  Permitir que se auto-oculte
+ * @param {Number} time       Tiempo de ocultarese
+ * 
+ * @returns {Object}
+ */
+function verAlert(selector, message, style, hideClose, autoHide, time) {
+    var templateAlert = '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>'+
+                        '<p class="message">Mensaje</p>';
+    
+    var alert = $(templateAlert),
+        alertMessage = $('.message', alert),
+        alertClose = $('.close', alert);
+    
+    if (!selector) {
+        console.log('No hay selector');
+    } else {
+        if (message) {
+            alertMessage.html(message);
+        }
+        if (hideClose) {
+            alertClose.remove();
+        }
+        if (autoHide && time) {
+            $(selector).addClass('alert fade in alert-' + style).html(alert).fadeOut(time);
+        } else {
+            $(selector).addClass('alert fade in alert-' + style).html(alert);
+        }
+    }
 }
 
 /**

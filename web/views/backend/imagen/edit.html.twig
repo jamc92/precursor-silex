@@ -26,39 +26,37 @@
                     <div class="col-md-6">
 
                         {{ form_start(form, {'method': 'POST'}) }}
-                            {{ form_errors(form) }}
+                        {{ form_errors(form) }}
 
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title"></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                    
-                                    <img src="{{ imagen.link }}" height="150">
+                        <div class="box box-info">
+                            <div class="box-header">
+                                <h3 class="box-title"></h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
 
-									<div class='form-group'>
-									    {{ form_label(form.nombre) }}
-									    {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
-									</div>
+                                <img src="{{ imagen.link }}" height="150">
 
-									{#<div class='form-group'>#}
-									    {#{{ form_label(form.descripcion, 'Descripción') }}#}
-									    {#{{ form_widget(form.descripcion, { attr: { 'class': 'form-control' }}) }}#}
-									{#</div>#}
-
-                                </div><!-- /.box-body -->
-
-                                {{ form_rest(form) }}
-
-                                <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Editar</button>
-                                    <button type="button" class="btn btn-default" onclick="location.href='{{ path("imagen_list") }}'">Volver</button>
+                                <div class='form-group'>
+                                    {{ form_label(form.nombre) }}
+                                    {{ form_widget(form.nombre, { attr: { 'class': 'form-control' }}) }}
                                 </div>
 
-                            </div><!-- /.box -->
+                                {#<div class='form-group'>#}
+                                {#{{ form_label(form.descripcion, 'Descripción') }}#}
+                                {#{{ form_widget(form.descripcion, { attr: { 'class': 'form-control' }}) }}#}
+                                {#</div>#}
+
+                            </div><!-- /.box-body -->
+
+                            {{ form_rest(form) }}
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                                <button type="button" class="btn btn-default" onclick="location.href = '{{ path("imagen_list") }}'">Volver</button>
+                            </div>
+
+                        </div><!-- /.box -->
                         {{ form_end(form) }}
-
-
                     </div>
                 </div>
 

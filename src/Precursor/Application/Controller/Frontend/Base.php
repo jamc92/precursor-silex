@@ -15,6 +15,7 @@ use Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Opcion\Menu,
     Symfony\Component\HttpFoundation\Request,
     Silex\Application,
+    Symfony\Component\HttpFoundation\JsonResponse,
     Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Base
@@ -57,5 +58,23 @@ class Base
             'categorias' => $categorias,
             'menu_items' => $menuItems
         ));
+    }
+    
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Application $app
+     * 
+     * @return JsonResponse
+     */
+    public function categoriasAjax(Request $request, Application $app)
+    {
+        if ($request->isXmlHttpRequest() && 'POST' == $request->getMethod()) {
+            $categoriaModelo = new Categoria($app['db']);
+            $categorias = $categoriaModelo->getTodo();
+            
+            return $app['twig']->render('frontend/categorias-ajax.html.twig', array(
+                'categorias' => $categorias
+            ));
+        }
     }
 } 
