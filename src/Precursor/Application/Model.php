@@ -258,7 +258,7 @@ class Model
     {
         if (!is_null($this->_table)) {
             $this->_affectedRows = $this->_db->update($this->_table, $data, $criteria);
-            return $this->_afieldffectedRows;
+            return $this->_affectedRows;
         }
     }
 

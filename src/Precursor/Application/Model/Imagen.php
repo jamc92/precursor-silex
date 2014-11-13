@@ -9,7 +9,8 @@
 namespace Precursor\Application\Model;
 
 use Doctrine\DBAL\Connection,
-    Precursor\Application\Model;
+    Precursor\Application\Model,
+    Precursor\Application\Controller\Backend\Auditoria;
 
 class Imagen extends Model
 {
@@ -70,11 +71,19 @@ class Imagen extends Model
             'creado' => date('Y-m-d H:m:s')
         );
         
+        $filasAfectadas = $this->_insert($data);
+        
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Imagen', 'Guardar imagen. Nombre de etiqueta: ' . $nombre, 'EXITOSO');
+        } else {
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Imagen', 'Guardar imagen. Nombre de etiqueta: ' . $nombre, 'FALLIDO');
+        }
+        
         if ($imagen != '' && !is_null($imagen)) {
             $data['imagen'] = $imagen;
         }
         
-        return $this->_insert($data);
+        return $filasAfectadas;
     }
     
     /**

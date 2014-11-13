@@ -9,7 +9,8 @@
 namespace Precursor\Application\Model;
 
 use Doctrine\DBAL\Connection,
-    Precursor\Application\Model;
+    Precursor\Application\Model,
+    Precursor\Application\Controller\Backend\Auditoria;
 
 class Etiqueta extends Model
 {
@@ -21,6 +22,8 @@ class Etiqueta extends Model
     {
         parent::__construct($db, 'etiqueta');
     }
+    
+    
 
     /**
      * @param string $nombre Nombre de la etiqueta
@@ -33,11 +36,20 @@ class Etiqueta extends Model
             'nombre' => $nombre,
             'creado' => date('Y-m-d H:m:s')
         );
-        return $this->_insert($data);
+        
+        $filasAfectadas = $this->_insert($data);
+        
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Etiqueta', 'Guardar etiqueta. Nombre de etiqueta: ' . $nombre, 'EXITOSO');
+        } else {
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Etiqueta', 'Guardar etiqueta. Nombre de etiqueta: ' . $nombre, 'FALLIDO');
+        }
+        
+        return $filasAfectadas;
     }
 
     /**
-     * @param int $id        Id de la etiqueta
+     * @param int $id Id de la etiqueta
      * @param string $nombre Nombre de la etiqueta
      * 
      * @return int Filas afectadas
@@ -47,7 +59,14 @@ class Etiqueta extends Model
         $data = array(
             'nombre' => $nombre
         );
-        return $this->_update($data, array('id' => $id));
+        
+        $filasAfectadas = $this->_update($data, array('id' => $id));
+                
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, 'UPDATE', 'Etiqueta', 'Modificar etiqueta. Nombre de etiqueta: ' . $nombre, 'EXITOSO');
+        }
+        
+        return $filasAfectadas;
     }
     
     /**
@@ -57,7 +76,16 @@ class Etiqueta extends Model
      */
     public function eliminar($id)
     {
-        return $this->_delete(array('id' => $id));
+        
+        $filasAfectadas = $this->_delete(array('id' => $id));
+        
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, 'DELETE', 'Etiqueta', 'Guardar etiqueta. Nombre de etiqueta: ', 'EXITOSO');
+        } else {
+            Auditoria::getInstance()->guardar($this->_db, 'DELETE', 'Etiqueta', 'Guardar etiqueta. Nombre de etiqueta: ', 'FALLIDO');
+        }
+        
+        return $filasAfectadas;
     }
     
 }

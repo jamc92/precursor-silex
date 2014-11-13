@@ -66,6 +66,11 @@
                    title="Imprimir noticia">
                     <i class="glyphicon glyphicon-print"></i>
                 </a>
+                <a href="{{ path('noticia_pdf',{idArticulo: articulo.id}) }}"
+                   class="btn btn-default PDF"
+                   title="Descargar pdf">
+                    <i class="glyphicon glyphicon-download-alt"></i>
+                </a>
             </div>
         </div>
 

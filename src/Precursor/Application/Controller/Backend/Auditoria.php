@@ -25,7 +25,7 @@ class Auditoria
     /**
      * @var Auditoria
      */
-    protected $_instance;
+    static $_instance;
 
     /**
      * @return Auditoria
@@ -33,9 +33,9 @@ class Auditoria
     public static function getInstance()
     {
         if (!isset(self::$_instance)) {
-            self::$instance = new self();
+            self::$_instance = new self();
         }
-        return self::$instancia;
+        return self::$_instance;
     }
     
     /**
