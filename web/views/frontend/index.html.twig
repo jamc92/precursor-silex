@@ -1241,7 +1241,9 @@ data-endspeed="1000"
             var success = function(response, textStatus, xhr) {
                 response = JSON.parse(response);
                 if (xhr.status == 202) {
-                    verAlert('.modalSuscriptor .modalResponse', "<p>Ocurrió un error interno y no se pudo completar su petición. Intente de nuevo mas tarde.</p><p>Detalles del error: " + response + "</p>", 'error');
+                    if (showResponse) {
+                        verAlert('.modalSuscriptor .modalResponse', "<p>Ocurrió un error interno y no se pudo completar su petición. Intente de nuevo mas tarde.</p><p>Detalles del error: " + response + "</p>", 'error');
+                    }
                 }
                 if (xhr.status == 200) {
                     $('input[name="correo"]').val('');
