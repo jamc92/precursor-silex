@@ -4,6 +4,10 @@
 $app->match('/', 'Precursor\\Application\\Controller\\Frontend\\Base::index')
     ->bind('home');
 
+$app->match('/check_user_login', 'Precursor\\Application\\Controller\\Frontend\\Usuario::checkUser')
+    ->bind('check_user_login')
+    ->method('POST');
+
 $app->match('/login', 'Precursor\\Application\\Controller\\Frontend\\Usuario::login')
     ->bind('login');
 

@@ -185,6 +185,26 @@ div.container .row-fluid .sidebar .etiquetas {
     width: 5rem;
 }
 
+/* Modals styles */
+.modal .modal-header.modal-info,
+.modal .modal-header.modal-success,
+.modal .modal-header.modal-danger,
+.modal .modal-header.modal-warning {
+    color: #fff;
+}
+.modal .modal-header.modal-info {
+    background-color: #00c0ef;
+}
+.modal .modal-header.modal-success {
+    background-color: #00a65a;
+}
+.modal .modal-header.modal-danger {
+    background-color: #f56954;
+}
+.modal .modal-header.modal-warning {
+    background-color: #f39c12;
+}
+
 @media(min-width:920px){
     #user-login-signup .forms .form-signin, #user-login-signup .forms .form-signup {
         padding: 40px;

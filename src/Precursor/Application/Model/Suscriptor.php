@@ -54,7 +54,12 @@ class Suscriptor extends Model
             'categorias'   => json_encode($categorias),
             'creado'       => date('Y-m-d H:m:s'),
         );
-        return $this->_insert($data);
+        $this->_db->beginTransaction();
+        try {
+            return $this->_insert($data);
+        } catch (Exception $ex) {
+            $this->_db->rollBack();
+        }
     }
 
     /**

@@ -105,27 +105,28 @@ function ajaxRequest(selectorJQuery, uri, data, loadingEfect, showResponse, meth
  * 
  * @returns {Object}
  */
-function verModalDialog(selector, title, body, footer) {
+function verModalDialog(selector, title, body, footer, style) {
     var templateModal = '<div class="modal-dialog">'+
-                    '<div class="modal-content">'+
-                      '<div class="modal-header">'+
-                        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-                        '<h4 class="modal-title">Titulo</h4>'+
-                      '</div>'+
-                      '<div class="modal-body">'+
-                        '<p>Contenido</p>'+
-                      '</div>'+
-                      '<div class="modal-footer">'+
-                        '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
-                        '<button type="submit" class="btn btn-primary">Enviar</button>'+
-                      '</div>'+
-                    '</div><!-- /.modal-content -->'+
-                  '</div><!-- /.modal-dialog -->';
+                            '<div class="modal-content">'+
+                              '<div class="box modal-header">'+
+                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
+                                '<h4 class="modal-title">Titulo</h4>'+
+                              '</div>'+
+                              '<div class="modal-body">'+
+                                '<p>Contenido</p>'+
+                              '</div>'+
+                              '<div class="modal-footer">'+
+                                '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
+                                '<button type="submit" class="btn btn-primary">Enviar</button>'+
+                              '</div>'+
+                            '</div><!-- /.modal-content -->'+
+                          '</div><!-- /.modal-dialog -->';
           
     var modal = $(templateModal),
-        modalTitle = $('modal-title', modal),
-        modalBody = $('modal-body', modal),
-        modalFooter = $('modal-body', modal);
+        modalHeader = $('.modal-header', modal),
+        modalTitle = $('.modal-title', modalHeader),
+        modalBody = $('.modal-body', modal),
+        modalFooter = $('.modal-footer', modal);
 
     if (!selector) {
         console.log('No hay selector');
@@ -138,6 +139,11 @@ function verModalDialog(selector, title, body, footer) {
         }
         if (footer) {
             modalFooter.html(footer);
+        }
+        if (!style) {
+            modalHeader.addClass('modal-info');
+        } else {
+            modalHeader.addClass('modal-' + style);
         }
         return $(selector).addClass('modal fade').html(modal).modal('show');
     }

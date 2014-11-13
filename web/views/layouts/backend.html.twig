@@ -70,4 +70,27 @@
     <script src="{{ app.asset_path }}/js/AdminLTE/app.js" type="text/javascript"></script>
     <!-- Funciones del precursor -->
     <script src="{{ app.asset_path }}/js/Precursor/funciones.js"></script>
+    <!-- Validaciones del login 
+         Evitar que al darle al boton atras o adelante se permita ver el usuario por cache
+    -->
+    <script>
+        $(function() {
+            var url = '{{ path("check_user_login") }}';
+            var success = function(response, textStatus, xhr) {
+                response = $.parseJSON(response);
+                if (xhr.status == 202 && response.mensaje == 'Usuario no logueado') {
+                    console.info(response.mensaje);
+                    if (location.pathname != '{{ path("login") }}') {
+                        window.location.href = '{{ path("login") }}';
+                    }
+                } else if (xhr.status == 200 && response.mensaje == 'Usuario logueado') {
+                    console.info(response.mensaje);
+                    if (location.pathname == '{{ path("login") }}') {
+                        window.location.href = response.url;
+                    }
+                }
+            };
+            ajaxRequest('', url, false, false, false, false, false, false, success);
+        });
+    </script>
 {% endblock %}

@@ -2,12 +2,6 @@
 
 {% block title %}Inicio - El Precursor{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ app.asset_path }}/rs-plugin/css/extralayers.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="{{ app.asset_path }}/rs-plugin/css/settings.css" rel="stylesheet" type="text/css" media="screen" />
-{% endblock %}
-
 {% block menu %}
     {% include 'frontend/menu.html.twig' with {'option': 'home'} %}
 {% endblock %}
@@ -1161,6 +1155,7 @@ data-endspeed="1000"
             </div>
             &nbsp;
             <div class="responseSuscriptor"></div>
+            <div class="modalSuscriptor"></div>
             <!-- /input-group -->
         </div>
         <!-- /well -->
@@ -1188,11 +1183,17 @@ data-endspeed="1000"
         </div>
 
     </div>
-
     {#{% block menu %}
         {% include 'frontend/footer.html.twig' %}
     {% endblock %}#}
 {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ app.asset_path }}/rs-plugin/css/extralayers.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{{ app.asset_path }}/rs-plugin/css/settings.css" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ app.asset_path }}/js/plugins/holder/holder.min.js"></script>
@@ -1211,21 +1212,22 @@ data-endspeed="1000"
                 if (response.mensaje == "Correo existe") {
                     verAlert('.responseSuscriptor', "¡Este correo ya esta registrado!", 'warning');
                 } else if (response.mensaje == "Usuario suscrito") {
-                    verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'sucess', false, true, 2000);
-                    verModalDialog('.responseSuscriptor', 'Elegir las secciones', 'Se ha registrado con exito el correo que ha enviado.');
+                    verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'info', false, true, 2000);
+                    verModalDialog('.modalSuscriptor', 'Elegir las secciones', 'Se ha registrado con exito el correo que ha enviado.', false,'info');
                     
                     var url = '{{ path("categoria_list_ajax") }}';
                     var success = function(responseCat, textStatus, xhr) {
-                        $('.responseSuscriptor .modal-body').html(responseCat);
+                        $('.responseSuscriptor').html('').removeClass('alert-warning');
+                        $('.modalSuscriptor .modal-body').append(responseCat);
                     };
                     
-                    ajaxRequest('.responseSuscriptor', uri, false, true, true, 'POST', false, false, success);
+                    ajaxRequest('.responseSuscriptor', url, false, true, true, 'POST', false, false, success);
                 } else if (response.mensaje == "Usuario no suscrito") {
                     verAlertBox('.responseSuscriptor', "Ocurrió un problema al suscribirse. Intente de nuevo mas tarde.", 'error');
                 }
             };
 
-            ajaxRequest('',uri, data, false, false, 'POST', false, false, success);
+            ajaxRequest('.responseSuscriptor',uri, data, false, false, 'POST', false, false, success);
         });
 
         $(document).ready(function() {

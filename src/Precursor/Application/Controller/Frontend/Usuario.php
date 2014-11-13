@@ -146,16 +146,24 @@ class Usuario
      * @return JsonResponse
      */
     public function checkUser(Application $app, Request $request) {
-        if ("POST" == $request->getMethod() || "GET" == $request->getMethod()) {
-            if (is_object($app['user'])) {
+        if ($request->isXmlHttpRequest() && $request->isMethod("POST")) {
+            if (is_array($app['user']) && !empty($app['user'])) {
+                
+                $url = $app['url_generator']->generate('admin');
+                
+                if ($app['user']['perfil'] == 'ROLE_USER') {
+                    $url = $app['url_generator']->generate('home');
+                }
+                
                 return new JsonResponse(array(
-                    'mensaje' => 'Usuario logueado.',
-                    'alias'   => $app['user']
-                ));
+                    'mensaje' => 'Usuario logueado',
+                    'alias'   => $app['user'],
+                    'url'     => $url
+                ), 200);
             } else {
                 return new JsonResponse(array(
-                    'mensaje' => 'Usuario no logueado.',
-                ));
+                    'mensaje' => 'Usuario no logueado',
+                ), 202);
             }
         }
     }
