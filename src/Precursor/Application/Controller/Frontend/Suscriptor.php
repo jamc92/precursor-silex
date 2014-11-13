@@ -72,11 +72,43 @@ class Suscriptor
     {
         if ($request->isXmlHttpRequest() && 'POST' == $request->getMethod()) {
             $categoriaModelo = new Categoria($app['db']);
-            $categorias = $categoriaModelo->getTodo();
+            $categorias = $categoriaModelo->getTodo(array('id', 'nombre'), array(), 'WHERE id > 1');
 
             return $app['twig']->render('frontend/categorias-ajax.html.twig', array(
                 'categorias' => $categorias
             ));
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Application $app
+     *
+     * @return JsonResponse
+     */
+    public function guardarCategorias(Request $request, Application $app)
+    {
+        if ($request->isXmlHttpRequest() && 'POST' == $request->getMethod()) {
+            $correo = $request->get('correo');
+            $categorias = $request->get('categorias');
+
+            if (empty($categorias)) {
+                $categorias = array('Todas' => 1);
+            }
+
+            $suscriptorModelo = new SuscriptorModel($app['db']);
+
+            if ($suscriptorModelo->existeCorreo($correo)) {
+                $filasAfectadas = $suscriptorModelo->guardar($correo, $categorias);
+
+                if ($filasAfectadas == 1) {
+                    return new JsonResponse('Se guardo categorías', 200);
+                } else {
+                    return new JsonResponse('No se guardo', 202);
+                }
+            } else {
+                return new JsonResponse('No existe correo de usuario', 202);
+            }
         }
     }
 

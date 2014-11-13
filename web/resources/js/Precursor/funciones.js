@@ -116,6 +116,7 @@ function verModalDialog(selector, title, body, footer, style) {
                                 '<p>Contenido</p>'+
                               '</div>'+
                               '<div class="modal-footer">'+
+                                '<div class="modalResponse" style="display:inline-block; float:left"></div>'+
                                 '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
                                 '<button type="submit" class="btn btn-primary">Enviar</button>'+
                               '</div>'+

@@ -12,6 +12,7 @@ namespace Precursor\Application\Model;
 
 use Doctrine\DBAL\Connection,
     Precursor\Application\Model;
+use Precursor\Application\Controller\Backend\Auditoria;
 
 class Suscriptor extends Model
 {
@@ -54,12 +55,21 @@ class Suscriptor extends Model
             'categorias'   => json_encode($categorias),
             'creado'       => date('Y-m-d H:m:s'),
         );
-        $this->_db->beginTransaction();
-        try {
-            return $this->_insert($data);
-        } catch (Exception $ex) {
-            $this->_db->rollBack();
+
+        if ($this->existeCorreo($correo)) {
+            unset($data['correo']);
+            $filasAfectadas = $this->_update($data, array('correo' => $correo));
+        } else {
+            $filasAfectadas = $this->_insert($data);
         }
+
+        $tipoTransaccion = ($this->existeCorreo($correo)) ? 'UPDATE' : 'INSERT';
+        $descripcion = ($this->existeCorreo($correo)) ? 'Actualizar las categorías que selecciona el usuario al suscribirse. Extra: ' . json_encode($categorias) : 'Guardar el suscriptor con el correo: ' . $correo;
+
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, $tipoTransaccion, 'Suscriptor', $descripcion, 'EXITOSO');
+        }
+        return $filasAfectadas;
     }
 
     /**
