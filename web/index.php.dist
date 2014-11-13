@@ -22,7 +22,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 }));
 # Proveedor de logs
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.name'    => 'El Precursor',
+    'monolog.name'    => 'elprecursor',
     'monolog.logfile' => __DIR__ . '/elprecursor.log'
 ));
 # Proveedor de Formularios
