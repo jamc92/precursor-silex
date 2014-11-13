@@ -6,6 +6,15 @@
     {% include 'frontend/menu.html.twig' with {'option': 'home'} %}
 {% endblock %}
 
+{% block slider %}
+    {# Banner de Académicos #}
+    {% if categoria.nombre == 'Universidad' %}
+        <div class="row-fluid">
+            <img src="{{ app.asset_path }}/img/secciones/adacemicos.jpg">
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div class="col-12 col-sm-8 col-lg-8">
         <div class="row-fluid">

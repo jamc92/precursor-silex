@@ -99,7 +99,7 @@ class Articulo
 
         $form = $form->getForm();
 
-        if ($request->isXmlHttpRequest()){
+        if ($request->isXmlHttpRequest()) {
              $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -116,7 +116,6 @@ class Articulo
                 }
                 
                 if (is_array($filasAfectadas)) {
-
                     if (!empty($filasAfectadas['etiquetas'])) {
                         $filasAfectadasEtiqueta = count($filasAfectadas['etiquetas']);
 
@@ -138,12 +137,16 @@ class Articulo
                             'message' => $message,
                         )
                     );
+                    
+                    return new JsonResponse('Articulo creado', 200);
 
                 } else {
                     return new JsonResponse('Articulo no guardado', 202);
                 }
-                
             } else {
+                
+                print_r($form->getErrors());
+                
                 return new JsonResponse('No todos los campos fueron completados', 202);
             }
         }

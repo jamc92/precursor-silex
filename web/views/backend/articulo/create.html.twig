@@ -20,9 +20,7 @@
 
                 {% include 'ag_alerts.html.twig' %}
                 
-                <div class="mensaje alert">
-                    
-                <div>
+                <div class="mensaje alert"><div>
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -84,7 +82,6 @@
                                 {% if is_granted('ROLE_WRITER') %}
                                     <button type="submit" 
                                         id="borradorButton"
-                                        accion="borrador"
                                         class="btn btn-primary">Guardar
                                     </button>
                                 {% endif %}
@@ -92,7 +89,6 @@
                                 {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
                                     <button type="button" 
                                         id="borradorButton"
-                                        accion="borrador" 
                                         class="btn btn-info">Borrador
                                     </button>
                                     <button type="submit" accion="publicado" class="btn btn-primary">Publicar</button>
@@ -157,28 +153,28 @@
                         }
                     }
                 })
-                        .done(function(data) {
-                            $(".modal-body").html(data);
-                            $("select.image-picker").imagepicker({
-                                hide_select: true,
-                                show_label: false
-                            });
-                            $("#accept_image").click(function() {
-                                $("#form_imagen").val($(".selected img").attr("src"));
-                                if ($("#form_imagen").val() != "") {
-                                    $("#articulo_imagen").html('<img src=" ' + $(".selected img").attr("src") + ' " style="width:200px">' +
-                                            '<button class="btn btn-default" ' +
-                                            'id="imageListButton" ' +
-                                            'type="button" ' +
-                                            'data-toggle="modal" ' +
-                                            'data-target="#imagenListModal"> ' +
-                                            '<i class="fa fa-picture-o"></i> ' +
-                                            'Modificar imagen de artículo ' +
-                                            '</button>');
-                                    $("#articulo_imagen").fadeIn();
-                                }
-                            });
-                        });
+                .done(function(data) {
+                    $(".modal-body").html(data);
+                    $("select.image-picker").imagepicker({
+                        hide_select: true,
+                        show_label: false
+                    });
+                    $("#accept_image").click(function() {
+                        $("#form_imagen").val($(".selected img").attr("src"));
+                        if ($("#form_imagen").val() != "") {
+                            $("#articulo_imagen").html('<img src=" ' + $(".selected img").attr("src") + ' " style="width:200px">' +
+                                    '<button class="btn btn-default" ' +
+                                    'id="imageListButton" ' +
+                                    'type="button" ' +
+                                    'data-toggle="modal" ' +
+                                    'data-target="#imagenListModal"> ' +
+                                    '<i class="fa fa-picture-o"></i> ' +
+                                    'Modificar imagen de artículo ' +
+                                    '</button>');
+                            $("#articulo_imagen").fadeIn();
+                        }
+                    });
+                });
             });
             $('form').submit(function(event) {
                 if (!$('#form_imagen').val()) {
@@ -199,16 +195,55 @@
                     var url = '{{ path("articulo_create") }}?accion=publicado';
                 {% endif %}
 
+                var contenido = CKEDITOR.instances.form_contenido.getData();
+                if (contenido != "") {
+                    $(this).find('#form_contenido').val(contenido);
+                } else {
+                    $('.mensaje').html('Contenido vacío').addClass('alert-warning');
+                }
+
                 var data = $(this).serialize();
                 
                 var success = function(response, textStatus, xhr) {
                     //articulo = JSON.parse(response);
-                    console.log(response);
-                    alert('Estatus' + textStatus);
+                    if (xhr.status == 202) {
+                        console.log(response);
+                        $('.mensaje').html(response).addClass('alert-warning');
+                    } else if (xhr.status == 200) {
+                        console.log(response);
+                        $('.mensaje').html('El artículo se ha creado y publicado con éxito').addClass('alert-success');
+                        $(location).attr('href', '{{ path("articulo_list") }}');
+                    }
                 };
                 ajaxRequest('.mensaje', url, data, true, true, null, null, null, success);
+            });
+            $("#borradorButton").click(function(evt) {
+                evt.preventDefault();
 
-            });            
+                var url = '{{ path("articulo_create") }}?accion=borrador';
+
+                var contenido = CKEDITOR.instances.form_contenido.getData();
+                if (contenido != "") {
+                    $(this).find('#form_contenido').val(contenido);
+                } else {
+                    $('.mensaje').html('Contenido vacío').addClass('alert-warning');
+                }
+
+                var data = $(this).serialize();
+                
+                var success = function(response, textStatus, xhr) {
+                    //articulo = JSON.parse(response);
+                    if (xhr.status == 202) {
+                        console.log(response);
+                        $('.mensaje').html(response).addClass('alert-warning');
+                    } else if (xhr.status == 200) {
+                        console.log(response);
+                        $('.mensaje').html('El artículo se ha creado con éxito').addClass('alert-success');
+                        $(location).attr('href', '{{ path("articulo_list") }}');
+                    }
+                };
+                ajaxRequest('.mensaje', url, data, true, true, null, null, null, success);
+            });
         });
 
     </script>
