@@ -10,6 +10,7 @@
 namespace Precursor\Application\Model;
 
 use Doctrine\DBAL\Connection,
+    Precursor\Application\Controller\Backend\Auditoria,
     Precursor\Application\Model;
 
 class Usuario extends Model
@@ -49,6 +50,7 @@ class Usuario extends Model
     {
         $fields = array(
             'usuario.id',
+            'usuario.id_perfil',
             'usuario.alias',
             'usuario.nombre',
             'usuario.correo',
@@ -138,7 +140,7 @@ class Usuario extends Model
      * 
      * @return int Filas afectadas
      */
-    public function modificar($id, $idPerfil, $nombre, $correo, $alias, $clave)
+    public function modificar($id, $idPerfil, $nombre, $correo, $alias, $clave = null)
     {
         $data = array(
             'id_perfil' => $idPerfil,
@@ -151,7 +153,13 @@ class Usuario extends Model
             $data['clave'] = $clave;
         }
         
-        return $this->_update($data, array('id' => $id));
+        $filasAfectadas = $this->_update($data, array('id' => $id));
+        
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, 'UPDATE', 'Usuario', 'Actualizar datos de mi cuenta. Extra: ' + json_encode(array($nombre, $correo, $alias)), 'EXITOSO');
+        }
+        
+        return $filasAfectadas;
     }
 
     /**

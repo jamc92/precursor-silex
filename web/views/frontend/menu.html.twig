@@ -74,7 +74,7 @@
                             <li class="divider"></li>
                             <li class="dropdown-header">Cuenta</li>
                             <li>
-                                <a href="{{ path('editar_datos', {id: app.user.id}) }}">Editar mis datos</a>
+                                <a href="{{ path('micuenta') }}" id="miCuenta">Mi cuenta</a>
                             </li>
                             <li>
                                 <a href="{{ path('logout') }}">Cerrar sesión</a>
@@ -92,3 +92,4 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
+<div class="modalMiCuenta"></div>
