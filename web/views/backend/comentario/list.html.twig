@@ -1,24 +1,5 @@
 {% extends 'layouts/backend.html.twig' %}
 
-{% block javascripts %}
-
-    {{ parent() }}
-
-    <!-- page script -->
-    <script type="text/javascript">
-        $(function() {
-            $("#comentario_list").dataTable();
-        });
-
-        function confirm_delete(){
-            if(!confirm("Esta seguro que desea eliminar el comentario? \n Esta acción no se podrá deshacer.")) {
-                return false;
-            }
-        }
-
-    </script>
-{% endblock %}
-
 {% block container %}
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -57,6 +38,7 @@
                                             <th>Contenido</th>
                                             <th>Fecha</th>
                                             <th>Acciones</th>
+                                            <th>Estatus</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,7 +49,17 @@
                                                 <td>{{ comentario.contenido }}</td>
                                                 <td>{{ comentario.fecha }}</td>
                                                 <td>
+                                                    {% if comentario.estatus == 'I' %}
+                                                        <a href="{{ path('aprobar_comentario', { id: comentario.id }) }}" onclick='return confirm_aprobar();' class="btn btn-success btn-xs">Aprobar</a>
+                                                    {% endif %}
                                                     <a href="{{ path('comentario_delete', { id: comentario.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs">Eliminar</a>
+                                                </td>
+                                                <td>
+                                                    {% if comentario.estatus == 'I' %}
+                                                        Por aprobar
+                                                    {% else %}
+                                                        Aprobado
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -80,6 +72,7 @@
                                             <th>Contenido</th>
                                             <th>Fecha</th>
                                             <th>Acciones</th>
+                                            <th>Estatus</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -92,4 +85,29 @@
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
 
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <!-- page script -->
+    <script type="text/javascript">
+        $(function() {
+            $("#comentario_list").dataTable();
+        });
+
+        function confirm_delete(){
+            if(!confirm("Esta seguro que desea eliminar el comentario? \n Esta acción no se podrá deshacer.")) {
+                return false;
+            }
+        }
+
+        function confirm_aprobar(){
+            if(!confirm("Está seguro que desea aprobar el comentario?")) {
+                return false;
+            }
+        }
+
+    </script>
 {% endblock %}
