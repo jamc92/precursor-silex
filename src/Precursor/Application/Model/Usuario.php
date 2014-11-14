@@ -156,7 +156,7 @@ class Usuario extends Model
         $filasAfectadas = $this->_update($data, array('id' => $id));
         
         if ($filasAfectadas == 1) {
-            Auditoria::getInstance()->guardar($this->_db, 'UPDATE', 'Actualizar datos de mi cuenta. Extra: ' + json_encode(array($nombre, $correo, $alias)), 'EXITOSO');
+            Auditoria::getInstance()->guardar($this->_db, 'UPDATE', 'Usuario', 'Actualizar datos de mi cuenta. Extra: ' + json_encode(array($nombre, $correo, $alias)), 'EXITOSO');
         }
         
         return $filasAfectadas;
