@@ -25,11 +25,13 @@ class Usuario extends Model
     }
     
     /**
-     * @param array $fields Campos que se desean del registro
+     * @param array $fields   Campos que se desean del registro
+     * @param string $where   Sentencia where de la consulta
+     * @param array $criteria Criterios de la sentencia where: valores en array de parametros
      * 
      * @return array Arreglo de usuarios
      */
-    public function getUsuarios(array $fields = array())
+    public function getUsuarios(array $fields = array(), $where = '', array $criteria = array())
     {
         if (empty($fields)) {
             $fields = array(
@@ -38,7 +40,7 @@ class Usuario extends Model
             );
         }
         $join = array('perfil', 'id_perfil', 'perfil.id', '=');
-        return $this->getTodo($fields, $join);
+        return $this->getTodo($fields, $join, $where, $criteria);
     }
     
     /**

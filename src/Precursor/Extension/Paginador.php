@@ -53,7 +53,7 @@ class Paginador
             $numPage = 1;
         }
 
-        if ( $numeroPaginas != 1 ) {
+        if ( $numeroPaginas > 1 ) {
             $html .= '<li class="previous"> <a href="#">&laquo;</a></li>';
         }
 

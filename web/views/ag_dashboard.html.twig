@@ -35,120 +35,118 @@
                                         <div class="data">
                                             <h1>{{ comentarios|length }}</h1>
                                             <hr>
-                                            <button type="button" class="btn btn-primary" id="verTablaArticulos">Ver comentarios</button>
+                                            <button type="button" class="btn btn-primary" id="verTablaComentarios" onclick="$('.comentariosTableContainer').fadeIn(1000)">Ver comentarios</button>
                                         </div>
                                     </div>
 
                                     <div class="well col-sm-3 col-lg-2">
                                         <h4>Artículos por aprobar</h4>
                                         <div class="data">
-                                            <h1>{{ comentarios|length }}</h1>
+                                            <h1>{{ articulos|length }}</h1>
                                             <hr>
-                                            <button type="button" class="btn btn-primary" id="verTablaArticulos">Ver artículos</button>
+                                            <button type="button" class="btn btn-primary" id="verTablaArticulos" onclick="$('.articulosTableContainer').fadeIn(1000)">Ver artículos</button>
                                         </div>
                                     </div>
 
                                     <div class="row">&nbsp;</div>
 
-                                    <div class="box-body">
-                                        <h4>Comentarios de usuarios</h4>
+                                    <div class="comentariosTableContainer" style="display:none">
+                                        <div class="box-body">
+                                            <h4>Comentarios de usuarios</h4>
+                                        </div>
+
+                                        <table id="comentario_list" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Artículo</th>
+                                                <th>Usuario</th>
+                                                <th>Comentario</th>
+                                                <th>Fecha</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for comentario in comentarios %}
+                                                <tr>
+                                                    <td>{{ comentario.articulo }}</td>
+                                                    <td>{{ comentario.usuario }}</td>
+                                                    <td>{{ comentario.contenido }}</td>
+                                                    <td>{{ comentario.fecha }}</td>
+                                                    <td>
+                                                        <a href="{{ path('aprobar_comentario', { id: comentario.id }) }}" onclick='return confirm_aprobar();' class="btn btn-success btn-xs">Aprobar</a>
+                                                        <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th>Artículo</th>
+                                                <th>Usuario</th>
+                                                <th>Comentario</th>
+                                                <th>Fecha</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
                                     </div>
 
-                                    <table id="comentario_list" class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Artículo</th>
-                                            <th>Usuario</th>
-                                            <th>Comentario</th>
-                                            <th>Fecha</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for comentario in comentarios %}
+                                    <div class="articulosTableContainer" style="display:none">
+                                        <div class="box-body">
+                                            <h4>Artículos de escritores</h4>
+                                        </div>
+
+                                        <table id="articulo_list" class="table table-bordered table-striped">
+                                            <thead>
                                             <tr>
-                                                <td>{{ comentario.articulo }}</td>
-                                                <td>{{ comentario.usuario }}</td>
-                                                <td>{{ comentario.contenido }}</td>
-                                                <td>{{ comentario.fecha }}</td>
-                                                <td>
-                                                    <a href="{{ path('aprobar_comentario', { id: comentario.id }) }}" onclick='return confirm_aprobar();' class="btn btn-success btn-xs">Aprobar</a>
-                                                    <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button>
-                                                </td>
+                                                <th>Categoría</th>
+                                                <th>Título</th>
+                                                <th>Autor</th>
+                                                <th>Fecha Pub.</th>
+                                                <th>Estatus</th>
+                                                <th>Acciones</th>
                                             </tr>
-                                        {% endfor %}
+                                            </thead>
+                                            <tbody>
+                                            {% for articulo in articulos %}
+                                                <tr>
+                                                    <td>{{ articulo.categoria }}</td>
+                                                    <td>{{ articulo.titulo }}</td>
+                                                    <td>{{ articulo.autor }}</td>
+                                                    <td>{{ articulo.fecha_pub }}</td>
+                                                    <td>
+                                                        {% if articulo.estatus == 'B' %}
+                                                            <p class="text-info col-md-12">Borrador</p>
+                                                        {% elseif articulo.estatus == 'A'%}
+                                                            <p class="text-success col-md-12">Publicado</p>
+                                                        {% elseif articulo.estatus == 'I'%}
+                                                            <p class="text-warning col-md-12">Inactivo</p>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ path('articulo_vista_previa', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Ver</a>
+                                                        <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
+                                                        {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
+                                                            <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
 
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                            <th>Artículo</th>
-                                            <th>Usuario</th>
-                                            <th>Comentario</th>
-                                            <th>Fecha</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-
-                                    <div class="box-body">
-
-                                        <h4>Artículos de escritores</h4>
-
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th>Categoría</th>
+                                                <th>Título</th>
+                                                <th>Autor</th>
+                                                <th>Fecha Pub.</th>
+                                                <th>Estatus</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
                                     </div>
-
-                                    <table id="articulo_list" class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Categoría</th>
-                                            <th>Título</th>
-                                            <th>Autor</th>
-                                            <th>Fecha Pub.</th>
-                                            <th>Estatus</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for articulo in articulos %}
-                                            <tr>
-                                                <td>{{ articulo.categoria }}</td>
-                                                <td>{{ articulo.titulo }}</td>
-                                                <td>{{ articulo.autor }}</td>
-                                                <td>{{ articulo.fecha_pub }}</td>
-                                                <td>
-                                                    {% if articulo.estatus == 'B' %}
-                                                        <p class="text-info col-md-12">Borrador</p>
-                                                    {% elseif articulo.estatus == 'A'%}
-                                                        <p class="text-success col-md-12">Publicado</p>
-                                                    {% elseif articulo.estatus == 'I'%}
-                                                        <p class="text-warning col-md-12">Inactivo</p>
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    <a href="{{ path('noticia', { id: articulo.id }) }}" class="btn btn-info btn-xs col-md-6">Ver</a>
-                                                    <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Editar</a>
-                                                    <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
-                                                    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
-                                                        <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
-                                                    {% endif %}
-
-
-
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                            <th>Categoría</th>
-                                            <th>Título</th>
-                                            <th>Autor</th>
-                                            <th>Fecha Pub.</th>
-                                            <th>Estatus</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
                                 {% endif %}
                             </div>
                         </div>

@@ -10,6 +10,10 @@ $app->match('/admin/articulo/edit/{id}', 'Precursor\\Application\\Controller\\Ba
     ->assert('id', '\d+')
     ->bind('articulo_edit');
 
+$app->match('/admin/articulo/vista-previa/{id}', 'Precursor\\Application\\Controller\\Backend\\Articulo::editar')
+    ->assert('id', '\d+')
+    ->bind('articulo_vista_previa');
+
 $app->match('/admin/articulo/delete/{id}', 'Precursor\\Application\\Controller\\Backend\\Articulo::eliminar')
     ->assert('id', '\d+')
     ->bind('articulo_delete');

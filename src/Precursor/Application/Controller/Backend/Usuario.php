@@ -27,7 +27,12 @@ class Usuario
     public function ver(Request $request, Application $app)
     {
         $usuarioModelo = new UsuarioModelo($app['db']);
-        $usuarios = $usuarioModelo->getUsuarios();
+
+        if ($app['user']['perfil'] == 'ROLE_EDITOR') {
+            $usuarios = $usuarioModelo->getUsuarios(array(), "WHERE id_perfil = 3 AND perfil = 4");
+        } else {
+            $usuarios = $usuarioModelo->getUsuarios();
+        }
 
         return $app['twig']->render('backend/usuario/list.html.twig', array(
             "usuarios" => $usuarios
@@ -60,6 +65,7 @@ class Usuario
         
         if ($app['user']['perfil'] === 'ROLE_EDITOR') {
             unset($options[1]);
+            unset($options[2]);
         }
 
         $initial_data = array(
