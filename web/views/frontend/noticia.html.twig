@@ -54,7 +54,7 @@
                    title="Compartir en Twitter">
                     <i class="fa fa-twitter"></i>
                 </a>
-                <a href="https://twitter.com/share" class="twitter-share-button" data-via="elprecursorcufm" data-lang="es" data-hashtags="ElPrecursor"></a>
+                {#<a href="https://twitter.com/share" class="twitter-share-button" data-via="elprecursorcufm" data-lang="es" data-hashtags="ElPrecursor"></a>#}
                 <a href="mailto:body={{ app.request.uri }}"
                    class="btn btn-success correo"
                    title="Enviar por correo electrónico">
@@ -68,7 +68,7 @@
                 </a>
                 <a href="{{ path('noticia_pdf',{idArticulo: articulo.id}) }}"
                    class="btn btn-default PDF"
-                   title="Descargar pdf">
+                   title="Descargar PDF">
                     <i class="glyphicon glyphicon-download-alt"></i>
                 </a>
             </div>

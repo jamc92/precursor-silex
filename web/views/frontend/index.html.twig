@@ -6,7 +6,7 @@
     {% include 'frontend/menu.html.twig' with {'option': 'home'} %}
 {% endblock %}
 
-{% block slide %}
+{% block slider %}
     <div class="tp-banner-container">
         <div class="tp-banner" >
             <ul>	<!-- SLIDE  -->
@@ -28,7 +28,7 @@
                          data-endelementdelay="0.1"
                          data-end="9000"
                          data-endspeed="1000"
-                         style="z-index: 2;"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/Capa-2.png">
+                         style="z-index: 2;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/Capa-2.png">
                     </div>
 
                     {#<div class="tp-caption lft customout rs-parallaxlevel-0"
@@ -53,7 +53,7 @@
                          data-easing="Power3.easeInOut"
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
-                         style="z-index: 3;"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/Rectángulo-1.png">
+                         style="z-index: 3;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/Rectángulo-1.png">
                     </div>
 
                     <!-- LAYER NR. 3 -->
@@ -93,7 +93,7 @@
                          data-easing="Power3.easeInOut"
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
-                         style="z-index: 6;"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/logoDIS.png">
+                         style="z-index: 6;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/logoDIS.png">
                     </div>
 
                     <!-- LAYER NR. 6 -->
@@ -106,7 +106,7 @@
                          data-easing="Power3.easeInOut"
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
-                         style="z-index: 6;"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/logoCUFM.png">
+                         style="z-index: 6;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/logoCUFM.png">
                     </div>
 
                     <!-- LAYER NR. 6 -->
@@ -181,13 +181,13 @@
                          data-easing="Power3.easeInOut"
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
-                         style="z-index: 11;"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/greyline.png">
+                         style="z-index: 11;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/greyline.png">
                     </div>
 
                     <!-- LAYER NR. 11 -->
-                    <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0"
+{#                    <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0"
                          data-x="73"
-                         data-y="502" 
+                         data-y="502"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="500"
                          data-start="2900"
@@ -198,7 +198,7 @@
                          data-endelementdelay="0.1"
                          data-linktoslide="next"
                          style="z-index: 12; max-width: auto; max-height: auto; white-space: nowrap;"><a href='#' class='largeredbtn'>CONTINUE THE TOUR</a>
-                    </div>
+                    </div>#}
 
                     <!-- LAYER NR. 12 -->
                     <div class="tp-caption arrowicon customin rs-parallaxlevel-0"
@@ -225,11 +225,26 @@
                 <!-- SLIDE  -->
                 <li data-transition="slideleft" data-slotamount="7" data-masterspeed="2000" data-thumb="{{ app.asset_path }}/images/homeslider_thumb2.jpg" data-delay="10000"  data-saveperformance="on"  data-title="Ken Burns Slide">
                     <!-- MAIN IMAGE -->
-                    <img src="{{ app.asset_path }}/images/dummy.png"  alt="laptopmockup_sliderdy" data-lazyload="{{ app.asset_path }}/images/laptopmockup_sliderdy.jpg" data-bgposition="right top" data-kenburns="on" data-duration="12000" data-ease="Power0.easeInOut" data-bgfit="115" data-bgfitend="100" data-bgpositionend="center bottom">
+                    <img src="{{ app.asset_path }}/images/dummy.png" data-lazyload="{{ app.asset_path }}/images/backgroud2.png" alt="laptopmockup_sliderdy" data-y="100" data-bgposition="right top" data-kenburns="on" data-duration="12000" data-ease="Power0.easeInOut" data-bgfit="115" data-bgfitend="100" data-bgpositionend="center bottom">
                     <!-- LAYERS -->
 
                     <!-- LAYER NR. 1 -->
-                    <div class="tp-caption customin fadeout rs-parallaxlevel-10"
+
+                    <div class="tp-caption grey_regular_18 customin tp-resizeme rs-parallaxlevel-0"
+                         data-x="330"
+                         data-y="100"
+                         data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="8000"
+                         data-start="1"
+                         data-easing="Power3.easeInOut"
+                         data-splitin="none"
+                         data-splitout="none"
+                         data-elementdelay="0.05"
+                         data-endelementdelay="0.1"
+                         style="z-index: 2;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/entraydescubre.png">
+                    </div>
+
+{#                    <div class="tp-caption customin fadeout rs-parallaxlevel-10"
                          data-x="848"
                          data-y="196" 
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
@@ -240,10 +255,10 @@
                          data-endelementdelay="0.1"
                          data-endspeed="300"
                          style="z-index: 2;"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/redbg_big.png">
-                    </div>
+                    </div>#}
 
                     <!-- LAYER NR. 2 -->
-                    <div class="tp-caption light_heavy_70 customin fadeout tp-resizeme rs-parallaxlevel-10"
+{#                    <div class="tp-caption light_heavy_70 customin fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="862"
                          data-y="204" 
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
@@ -256,25 +271,36 @@
                          data-endelementdelay="0.1"
                          data-endspeed="300"
                          style="z-index: 3; max-width: auto; max-height: auto; white-space: nowrap;">Effect
-                    </div>
+                    </div>#}
 
                     <!-- LAYER NR. 3 -->
-                    <div class="tp-caption black_heavy_70 skewfromleftshort fadeout tp-resizeme rs-parallaxlevel-10"
-                         data-x="717"
-                         data-y="143" 
-                         data-speed="500"
-                         data-start="2400"
+                    <div class="tp-caption lfl customout rs-parallaxlevel-0"
+                         data-x="-260"
+                         data-y="10"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="3000"
+                         data-start="1900"
                          data-easing="Power3.easeInOut"
-                         data-splitin="chars"
-                         data-splitout="none"
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
-                         data-endspeed="300"
-                         style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;">Ken Burns
+                         style="z-index: 4;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/computadora.png">
                     </div>
 
                     <!-- LAYER NR. 4 -->
-                    <div class="tp-caption black_bold_40 skewfromrightshort fadeout tp-resizeme rs-parallaxlevel-10"
+
+                    <div class="tp-caption lfb customout rs-parallaxlevel-0"
+                         data-x="280"
+                         data-y="420"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="3000"
+                         data-start="1900"
+                         data-easing="Power3.easeInOut"
+                         data-elementdelay="0.1"
+                         data-endelementdelay="0.1"
+                         style="z-index: 5;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/mouse-1.png">
+                    </div>
+
+                    {#<div class="tp-caption black_bold_40 skewfromrightshort fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="937"
                          data-y="282" 
                          data-speed="500"
@@ -286,12 +312,12 @@
                          data-endelementdelay="0.1"
                          data-endspeed="300"
                          style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;">Improved!
-                    </div>
+                    </div>#}
 
                     <!-- LAYER NR. 5 -->
                     <div class="tp-caption black_bold_bg_20 sfr fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="970"
-                         data-y="367" 
+                         data-y="187"
                          data-speed="300"
                          data-start="4000"
                          data-easing="Power3.easeInOut"
@@ -300,13 +326,13 @@
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
                          data-endspeed="300"
-                         style="z-index: 6; max-width: auto; max-height: auto; white-space: nowrap;">FASTER
+                         style="z-index: 6; max-width: auto; max-height: auto; white-space: nowrap;">ENTERATE
                     </div>
 
                     <!-- LAYER NR. 6 -->
                     <div class="tp-caption greenbox30 customin fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="939"
-                         data-y="367" 
+                         data-y="187"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="300"
                          data-start="4000"
@@ -322,7 +348,7 @@
                     <!-- LAYER NR. 7 -->
                     <div class="tp-caption arrowicon customin fadeout rs-parallaxlevel-10"
                          data-x="948"
-                         data-y="374" 
+                         data-y="193"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="300"
                          data-start="4200"
@@ -336,7 +362,7 @@
                     <!-- LAYER NR. 8 -->
                     <div class="tp-caption black_bold_bg_20 sfr fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="970"
-                         data-y="407" 
+                         data-y="237"
                          data-speed="300"
                          data-start="4500"
                          data-easing="Power3.easeInOut"
@@ -345,13 +371,13 @@
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
                          data-endspeed="300"
-                         style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">SMOOTHER
+                         style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">NOTICIAS
                     </div>
 
                     <!-- LAYER NR. 9 -->
                     <div class="tp-caption greenbox30 customin fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="939"
-                         data-y="407" 
+                         data-y="237"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="300"
                          data-start="4500"
@@ -367,7 +393,7 @@
                     <!-- LAYER NR. 10 -->
                     <div class="tp-caption arrowicon customin fadeout rs-parallaxlevel-10"
                          data-x="948"
-                         data-y="414" 
+                         data-y="243"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="300"
                          data-start="4700"
@@ -381,7 +407,7 @@
                     <!-- LAYER NR. 11 -->
                     <div class="tp-caption black_bold_bg_20 sfr fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="970"
-                         data-y="447" 
+                         data-y="287"
                          data-speed="300"
                          data-start="5000"
                          data-easing="Power3.easeInOut"
@@ -390,13 +416,13 @@
                          data-elementdelay="0.1"
                          data-endelementdelay="0.1"
                          data-endspeed="300"
-                         style="z-index: 12; max-width: auto; max-height: auto; white-space: nowrap;">EASY TO USE
+                         style="z-index: 12; max-width: auto; max-height: auto; white-space: nowrap;">EVENTOS
                     </div>
 
                     <!-- LAYER NR. 12 -->
                     <div class="tp-caption greenbox30 customin fadeout tp-resizeme rs-parallaxlevel-10"
                          data-x="939"
-                         data-y="447" 
+                         data-y="287"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="300"
                          data-start="5000"
@@ -412,7 +438,7 @@
                     <!-- LAYER NR. 13 -->
                     <div class="tp-caption arrowicon customin fadeout rs-parallaxlevel-10"
                          data-x="948"
-                         data-y="454" 
+                         data-y="293"
                          data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
                          data-speed="300"
                          data-start="5200"
@@ -426,11 +452,24 @@
                 <!-- SLIDE  -->
                 <li data-transition="slideup" data-slotamount="7" data-masterspeed="1000" data-thumb="{{ app.asset_path }}/images/homeslider_thumb3.jpg"  data-saveperformance="on"  data-title="Parallax 3D">
                     <!-- MAIN IMAGE -->
-                    <img src="{{ app.asset_path }}/images/dummy.png"  alt="3dbg" data-lazyload="{{ app.asset_path }}/images/3dbg.jpg" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                    <img src="{{ app.asset_path }}/images/dummy.png"  alt="3dbg" data-lazyload="{{ app.asset_path }}/images/background3.png" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
 
                     <!-- LAYER NR. 1 -->
-                    <div class="tp-caption fullbg_gradient tp-fade tp-resizeme rs-parallaxlevel-10"
+
+                    <div class="tp-caption lfl customout rs-parallaxlevel-0"
+                         data-x="-260"
+                         data-y="10"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="3000"
+                         data-start="1900"
+                         data-easing="Power3.easeInOut"
+                         data-elementdelay="0.1"
+                         data-endelementdelay="0.1"
+                         style="z-index: 4;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/hand.png">
+                    </div>
+
+                    {#<div class="tp-caption fullbg_gradient tp-fade tp-resizeme rs-parallaxlevel-10"
                          data-x="center" data-hoffset="0"
                          data-y="center" data-voffset="0"
                          data-speed="2000"
@@ -453,6 +492,19 @@
                     </div>
 
                     <!-- LAYER NR. 2 -->
+
+                    #}<div class="tp-caption lfr customout rs-parallaxlevel-0"
+                         data-x="660"
+                         data-y="100"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="3000"
+                         data-start="1900"
+                         data-easing="Power3.easeInOut"
+                         data-elementdelay="0.1"
+                         data-endelementdelay="0.1"
+                         style="z-index: 4;"><img class="img-responsive" src="{{ app.asset_path }}/images/dummy.png" alt="" data-lazyload="{{ app.asset_path }}/images/colorballs.png">
+                    </div>
+                    {#
                     <div class="tp-caption lft skewtoleftshort rs-parallaxlevel-9"
                          data-x="309"
                          data-y="69" 
@@ -778,10 +830,10 @@
                                               >
                             <a href="http://codecanyon.net/item/slider-revolution-responsive-wordpress-plugin/2751380?ref=themepunch" target="_blank"><img src="{{ app.asset_path }}/images/dummy.png" alt="" data-ww="18" data-hh="11" data-lazyload="{{ app.asset_path }}/images/doublearrow2.png"></a>
                         </div>
-                    </div>
+                    </div>#}
                 </li>
                 <!-- SLIDE  -->
-                <li data-transition="zoomin" data-slotamount="7" data-masterspeed="1500" data-thumb="{{ app.asset_path }}/images/homeslider_thumb4.jpg"  data-saveperformance="on"  data-title="Mobile Interaction">
+                {#<li data-transition="zoomin" data-slotamount="7" data-masterspeed="1500" data-thumb="{{ app.asset_path }}/images/homeslider_thumb4.jpg"  data-saveperformance="on"  data-title="Mobile Interaction">
                     <!-- MAIN IMAGE -->
                     <img src="{{ app.asset_path }}/images/dummy.png"  alt="slidebg2" data-lazyload="{{ app.asset_path }}/images/slidebg2.jpg" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
@@ -1060,9 +1112,9 @@
                          data-autoplay="false"
                          data-autoplayonlyfirsttime="false"
                          style="z-index: 11;">
-{#                        <iframe src='http://player.vimeo.com/video/76127035?title=0&byline=0&portrait=0;api=1' width='625' height='467' style='width:625px;height:467px;'></iframe>#}
+&#123;&#35;                        <iframe src='http://player.vimeo.com/video/76127035?title=0&byline=0&portrait=0;api=1' width='625' height='467' style='width:625px;height:467px;'></iframe>&#35;&#125;
                     </div>
-                </li>
+                </li>#}
                 <!-- SLIDE  -->
                 <!-- <li data-transition="fade" data-slotamount="7" data-masterspeed="600" data-thumb="homeslider_thumb6.jpg"  data-saveperformance="on"  data-title="Full-Width Video">
                 <!-- MAIN IMAGE -->
