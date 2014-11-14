@@ -48,6 +48,12 @@
                                         </div>
                                     </div>
 
+                                    <div class="row">&nbsp;</div>
+
+                                    <div class="box-body">
+                                        <h4>Comentarios de usuarios</h4>
+                                    </div>
+
                                     <table id="comentario_list" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
@@ -83,86 +89,71 @@
                                         </tr>
                                         </tfoot>
                                     </table>
+
+                                    <div class="box-body">
+
+                                        <h4>Artículos de escritores</h4>
+
+                                    </div>
+
+                                    <table id="articulo_list" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Categoría</th>
+                                            <th>Título</th>
+                                            <th>Autor</th>
+                                            <th>Fecha Pub.</th>
+                                            <th>Estatus</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for articulo in articulos %}
+                                            <tr>
+                                                <td>{{ articulo.categoria }}</td>
+                                                <td>{{ articulo.titulo }}</td>
+                                                <td>{{ articulo.autor }}</td>
+                                                <td>{{ articulo.fecha_pub }}</td>
+                                                <td>
+                                                    {% if articulo.estatus == 'B' %}
+                                                        <p class="text-info col-md-12">Borrador</p>
+                                                    {% elseif articulo.estatus == 'A'%}
+                                                        <p class="text-success col-md-12">Publicado</p>
+                                                    {% elseif articulo.estatus == 'I'%}
+                                                        <p class="text-warning col-md-12">Inactivo</p>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('noticia', { id: articulo.id }) }}" class="btn btn-info btn-xs col-md-6">Ver</a>
+                                                    <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Editar</a>
+                                                    <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
+                                                    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
+                                                        <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
+                                                    {% endif %}
+
+
+
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Categoría</th>
+                                            <th>Título</th>
+                                            <th>Autor</th>
+                                            <th>Fecha Pub.</th>
+                                            <th>Estatus</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
-
-            </section><!-- /.content -->
-
-            <section class="content">
-
-                <div class="row">
-                    <div class="col-xs-12">
-
-                        {% include 'ag_alerts.html.twig' %}
-
-                        <div class="box">
-                            <div class="box-body">
-
-                                <h4>Articulos de escritores</h4>
-
-                            </div>
-
-                            <table id="articulo_list" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Categoría</th>
-                                    <th>Título</th>
-                                    <th>Autor</th>
-                                    <th>Fecha Pub.</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for articulo in articulos %}
-                                    <tr>
-                                        <td>{{ articulo.categoria }}</td>
-                                        <td>{{ articulo.titulo }}</td>
-                                        <td>{{ articulo.autor }}</td>
-                                        <td>{{ articulo.fecha_pub }}</td>
-                                        <td>
-                                            {% if articulo.estatus == 'B' %}
-                                                <p class="text-info col-md-12">Borrador</p>
-                                            {% elseif articulo.estatus == 'A'%}
-                                                <p class="text-success col-md-12">Publicado</p>
-                                            {% elseif articulo.estatus == 'I'%}
-                                                <p class="text-warning col-md-12">Inactivo</p>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <a href="{{ path('noticia', { id: articulo.id }) }}" class="btn btn-info btn-xs col-md-6">Ver</a>
-                                            <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Editar</a>
-                                            <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
-                                                <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
-                                            {% endif %}
-
-
-
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Categoría</th>
-                                    <th>Título</th>
-                                    <th>Autor</th>
-                                    <th>Fecha Pub.</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-
             </section><!-- /.content -->
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
