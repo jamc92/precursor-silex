@@ -43,7 +43,7 @@ class Articulo
         ));
     }
 
-    public  function verArticuloInactivo(Request $request, Application $app, $id)
+    public  function aprobarArticulo(Request $request, Application $app, $id)
     {
         $articuloModelo = new ArticuloModelo($app['db']);
 
@@ -53,7 +53,7 @@ class Articulo
             $responses = array();
 
             if (!empty($articulo)) {
-                $filasAfectadas = $articuloModelo->verArticuloInactivo($id);
+                $filasAfectadas = $articuloModelo->aprobarArticulo($id);
 
                 if ($filasAfectadas == 1) {
                     $app['session']->getFlashBag()->add(
@@ -70,6 +70,7 @@ class Articulo
                 }
             }
         }
+        return $app->redirect($app['url_generator']->generate('admin'));
     }
 
     /**

@@ -28,13 +28,14 @@ class Articulo extends Model
      * @param string $orderBy
      * @return array
      */
-    public function getTodo($orderBy = 'fecha_pub')
+    public function getTodo($orderBy = 'fecha_pub', $estatus = 'A')
     {
         $this->_queryBuilder
-                ->select(array('a.*', 'usuario.nombre as autor'))
+                ->select(array('a.*', 'usuario.nombre as autor', 'categoria.nombre as categoria'))
                 ->from($this->_table, 'a')
-                ->where('a.estatus = "A"')
+                ->where("a.estatus = '$estatus'")
                 ->innerJoin('a', 'usuario', '', 'a.id_autor = usuario.id')
+                ->innerJoin('a', 'categoria', '', 'a.id_categoria = categoria.id')
                 ->orderBy($orderBy, 'DESC');
         
         $sql = $this->_queryBuilder->getSQL();
@@ -130,6 +131,11 @@ class Articulo extends Model
                 ))
             ->getSQL();
         return $this->_select($sql, $join = array(), '', array("%$titulo%", "%$titulo%", "%$titulo%"));
+    }
+
+    public function aprobarArticulo($id)
+    {
+        return $this->_update(array('estatus' => 'A'), array('id' => $id));
     }
 
     /**

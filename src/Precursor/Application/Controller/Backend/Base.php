@@ -11,6 +11,7 @@
 namespace Precursor\Application\Controller\Backend;
 
 use Precursor\LogViewer\LogViewer,
+    Precursor\Application\Model\Articulo,
     Precursor\Application\Model\Comentario,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
@@ -29,11 +30,18 @@ class Base
     {
         $comentarioModelo = new Comentario($app['db']);
 
-        $comentarios = $comentarioModelo->getComentarios(array()/*, "WHERE comentario.estatus = 'I'"*/);
+        $comentarios = $comentarioModelo->getComentarios(array(), "WHERE comentario.estatus = 'I'");
+
+
+        $articuloModelo = new Articulo($app['db']);
+
+        $articulos = $articuloModelo->getTodo('fecha_pub', "I");
 
         return $app['twig']->render('ag_dashboard.html.twig', array(
-            'comentarios' => $comentarios
+            'comentarios' => $comentarios,
+            'articulos' => $articulos
         ));
     }
+
     
 }
