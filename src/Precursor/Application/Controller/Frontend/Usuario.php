@@ -20,6 +20,7 @@ use OAuth\Common\Storage\Session,
     Silex\Application,
     Symfony\Component\HttpFoundation\JsonResponse,
     Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response,
     Symfony\Component\Routing\Generator\UrlGenerator,
     Symfony\Component\Security\Core\User\User;
 
@@ -86,7 +87,7 @@ class Usuario
             
             $usuario['service'] = 'facebook';
             
-            return $app['twig']->render('frontend/signup.html.twig', array(
+            return $app['twig']->render('frontend/usuario/signup.html.twig', array(
                 'menu_items' => $menuItems,
                 'usuario'    => $usuario
             ));
@@ -104,7 +105,7 @@ class Usuario
             
             $usuario['service'] = 'google';
             
-            return $app['twig']->render('frontend/signup.html.twig', array(
+            return $app['twig']->render('frontend/usuario/signup.html.twig', array(
                 'menu_items' => $menuItems,
                 'usuario'    => $usuario
             ));
@@ -132,7 +133,7 @@ class Usuario
         
         $menuItems = $menuModelo->getItems();
         
-        return $app['twig']->render('frontend/login.html.twig', array(
+        return $app['twig']->render('frontend/usuario/login.html.twig', array(
             'error'         => $error_msg,
             'last_username' => $app['session']->get('_security.last_username'),
             'menu_items'    => $menuItems
@@ -283,5 +284,35 @@ class Usuario
         }
     }
     
+    
+    public function miCuenta(Request $request, Application $app)
+    {
+        if (is_array($app['user'])) {
+            if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+                $nombre = $request->get('nombre');
+                $correo = $request->get('correo');
+                $alias  = $request->get('alias');
+                $clave  = $request->get('clave');
+                
+                $usuarioModelo = new UsuarioModelo($app['db']);
+                
+                if ($clave) {
+                    //$filasAfectadas = $usuarioModelo->modificar($app['user']['id'], $app['user']['id_perfil'], $nombre, $correo, $alias, $app['user']['clave']);
+                } else {
+                    $filasAfectadas = $usuarioModelo->modificar($app['user']['id'], $app['user']['id_perfil'], $nombre, $correo, $alias);
+                }
+                
+                if ($filasAfectadas == 1) {
+                    return new JsonResponse('Actualizada mi cuenta', 200);
+                } else {
+                    return new JsonResponse('Nada que actualizar', 202);
+                }
+            } elseif ($request->isXmlHttpRequest() && $request->isMethod('GET')) {
+                return $app['twig']->render('frontend/usuario/micuenta.html.twig');
+            }
+        } else {
+            return new Response('Forbiden', 403);
+        }
+    }
 
 }

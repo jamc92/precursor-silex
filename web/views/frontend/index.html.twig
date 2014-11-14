@@ -1213,8 +1213,9 @@ data-endspeed="1000"
                 } else if (response.mensaje == "Usuario suscrito") {
                     //verAlert('.responseSuscriptor', "¡Suscripción exitosa!", 'info', false, true, 2000);
 
-                    var buttonsFooter = '<button type="button" class="btn btn-default" data-dismiss="modal" onclick="enviarCategorias(false)">Cerrar</button>'+
-                            '<button type="button" class="btn btn-primary" onclick="enviarCategorias(true)">Enviar</button>';
+                    var buttonsFooter = '<div class="modalResponse" style="display:inline-block; float:left"></div>'+
+                                        '<button type="button" class="btn btn-default" data-dismiss="modal" onclick="enviarCategorias(false)">Cerrar</button>'+
+                                        '<button type="button" class="btn btn-primary" onclick="enviarCategorias(true)">Enviar</button>';
 
                     verModalDialog('.modalSuscriptor', 'Elegir las secciones', '<p><b>Se ha registrado con éxito el correo que ha enviado.</b></p>', buttonsFooter,'info');
 
@@ -1232,6 +1233,37 @@ data-endspeed="1000"
 
             ajaxRequest('.responseSuscriptor',uri, data, false, false, 'POST', false, false, success);
         });
+        
+        $('a#miCuenta').click(function(evt) {
+            evt.preventDefault();
+            
+            var url = $(this).attr('href');
+            var success = function(response) {
+                var buttonsFooter = '<div class="modalResponse" style="display:inline-block; float:left"></div>'+
+                                    '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'+
+                                    '<button type="button" class="btn btn-primary" onclick="actualizarMiCuenta()">Enviar</button>';
+                    
+                verModalDialog('.modalMiCuenta', 'Mi Cuenta', response, buttonsFooter, 'info');
+            };
+            ajaxRequest('.modalMiCuenta', url, false, false, false, 'GET', false, false, success);
+        });
+        
+        function actualizarMiCuenta() {
+            var url = '{{ path("micuenta") }}';
+            var data = $('#form_micuenta').serialize();
+            
+            var success = function(response, textStatus, xhr) {
+                response = JSON.parse(response);
+                
+                if (xhr.status == 200) {
+                    verAlert('.modalMiCuenta .modalResponse', "<p>Sus datos se han actualizado correctamente.</p>", 'error');
+                } else if(xhr.status == 202) {
+                    verAlert('.modalMiCuenta .modalResponse', "<p>No hay nada que actualizar.</p>", 'warning');
+                }
+            };
+            
+            ajaxRequest('.modalMiCuenta .modalResponse', url, data, true, true, 'POST', false, false, success);
+        }
 
         function enviarCategorias(showResponse) {
             var url = '{{ path("suscriptor_guardar_categorias") }}';
@@ -1243,11 +1275,10 @@ data-endspeed="1000"
                     if (showResponse) {
                         verAlert('.modalSuscriptor .modalResponse', "<p>Ocurrió un error interno y no se pudo completar su petición. Intente de nuevo mas tarde.</p><p>Detalles del error: " + response + "</p>", 'error');
                     }
-                }
-                if (xhr.status == 200) {
+                } else if (xhr.status == 200) {
                     $('input[name="correo"]').val('');
-                    $('.modalSuscriptor').modal('hide');
                     verAlert('.responseSuscriptor', "<p>Recibirá pronto nuestras noticias en su correo.</p>", 'info', false, true, 2500);
+                    $('.modalSuscriptor').modal('hide');
                 }
             };
 

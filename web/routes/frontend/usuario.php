@@ -19,7 +19,6 @@ $app->match('/auth/{service}', 'Precursor\\Application\\Controller\\Frontend\\Us
     ->assert('service', '[a-z]+')
     ->bind('auth_service');
 
-$app->match('/editar_datos/{id}', 'Precursor\\Application\\Controller\\Backend\\Usuario::editar')
-    ->assert('id', '\d+')
-    ->bind('editar_datos')
+$app->match('/micuenta', 'Precursor\\Application\\Controller\\Frontend\\Usuario::miCuenta')
+    ->bind('micuenta')
     ->method('GET|POST');
