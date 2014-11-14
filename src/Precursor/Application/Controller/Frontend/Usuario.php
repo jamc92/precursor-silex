@@ -284,7 +284,12 @@ class Usuario
         }
     }
     
-    
+    /**
+     * @param Request $request
+     * @param Application $app
+     * 
+     * @return Response|JsonResponse
+     */
     public function miCuenta(Request $request, Application $app)
     {
         if (is_array($app['user'])) {
