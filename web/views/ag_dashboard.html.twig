@@ -28,60 +28,62 @@
 
                                 <h4>Comentarios de usuarios</h4>
 
-                                <div class="well col-sm-3 col-lg-2">
-                                    <h4>Comentarios por aprobar</h4>
-                                    <div class="data">
-                                        <h1>{{ comentarios|length }}</h1>
-                                        <hr>
-                                        <button type="button" class="btn btn-primary" id="verTablaArticulos">Ver comentarios</button>
-                                    </div>
-                                </div>
+                                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
 
-                                <div class="well col-sm-3 col-lg-2">
-                                    <h4>Artículos por aprobar</h4>
-                                    <div class="data">
-                                        <h1>{{ comentarios|length }}</h1>
-                                        <hr>
-                                        <button type="button" class="btn btn-primary" id="verTablaArticulos">Ver artículos</button>
+                                    <div class="well col-sm-3 col-lg-2">
+                                        <h4>Comentarios por aprobar</h4>
+                                        <div class="data">
+                                            <h1>{{ comentarios|length }}</h1>
+                                            <hr>
+                                            <button type="button" class="btn btn-primary" id="verTablaArticulos">Ver comentarios</button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <table id="comentario_list" class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Artículo</th>
-                                        <th>Usuario</th>
-                                        <th>Comentario</th>
-                                        <th>Fecha</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for comentario in comentarios %}
+                                    <div class="well col-sm-3 col-lg-2">
+                                        <h4>Artículos por aprobar</h4>
+                                        <div class="data">
+                                            <h1>{{ comentarios|length }}</h1>
+                                            <hr>
+                                            <button type="button" class="btn btn-primary" id="verTablaArticulos">Ver artículos</button>
+                                        </div>
+                                    </div>
+
+                                    <table id="comentario_list" class="table table-bordered table-striped">
+                                        <thead>
                                         <tr>
-                                            <td>{{ comentario.articulo }}</td>
-                                            <td>{{ comentario.usuario }}</td>
-                                            <td>{{ comentario.contenido }}</td>
-                                            <td>{{ comentario.fecha }}</td>
-                                            <td>
-                                                <a href="{{ path('aprobar_comentario', { id: comentario.id }) }}" onclick='return confirm_aprobar();' class="btn btn-success btn-xs">Aprobar</a>
-                                                <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button>
-                                            </td>
+                                            <th>Artículo</th>
+                                            <th>Usuario</th>
+                                            <th>Comentario</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
                                         </tr>
-                                    {% endfor %}
+                                        </thead>
+                                        <tbody>
+                                        {% for comentario in comentarios %}
+                                            <tr>
+                                                <td>{{ comentario.articulo }}</td>
+                                                <td>{{ comentario.usuario }}</td>
+                                                <td>{{ comentario.contenido }}</td>
+                                                <td>{{ comentario.fecha }}</td>
+                                                <td>
+                                                    <a href="{{ path('aprobar_comentario', { id: comentario.id }) }}" onclick='return confirm_aprobar();' class="btn btn-success btn-xs">Aprobar</a>
+                                                    <button data-comentario-id="{{ comentario.id }}" href="#" class="btn btn-danger btn-xs eliminarComentario">Eliminar</button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
 
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Artículo</th>
-                                        <th>Usuario</th>
-                                        <th>Comentario</th>
-                                        <th>Fecha</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Artículo</th>
+                                            <th>Usuario</th>
+                                            <th>Comentario</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
