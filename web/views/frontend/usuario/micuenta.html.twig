@@ -1,0 +1,34 @@
+<form id="form_micuenta" class="form-signup">
+    <div class="input-group">
+        <label for="Usuario_nombre" class="btn btn-default input-group-addon"><b>Nombre:</b></label>
+        <input type="text"
+               class="form-control"
+               id="Usuario_nombre"
+               name="nombre"
+               placeholder="Introduzca su nombre"
+               value="{{ app.user.nombre }}"
+               required>
+    </div>
+    <div class="input-group">&nbsp;</div>
+    <div class="input-group">
+        <label for="Usuario_correo" class="btn btn-default input-group-addon"><b>Correo:</b></label>
+        <input type="email"
+               class="form-control"
+               id="Usuario_correo"
+               name="correo"
+               value="{{ app.user.correo }}"
+               placeholder="Introduzca su correo electrónico"
+               required>
+    </div>
+    <div>&nbsp;</div>
+    <div class="input-group">
+        <label for="Usuario_alias" class="btn btn-default input-group-addon"><b>Alias:</b></label>
+        <input type="text"
+               class="form-control"
+               id="Usuario_alias"
+               name="alias"
+               value="{{ app.user.alias }}"
+               placeholder="Introduzca su alias de usuario"
+               required>
+    </div>
+</form>

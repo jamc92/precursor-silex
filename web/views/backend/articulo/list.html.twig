@@ -10,8 +10,8 @@
             $("#articulo_list").dataTable();
         });
 
-        function confirm_delete(){
-            if(!confirm("¿Está seguro que desea eliminar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
+        function confirm_delete() {
+            if (!confirm("¿Está seguro que desea eliminar el artículo? \n ¡Esta acción no se podrá deshacer!")) {
                 return false;
             }
         }
@@ -44,7 +44,7 @@
 
                         <div class="box">
                             <div class="box-header">
-                                
+
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
@@ -83,19 +83,15 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                        <a href="{{ path('noticia', { id: articulo.id }) }}" class="btn btn-info btn-xs col-md-6">Ver</a>
-                                                        <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Editar</a>
-                                                        <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
+                                                    <a href="{{ path('noticia', { id: articulo.id }) }}" class="btn btn-info btn-xs col-md-6">Ver</a>
+                                                    <a href="{{ path('articulo_edit', { id: articulo.id }) }}" class="btn btn-primary btn-xs col-md-6">Editar</a>
+                                                    <a href="{{ path('etiquetas_articulo_list', { idArticulo: articulo.id }) }}" class="btn btn-success btn-xs col-md-6">Etiquetas</a>
                                                     {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_EDITOR') %}
                                                         <a href="{{ path('articulo_delete', { id: articulo.id }) }}" onclick='return confirm_delete();' class="btn btn-danger btn-xs col-md-6">Eliminar</a>
                                                     {% endif %}
-
-
-
                                                 </td>
                                             </tr>
-                                        {% endfor %}                                        
-
+                                        {% endfor %}                             
                                     </tbody>
                                     <tfoot>
                                         <tr>
