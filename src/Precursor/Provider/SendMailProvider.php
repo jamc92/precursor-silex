@@ -64,12 +64,6 @@ class SendMailProvider implements ServiceProviderInterface
             return $message;
         });
         
-        if (isset($app['sendmail.message']) && is_callable($app['sendmail.message'])) {
-            $message = $app['sendmail.message'];
-        } else {
-            $message = $app['sendmail.default_message'];
-        }
-        
         # Default Mailer
         $app['sendmail.default_mailer'] = $app->share(function() use($transport) {
             try {
@@ -80,7 +74,7 @@ class SendMailProvider implements ServiceProviderInterface
             return $mailer;
         });
         
-        if ($app['sendmail.mailer'] && is_callable($app['sendmail.mailer'])) {
+        if (isset($app['sendmail.mailer']) && is_callable($app['sendmail.mailer'])) {
             $mailer = $app['sendmail.mailer'];
         } else {
             $mailer = $app['sendmail.default_mailer'];
