@@ -37,8 +37,9 @@ class SendMailProvider implements ServiceProviderInterface
         # Default Transport
         $app['sendmail.default_transport'] = $app->share(function() use($options) {
             try {
-                $transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port'], $options['security']);
-                $transport->setUsername($options['username'])->setPassword($options['password']);
+                $transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port'], $options['security'])
+                        ->setUsername($options['username'])
+                        ->setPassword($options['password']);
             } catch (\Swift_TransportException $ste) {
                 throw $ste;
             }
@@ -49,20 +50,8 @@ class SendMailProvider implements ServiceProviderInterface
             $transport = $app['sendmail.transport'];
         } else {
             $transport = $app['sendmail.default_transport'];
+            $app['sendmail.transport'] = $app['sendmail.default_transport'];
         }
-        
-        # Default Message
-        $app['sendmail.message'] = $app->share(function($asunto, $from, array $to = array(), $message) {
-            try {
-                $message = \Swift_Message::newInstance($asunto)
-                        ->setFrom($from)
-                        ->setTo($to)
-                        ->setBody($message, 'text/html');
-            } catch (\Swift_SwiftException $sse) {
-                throw $sse;
-            }
-            return $message;
-        });
         
         if (isset($app['sendmail.mailer']) && is_callable($app['sendmail.mailer'])) {
             $mailer = $app['sendmail.mailer'];
