@@ -52,7 +52,7 @@ class SendMailProvider implements ServiceProviderInterface
         }
         
         # Default Message
-        $app['sendmail.default_message'] = $app->share(function($asunto, $from, array $to = array(), $message) {
+        $app['sendmail.message'] = $app->share(function($asunto, $from, array $to = array(), $message) {
             try {
                 $message = \Swift_Message::newInstance($asunto)
                         ->setFrom($from)
@@ -64,26 +64,20 @@ class SendMailProvider implements ServiceProviderInterface
             return $message;
         });
         
-        # Default Mailer
-        $app['sendmail.default_mailer'] = $app->share(function() use($transport) {
-            try {
-                $mailer = \Swift_Mailer::newInstance($transport);
-            } catch (\Swift_SwiftException $sse) {
-                throw $sse;
-            }
-            return $mailer;
-        });
-        
         if (isset($app['sendmail.mailer']) && is_callable($app['sendmail.mailer'])) {
             $mailer = $app['sendmail.mailer'];
         } else {
-            $mailer = $app['sendmail.default_mailer'];
+            # Default Mailer
+            $mailer = $app->share(function() use($transport) {
+                try {
+                    $mailer = \Swift_Mailer::newInstance($transport);
+                } catch (\Swift_SwiftException $sse) {
+                    throw $sse;
+                }
+                return $mailer;
+            });
+            $app['sendmail.mailer'] = $mailer;
         }
-        
-        # Default send
-        $app['sendmail.default_send'] = $app->share(function() use($mailer, $message) {
-            return $mailer->send($message);
-        });
         
     }
 
