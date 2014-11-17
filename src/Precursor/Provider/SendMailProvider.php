@@ -79,6 +79,11 @@ class SendMailProvider implements ServiceProviderInterface
             $app['sendmail.mailer'] = $mailer;
         }
         
+        # Default send
+        $app['sendmail.send'] = $app->share(function() use($app, $mailer) {
+            return $mailer->send($app['sendmail.message']);
+        });
+        
     }
 
 }
