@@ -164,11 +164,11 @@ class Usuario
                     'mensaje' => 'Usuario logueado',
                     'alias'   => $user,
                     'url'     => $url
-                ), 200);
+                ), 202);
             } else {
                 return new JsonResponse(array(
                     'mensaje' => 'Usuario no logueado',
-                ), 202);
+                ), 200);
             }
         }
     }

@@ -89,9 +89,9 @@
         $(function() {
             var url = '{{ path("check_user_login") }}';
             var success = function(response, textStatus, xhr) {
-                response = $.parseJSON(response);
-                if (xhr.status == 200 && response.mensaje == 'Usuario logueado') {
-                    console.info(response.mensaje);
+                response = JSON.parse(response);
+                console.info(response);
+                if (xhr.status == 202 && response.mensaje == 'Usuario logueado') {
                     if (location.pathname == '{{ path("login") }}') {
                         //$(location).attr('href', response.url);
                         window.location.href = response.url;

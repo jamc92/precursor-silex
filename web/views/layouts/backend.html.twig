@@ -78,16 +78,9 @@
             var url = '{{ path("check_user_login") }}';
             var success = function(response, textStatus, xhr) {
                 response = $.parseJSON(response);
-                if (xhr.status == 202 && response.mensaje == 'Usuario no logueado') {
-                    console.info(response.mensaje);
-                    if (location.pathname != '{{ path("login") }}') {
-                        window.location.href = '{{ path("login") }}';
-                    }
-                } else if (xhr.status == 200 && response.mensaje == 'Usuario logueado') {
-                    console.info(response.mensaje);
-                    if (location.pathname == '{{ path("login") }}') {
-                        window.location.href = response.url;
-                    }
+                console.info(response);
+                if (xhr.status == 200 && response.mensaje == 'Usuario no logueado') {
+                    window.location.href = '{{ path("login") }}';
                 }
             };
             ajaxRequest('', url, false, false, false, false, false, false, success);
