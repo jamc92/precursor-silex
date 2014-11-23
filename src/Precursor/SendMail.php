@@ -38,7 +38,7 @@ class SendMail
      */
     public function __construct(array $options = array(), $transport = null)
     {
-        if (!is_null($transport) && (get_class($transport) == 'Swift_SmtpTransport' || get_class($transport) == 'Swift_Transport_EsmtpTransport')) {
+        if (is_object($transport) && (get_class($transport) == 'Swift_SmtpTransport' || get_class($transport) == 'Swift_Transport_EsmtpTransport')) {
             $this->_transport = $transport;
         } else {
             $this->setTransport($options);
@@ -67,7 +67,10 @@ class SendMail
         $options = array_merge($defaultOptions, $options);
         
         try {
-            $transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port'], $options['security'])
+            $this->_transport = \Swift_SmtpTransport::newInstance()
+                    ->setHost($options['host'])
+                    ->setPort($options['port'])
+                    ->setEncryption($options['security'])
                     ->setUsername($options['username'])
                     ->setPassword($options['password']);
         } catch (\Swift_TransportException $ste) {
