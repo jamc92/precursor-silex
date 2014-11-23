@@ -38,7 +38,20 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 # Proveedor para el uso de variables de sesion
 $app->register(new Silex\Provider\SessionServiceProvider());
 # Proveedor para el envío de correos
-$app->register(new Silex\Provider\SwiftmailerServiceProvider());
+$app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
+    'swiftmailer.options' => array(
+        /*'host' => 'smtp.gmail.com',
+        'port' => 465,
+        'security' => 'ssl',
+        'username' => 'ramon.calle.88@gmail.com',
+        'password' => 'ramoncito.1'*/
+        'host'     => 'mx1.hostinger.es',
+        'port'     => 2525,
+        'security' => null,
+        'username' => 'info@precursor.esy.es',
+        'password' => 'elprecursor'
+    )
+));
 # Proveedor de seguridad de acceso a las url
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls'      => array(
