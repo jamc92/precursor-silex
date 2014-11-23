@@ -47,14 +47,14 @@
                                             <ol class="dd-list">
                                                 {% for menu_item in menu_items %}
                                                     <li class="dd-item dd3-item" data-id="{{ menu_item.id }}" data-link="{{ menu_item.link }}" data-texto="{{ menu_item.texto }}">
-                                                        <div class="dd-handle dd3-handle">Arrastra</div>
+                                                        <div class="dd-handle dd3-handle"></div>
                                                         <div class="dd3-content">{{ menu_item.texto }}</div>
                                                         <div class="dd3-remove">Eliminar</div>
                                                         {% if menu_item.children is defined %}
                                                             <ol class="dd-list">
                                                                 {% for submenu_item in menu_item.children %}
                                                                     <li class="dd-item dd3-item" data-id="{{ submenu_item.id }}" data-link="{{ submenu_item.link }}" data-texto="{{ submenu_item.texto }}">
-                                                                        <div class="dd-handle dd3-handle">Arrastra</div>
+                                                                        <div class="dd-handle dd3-handle"></div>
                                                                         <div class="dd3-content">{{ submenu_item.texto }}</div>
                                                                         <div class="dd3-remove">Eliminar</div>
                                                                     </li>
