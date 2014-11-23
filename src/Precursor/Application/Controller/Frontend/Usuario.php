@@ -227,10 +227,6 @@ class Usuario
                     $mensajeUsuario .= "<p>Confirme su registro haciendo click en el siguiente link <a href=\"#\">Link</a>.</p>";
                     $mensajeUsuario .= "</div>";
                     $mensajeUsuario .= '</div>';
-
-                    # Validar
-                    $resultAdmin = false;
-                    $resultUsuario = false;
                     
                     $sendMail = new SendMail(array(
                         'host'     => 'mx1.hostinger.es',
@@ -238,7 +234,7 @@ class Usuario
                         'security' => null,
                         'username' => 'info@precursor.esy.es',
                         'password' => 'elprecursor'
-                    ));
+                    ), $app['swiftmailer.transport']);
                     
                     $resultAdmin = $sendMail->setMessage($asunto, 'info@precursor.esy.es', array('info@precursor.esy.es' => 'El Precursor'), $mensajeAdmin)
                              ->send();

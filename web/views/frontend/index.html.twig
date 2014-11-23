@@ -1273,7 +1273,7 @@ data-endspeed="1000"
 
                     var url = '{{ path("suscriptor_categorias_list_ajax") }}';
                     var success = function(response, textStatus, xhr) {
-                        $('.responseSuscriptor').html('').removeClass('alert-warning').removeClass('alert-info');
+                        $('.responseSuscriptor').html('').removeClass('alert').removeClass('fade').removeClass('in').removeClass('alert-info').removeClass('alert-warning');
                         $('.modalSuscriptor .modal-body').append(response);
                     };
 
@@ -1283,7 +1283,7 @@ data-endspeed="1000"
                 }
             };
 
-            ajaxRequest('.responseSuscriptor',uri, data, false, false, 'POST', false, false, success);
+            ajaxRequest('.responseSuscriptor',uri, data, true, true, 'POST', false, false, success);
         });
         
         $('a#miCuenta').click(function(evt) {
