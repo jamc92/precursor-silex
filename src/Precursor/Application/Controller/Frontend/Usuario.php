@@ -17,6 +17,7 @@ use OAuth\Common\Storage\Session,
     Precursor\Application\Model\Opcion\Menu,
     Precursor\Application\Model\Usuario as UsuarioModelo,
     Precursor\Options\SocialsCredentials,
+    Precursor\SendMail,
     Silex\Application,
     Symfony\Component\HttpFoundation\JsonResponse,
     Symfony\Component\HttpFoundation\Request,
@@ -231,48 +232,30 @@ class Usuario
                     $resultAdmin = false;
                     $resultUsuario = false;
                     
-                    try {
-                        # Transporte SMTP/Gmail con ssl
-                        /*$transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
-                                ->setUsername("cufmelprecursor@gmail.com")
-                                ->setPassword("elprecursor");*/
-                        
-                        $transport = \Swift_SmtpTransport::newInstance('mx1.hostinger.es', 2525)
-                                ->setUsername("info@precursor.esy.es")
-                                ->setPassword("elprecursor");
-
-                        # Instancia de Swift_Mailer
-                        $mailer = \Swift_Mailer::newInstance($transport);
-
-                        # Instancia de Swift_Message que sera el mensaje del correo
-                        # Mensaje al correo de la pagina
-                        $mailMessage = \Swift_Message::newInstance($asunto)
-                                ->setFrom(array($data['correo'] => $data['nombre']))
-                                ->setTo('cufmelprecursor@gmail.com')
-                                ->setBody($mensajeAdmin, 'text/html');
-
-                        # Enviar el mensaje de la pagina
-                        $resultAdmin = $mailer->send($mailMessage);
-
-                        # Mensaje al correo del usuario
-                        $mailMessage = \Swift_Message::newInstance($asunto)
-                                ->setFrom('cufmelprecursor@gmail.com')
-                                ->setTo(array($data['correo'] => $data['nombre']))
-                                ->setBody($mensajeUsuario, 'text/html');
-
-                        # Enviar el mensaje del usuario
-                        $resultUsuario = $mailer->send($mailMessage);
-                    } catch (\Swift_TransportException $ste) {
-                        #return new JsonResponse('Ocurrió un error en el servidor al intentar enviar el correo.', 400);
-                    } catch (\Swift_SwiftException $sse) {
-                        #return new JsonResponse('Ocurrió un error en el servidor al intentar enviar el correo.', 400);
-                    }
+                    $sendMail = new SendMail(array(
+                        'host'     => 'mx1.hostinger.es',
+                        'port'     => 2525,
+                        'security' => null,
+                        'username' => 'info@precursor.esy.es',
+                        'password' => 'elprecursor'
+                    ));
+                    
+                    $resultAdmin = $sendMail->setMessage($asunto, 'info@precursor.esy.es', array('info@precursor.esy.es' => 'El Precursor'), $mensajeAdmin)
+                             ->send();
+                    
+                    $resultUsuario = $sendMail->setMessage($asunto, 'info@precursor.esy.es', array($data['correo'] => $data['nombre']), $mensajeUsuario)
+                             ->send();
+                                        
+                    # Transporte SMTP/Gmail con ssl
+                    /*$transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+                            ->setUsername("cufmelprecursor@gmail.com")
+                            ->setPassword("elprecursor");*/    
                     
                     if ($resultAdmin && $resultUsuario) {
                         return new JsonResponse('El registro fue exitoso. Se ha enviado un mensaje nuevo a su cuenta de correo para confirmar la cuenta.');
                     } else {
                         $usuarioModelo->eliminar($usuarioModelo->id, true);
-                        
+
                         return new JsonResponse('Ocurrió un error al tratar de enviar el mensaje a su cuenta de correo para confirmar la cuenta. <button type="button" class="btn btn-primary" onclick="$(\'form.form-signup\').submit();">Enviar datos nuevamente</button>', 202);
                     }
                 } else {

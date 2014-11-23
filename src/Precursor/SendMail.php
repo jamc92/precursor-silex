@@ -28,7 +28,7 @@ class SendMail
     /**
      * Objeto de mensaje de Swift Mailer
      * 
-     * @var \Swift_Message
+     * @var \Swift_Mime_Message
      */
     protected $_message;
 
@@ -113,10 +113,27 @@ class SendMail
     }
     
     /**
-     * Funcion de enviar el correo
+     * Obtener el objeto del mensaje
+     * 
+     * @return \Swift_Mime_Message
      */
-    public function send()
+    public function getMessage()
     {
-        return $this->_mailer->send($this->_message);
+        return $this->_message;
+    }
+    
+    /**
+     * Funcion de enviar el correo
+     * 
+     * @param \Swift_Mime_Message $message
+     * 
+     * @return boolean
+     */
+    public function send($message = null)
+    {
+        $result = (is_object($message) && get_class($message) == '\\Swift_Mime_Message')
+                ? $this->_mailer->send($message)
+                : $this->_mailer->send($this->_message);
+        return ($result > 0) ? true : false;
     }
 }
