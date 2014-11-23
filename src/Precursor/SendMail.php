@@ -1,26 +1,35 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of EnvioCorreo
+ * Clase para enviar correos con Swift Mailer
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
 
 namespace Precursor;
 
-class EnvioCorreo
+class SendMail
 {
     
+    /**
+     * Objeto de Swift Mailer
+     * 
+     * @var \Swift_Mailer
+     */
     protected $_mailer;
     
+    /**
+     * Transporte para el Swift Mailer
+     * 
+     * @var \Swift_SmtpTransport|\Swift_Transport_EsmtpTransport
+     */
     protected $_transport;
     
+    /**
+     * Objeto de mensaje de Swift Mailer
+     * 
+     * @var \Swift_Message
+     */
     protected $_message;
 
     /**
@@ -64,6 +73,7 @@ class EnvioCorreo
         } catch (\Swift_TransportException $ste) {
             throw $ste;
         }
+        return $this;
     }
     
     /**
@@ -78,5 +88,35 @@ class EnvioCorreo
         } catch (\Swift_SwiftException $sse) {
             throw $sse;
         }
+        return $this;
+    }
+    
+    /**
+     * Configura el objeto mensaje
+     * 
+     * @param string $subject
+     * @param string $from
+     * @param array $to
+     * @param string $bodyHtml
+     * @param array $cc
+     * @param array $bcc
+     */
+    public function setMessage($subject, $from, array $to = array(), $bodyHtml, array $cc = array(), array $bcc = array())
+    {
+        $this->_message = \Swift_Message::newInstance($subject)
+                ->setFrom($from)
+                ->setTo($to)
+                ->setCc($cc)
+                ->setBcc($bcc)
+                ->setBody($bodyHtml, 'text/html');
+        return $this;
+    }
+    
+    /**
+     * Funcion de enviar el correo
+     */
+    public function send()
+    {
+        return $this->_mailer->send($this->_message);
     }
 }
