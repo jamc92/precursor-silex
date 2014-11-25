@@ -2433,6 +2433,10 @@ Component: timeline
 }
 .skin-blue .navbar .nav a {
   color: rgba(255, 255, 255, 0.8);
+  -webkit-transition: all ease-in-out .5s;
+     -moz-transition: all ease-in-out .5s;
+       -o-transition: all ease-in-out .5s;
+          transition: all ease-in-out .5s;
 }
 .skin-blue .navbar .nav > li > a:hover,
 .skin-blue .navbar .nav > li > a:active,
@@ -2442,6 +2446,9 @@ Component: timeline
 .skin-blue .navbar .nav .open > a:focus {
   background: rgba(0, 0, 0, 0.1);
   color: #f6f6f6;
+  font-weight: bold;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .skin-blue .navbar .navbar-right > .nav {
   margin-right: 10px;
