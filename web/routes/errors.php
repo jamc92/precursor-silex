@@ -4,6 +4,7 @@ use \PDOException,
     Doctrine\DBAL\DBALException,
     Precursor\Application\Model\Opcion\Menu,
     Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException,
     Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException,
     Symfony\Component\HttpKernel\Exception\NotFoundHttpException,
     Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,23 @@ $app->error(function (\LogicException $logicException) use($app) {
     } else {
         // Aqui ira la vista error/500.html.twig
         return new Response($logicException->getMessage());
+    }
+});
+
+$app->error(function (AccessDeniedHttpException $accessDeniedHttpException) use($app) {
+    if ($app['debug']) {
+        return;
+    } else {
+        $menuModelo = new Menu($app['db']);
+        $menuItems = $menuModelo->getItems();
+        
+        // Respuesta en frontend
+        $uriActual = $_SERVER['REQUEST_URI'];
+        
+        return $app['twig']->render('errors/403.html.twig', array(
+            'uri'        => $uriActual,
+            'menu_items' => $menuItems
+        ));
     }
 });
 
