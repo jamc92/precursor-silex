@@ -130,7 +130,7 @@ class Articulo extends Model
                 $this->queryBuilder()->expr()->like('contenido', '?')
                 ))
             ->getSQL();
-        return $this->_select($sql, $join = array(), '', array("%$titulo%", "%$titulo%", "%$titulo%"));
+        return $this->_select($sql, $join = array(), "WHERE estatus = 'A'", array("%$titulo%", "%$titulo%", "%$titulo%"));
     }
 
     public function aprobarArticulo($id)
