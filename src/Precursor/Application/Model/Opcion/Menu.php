@@ -37,7 +37,8 @@ class Menu extends Opcion
      * @param Connection $db Objeto de la conección de doctrine con la base de datos
      * @param int $id        Id de la opción
      */
-    public function __construct(Connection $db, $id = null) {
+    public function __construct(Connection $db, $id = null)
+    {
         parent::__construct($db);
         
         $this->_id     = $id;
