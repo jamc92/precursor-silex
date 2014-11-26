@@ -115,7 +115,7 @@ class Archivo
     public function editar(Request $request, Application $app, $nombre)
     {
         $direccion = $app['request']->get('direccion');
-
+        
         if (!empty($direccion)) {
 
             $file = fopen($direccion . "/$nombre", 'r');
@@ -134,17 +134,18 @@ class Archivo
 
             $form = $form->getForm();
 
-            if ('PUT' == $request->getMethod()) {
-                $form->handleRequest($request);
-
-                if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    print_r($data);
-                    die;
-                    return '';
+            if ($request->isXmlHttpRequest() && 'PUT' == $request->getMethod()) {
+                $data = $request->get('form');
+                
+                if ($contenido !== $data['contenido']) {
+                    $result = file_put_contents($direccion . "/$nombre", $data['contenido']);
+                    
+                    $message = ($result) ? 'Exitoso' : 'No escrito';
+                    
+                    return new Response($message);
+                } else {
+                    return new Response('Nada que actualizar');
                 }
-
             }
 
             return $app['twig']->render('backend/archivo/edit.html.twig', array(
