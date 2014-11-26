@@ -85,14 +85,10 @@ class Menu extends Opcion
     {
         $filasAfectadas = parent::guardar('js', $this->_nombre, json_encode($items));
 
-        $auditoriaController = new Auditoria($this->_db);
-
         if ($filasAfectadas == 1) {
-            $auditoriaController->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú. Extra: ' . json_encode($items), 'EXITOSO');
-            #Auditoria::getInstance()->guardar();
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú. Extra: ' . json_encode($items), 'EXITOSO');
         } else {
-            $auditoriaController->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú fallido. Extra: ' . json_encode($items), 'FALLIDO');
-            #Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú fallido. Extra: ' . json_encode($items), 'FALLIDO');
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'Menu', 'Guardar items de menú fallido. Extra: ' . json_encode($items), 'FALLIDO');
         }
 
         return $filasAfectadas;

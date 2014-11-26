@@ -68,11 +68,38 @@ class CustomStyles extends Opcion
     }
     
     /**
-     * @return array
+     * @return string
      */
     public function getStyles()
     {
         return $this->_styles;
     }
 
+    /**
+     * @param string $styles CSS de los estilos personalizados de la aplicacion
+     * 
+     * @return int Filas afectadas
+     */
+    public function guardar($styles)
+    {
+        $filasAfectadas = parent::guardar('css', $this->_nombre, $styles);
+
+        if ($filasAfectadas == 1) {
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'CustomStyles', "Guardar estilos personalizados. Extra: $styles", 'EXITOSO');
+        } else {
+            Auditoria::getInstance()->guardar($this->_db, 'INSERT', 'CustomStyles', "Guardar estilos personalizados. Extra: $styles", 'FALLIDO');
+        }
+
+        return $filasAfectadas;
+    }
+    
+    /**
+     * @param string $styles JSON de los items del menú
+     * 
+     * @return int Filas afectadas
+     */
+    public function modificar($styles)
+    {
+        return parent::modificar($this->_id, 'css', $this->_nombre, $styles);
+    }
 }
