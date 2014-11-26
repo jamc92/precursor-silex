@@ -112,9 +112,11 @@ $app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($
 if ($_SERVER['SERVER_NAME'] == "precursor.esy.es") {
     $app['asset_path'] = 'http://precursor.esy.es/web/resources';
     $app['upload_path'] = 'http://precursor.esy.es/web/resources/uploads';
+    $app['banner_path'] = 'http://precursor.esy.es/web/resources/img/secciones';
 } else {
     $app['asset_path'] = 'http://localhost/precursor-silex/web/resources';
     $app['upload_path'] = 'http://localhost/precursor-silex/web/resources/uploads';
+    $app['banner_path'] = 'http://localhost/precursor-silex/web/resources/img/secciones';
 }
 
 $app['upload_dir'] = __DIR__ . "/resources/uploads/";
