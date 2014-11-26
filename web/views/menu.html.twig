@@ -96,8 +96,11 @@
                     <li {% if option is defined and option == 'logs_list' %}class="active"{% endif %}><a href="{{ path('logs_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Logs</a></li>
                 </ul>
             </li>
-            <li {% if option is defined and option == 'correos' %}class="active"{% endif %}>
-                <a href="{{ path('correos_ver') }}" style="margin-left: 10px;"><i class="fa fa-envelop"></i> Envío de correos</a>
+            <li {% if option is defined and option == 'custom_styles' %}class="active"{% endif %}>
+                <a href="{{ path('custom_styles') }}" style="margin-left: 10px;"><i class="fa fa-css3"></i> Estilos CSS</a>
+            </li>
+            <li {% if option is defined and option == 'envio_correos' %}class="active"{% endif %}>
+                <a href="{{ path('envio_correos') }}" style="margin-left: 10px;"><i class="fa fa-envelope"></i> Envío de correos</a>
             </li>
             <li {% if option is defined and option == 'menu' %}class="active"{% endif %}>
                 <a href="{{ path('menu_index') }}" style="margin-left: 10px;"><i class="fa fa-bars"></i> Menú</a>

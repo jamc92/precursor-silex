@@ -53,8 +53,13 @@
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
-                                <button type="button" id="editar" class="btn btn-primary">Editar</button>
-                                <button type="button" class="btn btn-default" onclick="location.href='{{ path("archivo_list") }}'">Volver</button>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <button type="button" id="editar" class="btn btn-primary">Editar</button>
+                                        <button type="button" class="btn btn-default" onclick="location.href='{{ path("archivo_list") }}'">Volver</button>
+                                    </div>
+                                    <div class="response alert col-md-6"></div>
+                                </div>
                             </div>
 
                         </div><!-- /.box -->
@@ -116,23 +121,17 @@
         $('#editar').on('click', function() {
             
             var contenido = ace.edit('editor').getValue();
+            var data = {
+                'form[nombre]': $("#form_nombre").val(),
+                'form[contenido]': contenido,
+                'form[_token]': $("#form__token").val()
+            };
+            var success = function(response, textStatus, xhr) {
+                verAlert('.response', response, 'info', false, true, 5000);
+            };
             
             if (contenido != "") {
-                $.ajax({
-                    url: '',
-                    data: {
-                        'form[nombre]': $("#form_nombre").val(),
-                        'form[contenido]': contenido,
-                        'form[_token]': $("#form__token").val()
-                    },
-                    error: function(xhr) {
-                        console.log(xhr);
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    },
-                    type: 'PUT'
-                });
+                ajaxRequest('.response', '', data, true, true, 'PUT', false, false, success);
             }
         });
     </script>

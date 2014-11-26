@@ -9,13 +9,57 @@
 
 namespace Precursor\Application\Controller\Backend;
 
-use Precursor\Application\Model\Opcion\Menu,
+use Precursor\Application\Model\Opcion\CustomStyles,
+    Precursor\Application\Model\Opcion\Menu,
     Silex\Application,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
 class Opcion
 {
+    
+    
+    public function customStyles(Application $app, Request $request)
+    {
+        $customStylesModelo = new CustomStyles($app['db']);
+        
+        $contenido = $customStylesModelo->getStyles();
+        
+        $initial_data = array(
+            'contenido' => $contenido
+        );
+        
+        $form = $app['form.factory']->createBuilder('form', $initial_data);
+        
+        $form = $form->add('contenido', 'textarea', array());
+        
+        $form = $form->getForm();
+        
+        if ('POST' == $request->getMethod()) {
+            $data = $request->get('form');
+            
+            $filasAfectadas = 0;
+            
+            $customStyles = $customStylesModelo->getOpcion(null, 'custom_styles');
+            
+            if (!empty($customStyles) && ($customStyles['value'] !== $data['contenido'])) {
+
+                $customStylesModelo->setId($customStyles['id']);
+
+                $filasAfectadas = $customStylesModelo->modificar($data['contenido']);
+            } elseif (!empty($data['contenido'])) {
+                $filasAfectadas = $customStylesModelo->guardar($data['contenido']);
+            }
+            
+            $message = ($filasAfectadas > 0) ? 'Exitoso' : 'Nada que actualizar';
+            
+            return new Response($message);
+        }
+        
+        return $app['twig']->render('backend/custom_styles/index.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
 
     /**
      * @param Application $app

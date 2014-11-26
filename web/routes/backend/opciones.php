@@ -7,9 +7,9 @@ $app->match('/admin/menu/guardar', 'Precursor\\Application\\Controller\\Backend\
     ->method('POST')
     ->bind('menu_guardar');
 
-$app->match('/admin/correos', 'Precursor\\Application\\Controller\\Backend\\Opcion::verCorreos')
-    ->bind('correos_ver');
+$app->match('/admin/custom-styles', 'Precursor\\Application\\Controller\\Backend\\Opcion::customStyles')
+    ->bind('custom_styles')
+    ->method('GET|POST');
 
-$app->match('/admin/correos/guardar', 'Precursor\\Application\\Controller\\Backend\\Opcion::guardarCorreos')
-    ->method('POST')
-    ->bind('correos_guardar');
+$app->match('/admin/envio-correos', 'Precursor\\Application\\Controller\\Backend\\Opcion::verCorreos')
+    ->bind('envio_correos');
