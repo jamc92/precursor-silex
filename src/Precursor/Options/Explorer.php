@@ -44,6 +44,7 @@ class Explorer
             dirname(__DIR__) . "/File/",
             dirname(__DIR__) . "/Options/",
             dirname(__DIR__) . "/Provider/",
+            dirname(__DIR__) . "/LogViewer/"
         );
     }
     

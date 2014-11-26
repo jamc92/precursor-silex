@@ -30,12 +30,13 @@ class Archivo
 
         if (!empty($archivo)) {
 
-            $file    = fopen($archivo, 'r');
-            $content = fread($file, 8192);
-            fclose($file);
+            #$file    = fopen($archivo, 'r');
+            #$content = fread($file, 8192);
+            #fclose($file);
+            $contenido = file_get_contents($archivo);
 
             return $app['twig']->render('backend/archivo/content.html.twig', array(
-                'content' => $content
+                'content' => $contenido
             ));
         } else {
             $explorer = $app['explorer'];
@@ -118,9 +119,9 @@ class Archivo
         
         if (!empty($direccion)) {
 
-            $file = fopen($direccion . "/$nombre", 'r');
-            $contenido = fread($file, 8192);
-            fclose($file);
+            $contenido = file_get_contents($direccion . "/$nombre");
+            #$contenido = fread($file, 8192);
+            #fclose($file);
 
             $initial_data = array(
                 'contenido' => $contenido,
