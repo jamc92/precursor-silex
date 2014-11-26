@@ -27,7 +27,7 @@ class CustomStyles
         
         $styles = $csmodelo->getStyles();
         
-        echo "<styles>$styles</styles>";
+        echo '<style id="custom_styles">' . $styles . '</style>';
     }
 
 }

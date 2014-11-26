@@ -7,7 +7,8 @@
 
 namespace Precursor;
 
-use Precursor\Extension\Paginador;
+use Precursor\Extension\CustomStyles,
+    Precursor\Extension\Paginador;
 
 class WidgetExtension extends \Twig_Extension
 {
@@ -26,8 +27,11 @@ class WidgetExtension extends \Twig_Extension
     public function getFunctions()
     {
         $paginador = new Paginador();
+        $customStyles = new CustomStyles();
+        
         return array(
             new \Twig_SimpleFunction('precursor_widget', array($this, 'getWidget')),
+            new \Twig_SimpleFunction('precursor_custom_styles', array($customStyles, 'rawHtmlStyles')),
             new \Twig_SimpleFunction('paginador_noticias', array($paginador, 'getPaginador'))
         );
     }
