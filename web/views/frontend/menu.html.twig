@@ -13,7 +13,7 @@
             <ul class="nav navbar-nav">
                 {% if menu_items %}
                     {% for menu_item in menu_items %}
-                        <li class="{% if menu_item.children is defined %}dropdown{% endif %}{% if option is defined and option == menu_item.texto %}active{% endif %}">
+                        <li class="{% if menu_item.children is defined %}dropdown{% endif %}{% if menu_item.id is defined %}{{ menu_item.id }}{% endif %}">
                             {% if menu_item.children is defined %}
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu_item.texto }} <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
