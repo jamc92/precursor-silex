@@ -75,6 +75,8 @@
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/css");
+            editor.setAutoScrollEditorIntoView(true);
+            editor.setOption("maxLines", 100);
             ace.edit('editor').setValue($('#form_contenido').val());
             
             $('#form_contenido').parent().css('display', 'none');
