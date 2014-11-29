@@ -80,22 +80,19 @@
             $('#form_contenido').parent().css('display', 'none');
         });
         
-        $('#editar').on('click', function() {
+        $('#editar').bind('click', function() {
+            $('.response').fadeIn();
             
             var contenido = ace.edit('editor').getValue();
-            console.info(contenido);
             var url = '{{ path("custom_styles") }}';
-            console.info(url);
             var data = {
                 'form[contenido]': contenido,
                 'form[_token]': $("#form__token").val()
             };
-            console.info(data);
+            
             var success = function(response, textStatus, xhr) {
                 verAlert('.response', response, 'info', false, true, 5000);
             };
-            console.info(success);
-            
             if (contenido !== "") {
                 ajaxRequest('.response', url, data, true, true, 'POST', false, false, success);
             }
