@@ -1,0 +1,36 @@
+{% extends "layouts/frontend.html.twig" %}
+
+{% block stylesheets %}
+    <!-- bootstrap 3.0.2 -->
+    <link href="{{ app.asset_path }}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- font Awesome -->
+    <link href="{{ app.asset_path }}/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="{{ app.asset_path }}/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="{{ app.asset_path }}/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="{{ app.asset_path }}/css/styles.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+{% endblock %}
+
+{% block container %}
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <div class="container-fluid">
+            <div class="col-12 col-sm-8 col-lg-8">
+                <h1>Error {% block error_number %}{% endblock %}</h1>
+                <h4>{% block error_message %}{% endblock %}</h4>
+                <p>{% block error_extra %}Contacte con el administrador de la página.{% endblock %}</p>
+                {% block error_details %}
+                    {% if error is defined %}
+                        <p>Detalles: {{ error }}</p>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
