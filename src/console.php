@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Doctrine\DBAL\Schema\Table;
 
-$console = new Application('CRUD Admin Generator command instalation', '1.0');
+$console = new Application('Precursor Command Application Test', '1.0');
 
 $console
     ->register('generate:admin')

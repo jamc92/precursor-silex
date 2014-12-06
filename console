@@ -1,9 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
+$appFile = __DIR__ . '/src/app.php';
+$consoleFile = __DIR__ . '/src/console.php';
 
-require __DIR__.'/src/app.php';
-$console = require __DIR__.'/src/console.php';
-$console->run();
-
+if (!file_exists($appFile)) {
+    die("Archivo $appFile no existe.");
+} elseif (!file_exists($consoleFile)) {
+    die("Archivo $consoleFile no existe.");
+} else {
+    require $appFile;
+    $console = require $consoleFile;
+    $console->run();
+}
